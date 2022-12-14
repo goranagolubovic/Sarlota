@@ -49,8 +49,8 @@ public class ZaduzenjeService {
         }
 
         zaduzenje.setNaslov(zaduzenjeDTO.getNaslov());
-        zaduzenje.setOpis(zaduzenje.getOpis());
-        zaduzenje.setRokZaIzvrsenje(null);
+        zaduzenje.setOpis(zaduzenjeDTO.getOpis());
+        zaduzenje.setRokZaIzvrsenje(zaduzenjeDTO.getRokZaIzvrsenje());
         zaduzenje.setStatus(zaduzenjeDTO.getStatus());
 
         return zaduzenjeRepository.save(zaduzenje);

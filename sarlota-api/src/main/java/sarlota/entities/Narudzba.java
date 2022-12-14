@@ -14,6 +14,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Narudzba {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id@Column(name = "id")
     private Integer id;
     @Basic@Column(name = "datum_prijema")

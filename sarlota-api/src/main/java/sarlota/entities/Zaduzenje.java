@@ -12,6 +12,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Zaduzenje {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id@Column(name = "id")
     private Integer id;
     @Basic@Column(name = "naslov")

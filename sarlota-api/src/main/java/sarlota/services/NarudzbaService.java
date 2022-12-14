@@ -49,8 +49,8 @@ public class NarudzbaService {
             return null;
         }
 
-        narudzba.setDatumIsporuke(null);
-        narudzba.setDatumPrijema(null);
+        narudzba.setDatumIsporuke(narudzbaDTO.getDatumIsporuke());
+        narudzba.setDatumPrijema(narudzbaDTO.getDatumPrijema());
         narudzba.setOpis(narudzbaDTO.getOpis());
         narudzba.setAktivna(narudzbaDTO.getAktivna());
 
