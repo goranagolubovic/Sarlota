@@ -9,7 +9,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import sarlota.entities.Zaposleni;
 import sarlota.entities.dto.LoginResponse;
-import sarlota.entities.enums.Role;
 import sarlota.entities.requests.LoginRequest;
 
 import java.util.Date;
@@ -28,10 +27,9 @@ public class AuthService{
         this.zaposleniService = zaposleniService;
     }
 
-    public LoginResponse logIn(LoginRequest request){
+    public LoginResponse login(LoginRequest request){
         LoginResponse response = null;
-        try{
-            //throw new Exception();
+        try {
             Authentication authenticate = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getKorisnickoIme(), request.getLozinka())
             );
@@ -48,16 +46,18 @@ public class AuthService{
             response.setToken(generateJwt(zaposleni));
 
         }
+
         catch (Exception ex){
             return null;
         }
+
 
     return response;
 
 
     }
 
-    private String generateJwt(Zaposleni zaposleni){
+    public String generateJwt(Zaposleni zaposleni){
         return Jwts.builder()
                 .setId(zaposleni.getId().toString())
                 .setSubject(zaposleni.getUsername())

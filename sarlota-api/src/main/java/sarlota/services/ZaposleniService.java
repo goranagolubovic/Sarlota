@@ -32,7 +32,7 @@ public class ZaposleniService {
     private String defaultPassword;
 
     @Value("${authorization.default.salary}")
-    private BigDecimal defaultPlata;
+    private BigDecimal defaultSalary;
 
     public List<Zaposleni> getAll() {
 
@@ -81,7 +81,7 @@ public class ZaposleniService {
         zaposleniRepository.deleteById(id);
     }
 
-    public void signUp(SignUpRequest request){
+    public void signup(SignUpRequest request){
         if(zaposleniRepository.findByUsername(request.getKorisnickoIme()) != null){
             return;
         }
@@ -98,7 +98,7 @@ public class ZaposleniService {
             zaposleni.setKorisnickoIme(defaultUsername);
             zaposleni.setIme(defaultFirstName);
             zaposleni.setPrezime(defaultLastName);
-            zaposleni.setPlata(defaultPlata);
+            zaposleni.setPlata(defaultSalary);
             zaposleni.setLozinka(passwordEncoder.encode(defaultPassword));
             zaposleni.setTipZaposlenog(Role.POSLASTICAR);
             zaposleniRepository.saveAndFlush(zaposleni);

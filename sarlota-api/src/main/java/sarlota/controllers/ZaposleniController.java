@@ -6,10 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import sarlota.entities.Zaposleni;
-import sarlota.entities.dto.ZaposleniDTO;
 import sarlota.entities.requests.ZaposleniUpdateRequest;
 import sarlota.services.ZaposleniService;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -19,38 +19,27 @@ public class ZaposleniController {
     private final ZaposleniService zaposleniService;
 
     @GetMapping
-    public ResponseEntity<List<Zaposleni>> getAll() { return ResponseEntity.ok(zaposleniService.getAll()); }
+    public ResponseEntity<List<Zaposleni>> getAll(Authentication auth) {
+        return ResponseEntity.ok(zaposleniService.getAll());
+    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Zaposleni> getOne(@PathVariable int id) {
+    public ResponseEntity<Zaposleni> getOne(@PathVariable int id, Authentication auth) {
         Zaposleni z = zaposleniService.getOne(id);
         return z == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build() : ResponseEntity.ok(z);
     }
-
-    /*@PostMapping
-    public ResponseEntity<Zaposleni> add(@RequestBody ZaposleniDTO zaposleniDTO) {
-        try {
-            Zaposleni z = zaposleniService.add(zaposleniDTO);
-            return z == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build() : ResponseEntity.ok(z);
-        }
-        catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }*/
 
     @PutMapping("/{id}")
     public ResponseEntity<Zaposleni> update(@PathVariable int id, @RequestBody ZaposleniUpdateRequest request, Authentication auth) {
         try {
             Zaposleni requester = (Zaposleni) auth.getPrincipal();
             if(requester.getId().equals(id)){
-                System.out.println(requester.getId() + id);
                return ResponseEntity.status(HttpStatus.CONFLICT).build();
             }
             Zaposleni z = zaposleniService.update(id, request);
             return z == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build() : ResponseEntity.ok(z);
         }
         catch (Exception e) {
-            System.out.println(e.getMessage());
             return ResponseEntity.status((HttpStatus.ALREADY_REPORTED)).build();
         }
     }

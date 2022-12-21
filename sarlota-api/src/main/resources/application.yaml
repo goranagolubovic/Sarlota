@@ -9,13 +9,11 @@ authorization:
       name: Authorization
       prefix: Bearer
     secret: fsaf078fasfas098asffas8089df866
-    expiration-time: 900000
+    expiration-time: 1
   default:
     username: admin
     password: admin
     first-name: vlasnik
     last-name: vlasnik
-    salary: 1500
-server:
-  port: 9000
+    salary: 2000
 
