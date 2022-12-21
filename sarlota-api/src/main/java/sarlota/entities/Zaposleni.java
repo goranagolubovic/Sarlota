@@ -36,7 +36,7 @@ public class Zaposleni implements UserDetails {
     private BigDecimal plata;
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "tip_zaposlenog", nullable = false)
-    private Role role;
+    private Role tipZaposlenog;
     @JsonIgnore
     @OneToMany(mappedBy = "zaposleniByZaposleniId")
     private List<Kontakt> kontaktsById;
@@ -58,21 +58,21 @@ public class Zaposleni implements UserDetails {
         this.prezime = lastName;
         this.plata = plata;
         this.lozinka = password;
-        this.role = tipZaposlenog;
+        this.tipZaposlenog = tipZaposlenog;
     }
 
     public Zaposleni(Integer id, String username, String password, Role role) {
         this.id = id;
         this.korisnickoIme = username;
         this.lozinka = password;
-        this.role = role;
+        this.tipZaposlenog = role;
     }
 
 
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(role.name()));
+        return Collections.singletonList(new SimpleGrantedAuthority(tipZaposlenog.name()));
     }
 
     @Override

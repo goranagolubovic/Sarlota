@@ -44,7 +44,7 @@ public class AuthService{
                     z.getKorisnickoIme(),
                     z.getLozinka(),
                     z.getPlata(),
-                    z.getRole());
+                    z.getTipZaposlenog());
             response.setToken(generateJwt(zaposleni));
 
         }
@@ -61,7 +61,7 @@ public class AuthService{
         return Jwts.builder()
                 .setId(zaposleni.getId().toString())
                 .setSubject(zaposleni.getUsername())
-                .claim("role", zaposleni.getRole().name())
+                .claim("role", zaposleni.getTipZaposlenog().name())
                 .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(tokenExpirationTime)))
                 .signWith(SignatureAlgorithm.HS512, tokenSecret)
                 .compact();

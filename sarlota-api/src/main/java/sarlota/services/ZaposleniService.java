@@ -72,7 +72,7 @@ public class ZaposleniService {
         z.setKorisnickoIme(request.getKorisnickoIme());
         z.setPlata(request.getPlata());
         //z.setLozinka(request.getLozinka());
-        z.setRole(request.getTipZaposlenog());
+        z.setTipZaposlenog(request.getTipZaposlenog());
         return zaposleniRepository.save(z);
     }
 
@@ -87,8 +87,8 @@ public class ZaposleniService {
         }
         Zaposleni z = new Zaposleni(request.getKorisnickoIme(), request.getIme(), request.getPrezime(), request.getLozinka(),new BigDecimal(1500), request.getTipZaposlenog());
         z.setLozinka(passwordEncoder.encode(z.getLozinka()));
-        z.setRole(request.getTipZaposlenog());
-        add(new ZaposleniDTO(z.getIme(), z.getPrezime(), z.getKorisnickoIme(), z.getLozinka(), z.getPlata() , z.getRole()));
+        z.setTipZaposlenog(request.getTipZaposlenog());
+        add(new ZaposleniDTO(z.getIme(), z.getPrezime(), z.getKorisnickoIme(), z.getLozinka(), z.getPlata() , z.getTipZaposlenog()));
     }
 
     @PostConstruct
@@ -100,7 +100,7 @@ public class ZaposleniService {
             zaposleni.setPrezime(defaultLastName);
             zaposleni.setPlata(defaultPlata);
             zaposleni.setLozinka(passwordEncoder.encode(defaultPassword));
-            zaposleni.setRole(Role.POSLASTICAR);
+            zaposleni.setTipZaposlenog(Role.POSLASTICAR);
             zaposleniRepository.saveAndFlush(zaposleni);
         }
     }
