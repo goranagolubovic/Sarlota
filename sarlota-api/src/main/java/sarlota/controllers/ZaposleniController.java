@@ -3,9 +3,11 @@ package sarlota.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import sarlota.entities.Zaposleni;
 import sarlota.entities.dto.ZaposleniDTO;
+import sarlota.entities.requests.ZaposleniUpdateRequest;
 import sarlota.services.ZaposleniService;
 
 import java.util.List;
@@ -25,7 +27,7 @@ public class ZaposleniController {
         return z == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build() : ResponseEntity.ok(z);
     }
 
-    @PostMapping
+    /*@PostMapping
     public ResponseEntity<Zaposleni> add(@RequestBody ZaposleniDTO zaposleniDTO) {
         try {
             Zaposleni z = zaposleniService.add(zaposleniDTO);
@@ -34,16 +36,22 @@ public class ZaposleniController {
         catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-    }
+    }*/
 
     @PutMapping("/{id}")
-    public ResponseEntity<Zaposleni> update(@PathVariable int id, @RequestBody ZaposleniDTO zaposleniDTO) {
+    public ResponseEntity<Zaposleni> update(@PathVariable int id, @RequestBody ZaposleniUpdateRequest request, Authentication auth) {
         try {
-            Zaposleni z = zaposleniService.update(id, zaposleniDTO);
+            Zaposleni requester = (Zaposleni) auth.getPrincipal();
+            if(requester.getId().equals(id)){
+                System.out.println(requester.getId() + id);
+               return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
+            Zaposleni z = zaposleniService.update(id, request);
             return z == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build() : ResponseEntity.ok(z);
         }
         catch (Exception e) {
-            return ResponseEntity.status((HttpStatus.INTERNAL_SERVER_ERROR)).build();
+            System.out.println(e.getMessage());
+            return ResponseEntity.status((HttpStatus.ALREADY_REPORTED)).build();
         }
     }
 

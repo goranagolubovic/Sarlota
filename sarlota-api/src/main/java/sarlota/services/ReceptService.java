@@ -19,7 +19,7 @@ public class ReceptService {
 
     private final ZaposleniRepository zaposleniRepository;
 
-    private final PonudaRepository ponudaRepository;
+   // private final PonudaRepository ponudaRepository;
 
     public List<Recept> getAll() { return receptRepository.findAll(); }
 
@@ -27,8 +27,8 @@ public class ReceptService {
 
     public Recept add(ReceptDTO receptDTO) {
         Zaposleni zaposleni = zaposleniRepository.findById(receptDTO.getIdZaposlenog()).orElse(null);
-        Ponuda ponuda = ponudaRepository.findById(receptDTO.getIdPonude()).orElse(null);
-
+       // Ponuda ponuda = ponudaRepository.findById(receptDTO.getIdPonude()).orElse(null);
+Ponuda ponuda = null;
         if (zaposleni == null || ponuda == null) {
             return null;
         }
