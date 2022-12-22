@@ -1,7 +1,6 @@
 package sarlota.services;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,7 +8,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import sarlota.entities.Zaposleni;
 import sarlota.entities.dto.LoginResponse;
+import sarlota.entities.dto.RefreshResponse;
+import sarlota.entities.enums.Role;
 import sarlota.entities.requests.LoginRequest;
+import sarlota.entities.requests.RefreshRequest;
 
 import java.util.Date;
 
@@ -54,6 +56,23 @@ public class AuthService{
 
     return response;
 
+
+    }
+
+    public RefreshResponse refreshToken(RefreshRequest request){
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(tokenSecret)
+                    .parseClaimsJws(request.getToken())
+                    .getBody();
+
+        }
+        catch(ExpiredJwtException e){
+            Zaposleni z = new Zaposleni(Integer.valueOf(e.getClaims().getId()), e.getClaims().getSubject(), null, Role.valueOf(e.getClaims().get("role", String.class)));
+            return new RefreshResponse(generateJwt(z));
+        }
+
+        return null;
 
     }
 

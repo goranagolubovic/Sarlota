@@ -25,10 +25,6 @@ import java.util.Date;
 @Component
 public class AuthorizationFilter extends OncePerRequestFilter {
 
-    @Value("${authorization.token.expiration-time}")
-    private String tokenExpirationTime;
-    @Value("${authorization.token.secret}")
-    private String tokenSecret;
 
     @Value("${authorization.token.header.name}")
     private String authorizationHeaderName;
@@ -37,6 +33,8 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     @Value("${authorization.token.secret}")
     private String authorizationSecret;
 
+    @Value("RefreshToken")
+    private String refreshHeaderName;
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
@@ -46,6 +44,16 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             return;
         }
         String token  = authorizationHeader.replace(authorizationHeaderPrefix, "");
+
+        String refreshHeader = httpServletRequest.getHeader(refreshHeaderName);
+
+        //korisnik trazi refresh tokena
+        if(Boolean.parseBoolean(refreshHeader) == true){
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
+            return;
+
+        }
+
         try {
             Claims claims = Jwts.parser()
                     .setSigningKey(authorizationSecret)
@@ -56,40 +64,27 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         catch (SignatureException e) {
-            System.out.println("Invalid JWT signature.");
+
         }
         catch (MalformedJwtException e) {
-            System.out.println("Invalid JWT token.");}
+
+        }
+
         catch (ExpiredJwtException e) {
-            Zaposleni z = new Zaposleni(Integer.valueOf(e.getClaims().getId()), e.getClaims().getSubject(), null, Role.valueOf(e.getClaims().get("role", String.class)));
-            String s = generateJwt(z);
             httpServletResponse.resetBuffer();
             httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            httpServletResponse.setHeader("Content-Type", "application/json");
-            String responseString = "{\"New Token\":" + "\"" + s + "\"\n}";
-            httpServletResponse.getOutputStream().print(responseString);
             httpServletResponse.flushBuffer();
             return;
         }
         catch (UnsupportedJwtException e) {
-            System.out.println("Unsupported JWT token.");
         }
         catch (IllegalArgumentException e) {
-            System.out.println("JWT token compact of handler are invalid.");
         }
 
 
        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 
-    private String generateJwt(Zaposleni zaposleni){
-        return Jwts.builder()
-                .setId(zaposleni.getId().toString())
-                .setSubject(zaposleni.getUsername())
-                .claim("role", zaposleni.getTipZaposlenog().name())
-                .setExpiration(new Date(System.currentTimeMillis() + 900000))
-                .signWith(SignatureAlgorithm.HS512, tokenSecret)
-                .compact();
-    }
+
 
 }
