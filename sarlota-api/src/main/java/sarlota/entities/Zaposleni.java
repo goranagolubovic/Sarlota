@@ -26,10 +26,7 @@ public class Zaposleni {
     private Double plata;
     @Basic@Column(name = "tip_zaposlenog")
     private Integer tipZaposlenog;
-    //================================================================================
-    // OVO JE ISKOMENTARISANO SAMO ZATO DA BIH MOGAO TESTIRATI 'Narudzbe' i 'Zaduzenja'
-    //================================================================================
-    /*@JsonIgnore
+    @JsonIgnore
     @OneToMany(mappedBy = "zaposleniByZaposleniId")
     private List<Kontakt> kontaktsById;
     @JsonIgnore
@@ -40,7 +37,7 @@ public class Zaposleni {
     private List<Recept> receptsById;
     @JsonIgnore
     @OneToMany(mappedBy = "zaposleniByZaposleniId")
-    private List<Zaduzenje> zaduzenjesById;*/
+    private List<Zaduzenje> zaduzenjesById;
 
 
 
