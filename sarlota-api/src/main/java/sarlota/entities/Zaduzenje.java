@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Data
@@ -11,6 +12,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Zaduzenje {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id@Column(name = "id")
     private Integer id;
     @Basic@Column(name = "naslov")
@@ -18,7 +20,7 @@ public class Zaduzenje {
     @Basic@Column(name = "opis")
     private String opis;
     @Basic@Column(name = "rok_za_izvrsenje")
-    private Date rokZaIzvrsenje;
+    private LocalDateTime rokZaIzvrsenje;
     @Basic@Column(name = "status")
     private Boolean status;
     @ManyToOne@JoinColumn(name = "zaposleni_id", referencedColumnName = "id", nullable = false)
