@@ -3,3 +3,20 @@ spring:
     username: root
     password: root
     url: jdbc:mysql://localhost:3306/db_sarlota
+authorization:
+  token:
+    header:
+      name: Authorization
+      prefix: Bearer
+      refresh: RefreshToken
+    secret: fsaf078fasfas098asffas8089df866
+    expiration-time: 10000
+
+  default:
+    username: admin
+    password: admin
+    first-name: vlasnik
+    last-name: vlasnik
+    salary: 2000
+server:
+  port: 9000
