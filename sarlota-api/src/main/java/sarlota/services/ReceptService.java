@@ -19,16 +19,19 @@ public class ReceptService {
 
     private final ZaposleniRepository zaposleniRepository;
 
-   // private final PonudaRepository ponudaRepository;
+    // private final PonudaRepository ponudaRepository;
 
-    public List<Recept> getAll() { return receptRepository.findAll(); }
+    public List<Recept> getAll() {
+        return receptRepository.findAll();
+    }
 
-    public Recept getOne(int id) { return receptRepository.findById(id).orElse(null); }
+    public Recept getOne(int id) {
+        return receptRepository.findById(id).orElse(null);
+    }
 
     public Recept add(ReceptDTO receptDTO) {
         Zaposleni zaposleni = zaposleniRepository.findById(receptDTO.getIdZaposlenog()).orElse(null);
-       // Ponuda ponuda = ponudaRepository.findById(receptDTO.getIdPonude()).orElse(null);
-Ponuda ponuda = null;
+        Ponuda ponuda = ponudaRepository.findById(receptDTO.getIdPonude()).orElse(null);
         if (zaposleni == null || ponuda == null) {
             return null;
         }
@@ -52,5 +55,7 @@ Ponuda ponuda = null;
         return receptRepository.save(r);
     }
 
-    public void delete(int id) { receptRepository.deleteById(id); }
+    public void delete(int id) {
+        receptRepository.deleteById(id);
+    }
 }

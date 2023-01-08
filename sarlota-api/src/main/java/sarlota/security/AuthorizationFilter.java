@@ -1,25 +1,20 @@
 package sarlota.security;
 
 import io.jsonwebtoken.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import sarlota.entities.Zaposleni;
+import sarlota.entities.dto.JwtZaposleni;
 import sarlota.entities.enums.Role;
-import sarlota.services.AuthService;
-
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
 
 
 @Component
@@ -39,19 +34,17 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String authorizationHeader = httpServletRequest.getHeader(authorizationHeaderName);
-        if(authorizationHeader == null || !authorizationHeader.startsWith(authorizationHeaderPrefix)){
+        if (authorizationHeader == null || !authorizationHeader.startsWith(authorizationHeaderPrefix)) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
         }
-        String token  = authorizationHeader.replace(authorizationHeaderPrefix, "");
 
+        String token = authorizationHeader.replace(authorizationHeaderPrefix, "");
         String refreshHeader = httpServletRequest.getHeader(refreshHeaderName);
 
-        //korisnik trazi refresh tokena
-        if(Boolean.parseBoolean(refreshHeader) == true){
+        if (Boolean.parseBoolean(refreshHeader) == true) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
-
         }
 
         try {
@@ -59,32 +52,23 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                     .setSigningKey(authorizationSecret)
                     .parseClaimsJws(token)
                     .getBody();
-            Zaposleni z = new Zaposleni(Integer.valueOf(claims.getId()), claims.getSubject(), null, Role.valueOf(claims.get("role", String.class)));
+            JwtZaposleni z = new JwtZaposleni(new Zaposleni(Integer.valueOf(claims.getId()), claims.getSubject(), null, Role.valueOf(claims.get("role", String.class))));
             Authentication authentication = new UsernamePasswordAuthenticationToken(z, null, z.getAuthorities());
+
             SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
-        catch (SignatureException e) {
-
-        }
-        catch (MalformedJwtException e) {
-
-        }
-
-        catch (ExpiredJwtException e) {
+        } catch (SignatureException e) {
+        } catch (MalformedJwtException e) {
+        } catch (ExpiredJwtException e) {
             httpServletResponse.resetBuffer();
             httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             httpServletResponse.flushBuffer();
             return;
-        }
-        catch (UnsupportedJwtException e) {
-        }
-        catch (IllegalArgumentException e) {
+        } catch (UnsupportedJwtException e) {
+        } catch (IllegalArgumentException e) {
         }
 
-
-       filterChain.doFilter(httpServletRequest, httpServletResponse);
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
-
 
 
 }

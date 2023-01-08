@@ -37,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(jwtUserDetailsService);
     }
 
@@ -58,22 +58,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private HttpSecurity createAuthorizationRules(HttpSecurity http) throws Exception {
         AuthorizationRules authorizationRules = new ObjectMapper().readValue(new ClassPathResource("rules.json").getInputStream(), AuthorizationRules.class);
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry interceptor = http.authorizeRequests();
-        interceptor = interceptor.antMatchers(HttpMethod.GET, "/login").permitAll().antMatchers(HttpMethod.POST, "/signup").permitAll().antMatchers(HttpMethod.POST, "/login").permitAll()
-                .antMatchers(HttpMethod.GET, "/signup").permitAll().antMatchers(HttpMethod.GET, "/refreshtoken").permitAll();
-        for(Rule rule : authorizationRules.getRules()) {
+        interceptor = interceptor.antMatchers(HttpMethod.GET, "/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/signup").permitAll()
+                .antMatchers(HttpMethod.POST, "/login").permitAll()
+                .antMatchers(HttpMethod.GET, "/signup").permitAll()
+                .antMatchers(HttpMethod.GET, "/refreshtoken").permitAll();
+
+        for (Rule rule : authorizationRules.getRules()) {
             if (rule.getMethods().isEmpty())
                 interceptor = interceptor.antMatchers(rule.getPattern()).hasAnyAuthority(rule.getRoles().toArray(String[]::new));
             else for (String method : rule.getMethods()) {
                 interceptor = interceptor.antMatchers(HttpMethod.resolve(method), rule.getPattern()).hasAnyAuthority(rule.getRoles().toArray(String[]::new));
             }
         }
-            return interceptor.anyRequest().denyAll().and();
+        return interceptor.anyRequest().denyAll().and();
     }
 
     @Bean
-    public CorsFilter corsFilter(){
+    public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config  = new CorsConfiguration();
+        CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.addAllowedOrigin("*");
         config.addAllowedHeader("*");
@@ -85,13 +89,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    GrantedAuthorityDefaults grantedAuthorityDefaults(){
+    GrantedAuthorityDefaults grantedAuthorityDefaults() {
         return new GrantedAuthorityDefaults("");
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {return new BCryptPasswordEncoder();}
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
+}
 
 
 

@@ -9,10 +9,9 @@ import java.math.BigDecimal;
 public class ZaposleniUpdateRequest {
 
     private String korisnickoIme;
-
     private String ime;
     private String prezime;
-    //private String lozinka;
+    private String lozinka;
     private BigDecimal plata;
     private Role tipZaposlenog;
 
