@@ -1,26 +1,22 @@
-import React from "react";
-import logo from "../logo.svg";
+// Libs
+import { useRoutes } from "react-router";
+
+// Pages
+import { LandingPage } from "../pages/landing-page";
+import { LoginPage } from "../pages/login";
+import { SignUpPage } from "../pages/sign-up";
+
 import "./app.scss";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const routes = useRoutes([
+    { path: "/", element: <LandingPage /> },
+    { path: "/login", element: <LoginPage /> },
+    { path: "/signup", element: <SignUpPage /> },
+    { path: "*", element: <LandingPage /> },
+  ]);
+
+  return <>{routes}</>;
 }
 
 export default App;
