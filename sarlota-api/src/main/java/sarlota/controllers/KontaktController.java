@@ -11,7 +11,7 @@ import sarlota.services.KontaktService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/kontakti")
+@RequestMapping("api/v1/kontakti")
 @RequiredArgsConstructor
 public class KontaktController {
     private final KontaktService kontaktService;

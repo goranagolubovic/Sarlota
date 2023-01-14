@@ -12,7 +12,7 @@ import sarlota.services.ReceptService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/recepti")
+@RequestMapping("api/v1/recepti")
 @RequiredArgsConstructor
 public class ReceptController {
     private final ReceptService receptService;

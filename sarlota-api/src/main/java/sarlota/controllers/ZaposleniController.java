@@ -10,7 +10,7 @@ import sarlota.services.ZaposleniService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/zaposleni")
+@RequestMapping("api/v1/zaposleni")
 @RequiredArgsConstructor
 public class ZaposleniController {
     private final ZaposleniService zaposleniService;

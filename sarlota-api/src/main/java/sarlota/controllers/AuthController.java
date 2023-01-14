@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sarlota.entities.requests.LoginRequest;
 import sarlota.entities.requests.RefreshRequest;
 import sarlota.entities.requests.SignUpRequest;
@@ -18,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/api/v1")
 public class AuthController {
 
     @Value("${authorization.token.header.name}")
@@ -30,7 +28,7 @@ public class AuthController {
     private final AuthService service;
     private final ZaposleniService zaposleniService;
 
-    @PostMapping("login")
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         try {
             return ResponseEntity.ok(service.login(request));
@@ -39,7 +37,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("signup")
+    @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody SignUpRequest request) {
         try {
             zaposleniService.signup(request);
