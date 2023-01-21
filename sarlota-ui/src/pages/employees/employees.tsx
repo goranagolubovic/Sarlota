@@ -1,6 +1,8 @@
 // Libs
-import { EmployeeCard } from "../../components/employee";
 import { Typography } from "antd";
+
+// Components
+import { EmployeeCard } from "../../components/employee";
 
 import "./employees.scss";
 
