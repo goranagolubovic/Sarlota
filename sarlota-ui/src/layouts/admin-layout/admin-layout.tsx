@@ -70,7 +70,7 @@ export const AdminLayout: React.FunctionComponent = () => {
       >
         <div
           style={{
-            height: 32,
+            height: 90,
             margin: 16,
             background: "rgba(255, 255, 255, 0.2)",
           }}
