@@ -13,6 +13,7 @@ import { EmployeesPage } from "./pages/employees";
 import { SettingsPage } from "./pages/settings";
 import { ContactsPage } from "./pages/contacts";
 import { RecipesPage } from "./pages/recipes";
+import { OrdersPage } from "./pages/orders";
 
 function App() {
   const routes = useRoutes([
@@ -25,6 +26,7 @@ function App() {
       children: [
         { path: "pregled", element: <HomePage /> },
         { path: "kalendar", element: <CalendarPage /> },
+        { path: "narudzbe", element: <OrdersPage /> },
         { path: "statistika", element: <StatisticsPage /> },
         { path: "zaposleni", element: <EmployeesPage /> },
         { path: "recepti", element: <RecipesPage /> },

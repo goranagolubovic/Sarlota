@@ -14,6 +14,7 @@ import {
   SettingOutlined,
   CalendarOutlined,
   ContactsOutlined,
+  ShopOutlined,
 } from "@ant-design/icons";
 
 import type { MenuProps } from "antd";
@@ -39,6 +40,7 @@ function getItem(
 
 const items: MenuItem[] = [
   getItem("Pregled", "pregled", <DesktopOutlined />),
+  getItem("Narudžbe", "narudzbe", <ShopOutlined />),
   getItem("Kalendar", "kalendar", <CalendarOutlined />),
   getItem("Statistika", "statistika", <PieChartOutlined />),
   getItem("Zaposleni", "zaposleni", <TeamOutlined />),
