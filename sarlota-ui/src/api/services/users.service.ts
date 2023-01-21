@@ -15,7 +15,7 @@ export interface LoginResponse {
   token: string;
 }
 
-async function login(body: LoginRequest) {
+export async function login(body: LoginRequest) {
   const requestOptions = {
     headers,
     body: JSON.stringify(body),
@@ -35,7 +35,7 @@ export interface SignUpRequest {
   tipZaposlenog: Role;
 }
 
-async function signUp(body: SignUpRequest) {
+export async function signUp(body: SignUpRequest) {
   const requestOptions = {
     headers,
     body: JSON.stringify(body),
