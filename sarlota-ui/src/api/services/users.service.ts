@@ -42,4 +42,5 @@ export async function signUp(body: SignUpRequest) {
   };
 
   const response = await post(BACKEND_URL + "signup", requestOptions);
+  return response;
 }
