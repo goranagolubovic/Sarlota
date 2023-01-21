@@ -1,8 +1,13 @@
+// Libs
 import type { BadgeProps } from "antd";
 import { Badge, Calendar } from "antd";
+import { Typography } from "antd";
+
 import type { Dayjs } from "dayjs";
 
 import "./calendar.scss";
+
+const { Title } = Typography;
 
 const getListData = (value: Dayjs) => {
   let listData;
@@ -61,9 +66,15 @@ export const CalendarPage: React.FunctionComponent = () => {
   };
 
   return (
-    <Calendar
-      dateCellRender={dateCellRender}
-      monthCellRender={monthCellRender}
-    />
+    <>
+      <Title level={3} style={{ marginTop: 0 }}>
+        Kalendarski prikaz
+      </Title>
+      <Calendar
+        className="calendar"
+        dateCellRender={dateCellRender}
+        monthCellRender={monthCellRender}
+      />
+    </>
   );
 };

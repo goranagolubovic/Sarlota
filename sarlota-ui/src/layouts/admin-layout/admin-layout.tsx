@@ -13,6 +13,7 @@ import {
   FileTextOutlined,
   SettingOutlined,
   CalendarOutlined,
+  ContactsOutlined,
 } from "@ant-design/icons";
 
 import type { MenuProps } from "antd";
@@ -40,14 +41,8 @@ const items: MenuItem[] = [
   getItem("Kalendar", "kalendar", <CalendarOutlined />),
   getItem("Statistika", "statistika", <PieChartOutlined />),
   getItem("Zaposleni", "zaposleni", <TeamOutlined />),
-  getItem("Recepti", "recepti", <FileTextOutlined />, [
-    getItem("Tom", "3"),
-    getItem("Bill", "4"),
-  ]),
-  getItem("Kontakti", "kontakti", <TeamOutlined />, [
-    getItem("Team 1", "6"),
-    getItem("Team 2", "8"),
-  ]),
+  getItem("Recepti", "recepti", <FileTextOutlined />),
+  getItem("Kontakti", "kontakti", <ContactsOutlined />),
   getItem("Podešavanja", "podesavanja", <SettingOutlined />),
 ];
 

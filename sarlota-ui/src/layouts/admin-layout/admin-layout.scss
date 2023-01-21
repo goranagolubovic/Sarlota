@@ -1,8 +1,12 @@
+.site-layout {
+  background: #e6ecf5;
+}
 .admin-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-block: 5px;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .ant-avatar {
