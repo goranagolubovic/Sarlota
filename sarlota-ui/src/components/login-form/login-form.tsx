@@ -16,7 +16,7 @@ export const LoginForm: React.FunctionComponent = () => {
     if (response.status === 200) {
       const token = await response.json();
       console.log(token);
-      navigate("/admin/statistika");
+      navigate("/admin/pregled");
     } else onFinishFailed("Error");
   };
 

@@ -11,11 +11,13 @@ import { CalendarPage } from "./pages/calendar";
 import { HomePage } from "./pages/home";
 import { EmployeesPage } from "./pages/employees";
 import { SettingsPage } from "./pages/settings";
+import { ContactsPage } from "./pages/contacts";
+import { RecipesPage } from "./pages/recipes";
 
 function App() {
   const routes = useRoutes([
     { path: "/", element: <LandingPage /> },
-    { path: "/login", element: <LoginPage /> },
+    { path: "/prijava", element: <LoginPage /> },
     { path: "/signup", element: <SignUpPage /> },
     {
       path: "/admin",
@@ -25,9 +27,10 @@ function App() {
         { path: "kalendar", element: <CalendarPage /> },
         { path: "statistika", element: <StatisticsPage /> },
         { path: "zaposleni", element: <EmployeesPage /> },
-        { path: "recepti", element: <EmployeesPage /> },
-        { path: "kontakti", element: <EmployeesPage /> },
+        { path: "recepti", element: <RecipesPage /> },
+        { path: "kontakti", element: <ContactsPage /> },
         { path: "podesavanja", element: <SettingsPage /> },
+        { path: "*", element: <HomePage /> },
       ],
     },
     { path: "*", element: <LandingPage /> },

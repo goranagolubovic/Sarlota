@@ -1,7 +1,7 @@
 // Libs
 import { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { Avatar, Layout, Menu, theme } from "antd";
+import { Avatar, Layout, Menu, theme, Typography } from "antd";
 
 import "./admin-layout.scss";
 
@@ -19,6 +19,7 @@ import {
 import type { MenuProps } from "antd";
 
 const { Header, Content, Footer, Sider } = Layout;
+const { Text } = Typography;
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -88,18 +89,20 @@ export const AdminLayout: React.FunctionComponent = () => {
           <div>
             <strong>Welcome,</strong> User
           </div>
-          <Avatar
-            size="large"
-            src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-          />
+
+          <div className="admin-header__avatar">
+            <Text>Ime Prezime</Text>
+            <Avatar
+              size="large"
+              src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+            />
+          </div>
         </Header>
         <Content style={{ margin: "16px 16px" }}>
           <Outlet />
         </Content>
 
-        <Footer style={{ textAlign: "center" }}>
-          Ant Design ©2023 Created by Ant UED
-        </Footer>
+        <Footer style={{ textAlign: "center" }}>Šarlota ©2023</Footer>
       </Layout>
     </Layout>
   );
