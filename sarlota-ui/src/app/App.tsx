@@ -7,6 +7,8 @@ import { LandingPage } from "../pages/landing-page";
 import { LoginPage } from "../pages/login";
 import { SignUpPage } from "../pages/sign-up";
 import { StatisticsPage } from "../pages/statistics";
+import { CalendarPage } from "../pages/calendar";
+import { HomePage } from "../pages/home";
 
 import "./app.scss";
 
@@ -18,7 +20,11 @@ function App() {
     {
       path: "/admin",
       element: <AdminLayout />,
-      children: [{ path: "statistika", element: <StatisticsPage /> }],
+      children: [
+        { path: "pregled", element: <HomePage /> },
+        { path: "kalendar", element: <CalendarPage /> },
+        { path: "statistika", element: <StatisticsPage /> },
+      ],
     },
     { path: "*", element: <LandingPage /> },
   ]);

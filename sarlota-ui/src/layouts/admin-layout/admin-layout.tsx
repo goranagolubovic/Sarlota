@@ -1,17 +1,18 @@
 // Libs
-import { Outlet } from "react-router-dom";
-import { Layout, Menu, theme } from "antd";
 import { useState } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
+import { Avatar, Layout, Menu, theme } from "antd";
 
 import "./admin-layout.scss";
 
 // Assets
 import {
   DesktopOutlined,
-  FileOutlined,
   PieChartOutlined,
   TeamOutlined,
-  UserOutlined,
+  FileTextOutlined,
+  SettingOutlined,
+  CalendarOutlined,
 } from "@ant-design/icons";
 
 import type { MenuProps } from "antd";
@@ -35,25 +36,32 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem("Option 1", "1", <PieChartOutlined />),
-  getItem("Option 2", "2", <DesktopOutlined />),
-  getItem("User", "sub1", <UserOutlined />, [
+  getItem("Pregled", "pregled", <DesktopOutlined />),
+  getItem("Kalendar", "kalendar", <CalendarOutlined />),
+  getItem("Statistika", "statistika", <PieChartOutlined />),
+  getItem("Zaposleni", "zaposleni", <TeamOutlined />),
+  getItem("Recepti", "recepti", <FileTextOutlined />, [
     getItem("Tom", "3"),
     getItem("Bill", "4"),
-    getItem("Alex", "5"),
   ]),
-  getItem("Team", "sub2", <TeamOutlined />, [
+  getItem("Kontakti", "kontakti", <TeamOutlined />, [
     getItem("Team 1", "6"),
     getItem("Team 2", "8"),
   ]),
-  getItem("Files", "9", <FileOutlined />),
+  getItem("Podešavanja", "podesavanja", <SettingOutlined />),
 ];
 
 export const AdminLayout: React.FunctionComponent = () => {
+  const navigate = useNavigate();
+
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
+  const onNavigate = (item: MenuItem) => {
+    navigate(`./${item?.key}`);
+  };
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -71,14 +79,26 @@ export const AdminLayout: React.FunctionComponent = () => {
         />
         <Menu
           theme="dark"
-          defaultSelectedKeys={["1"]}
+          defaultSelectedKeys={["pregled"]}
           mode="inline"
           items={items}
+          onClick={onNavigate}
         />
       </Sider>
       <Layout className="site-layout">
-        <Header style={{ padding: 0, background: colorBgContainer }} />
-        <Content style={{ margin: "0 16px" }}>
+        <Header
+          className="admin-header"
+          style={{ paddingBlock: "10px", background: colorBgContainer }}
+        >
+          <div>
+            <strong>Welcome,</strong> User
+          </div>
+          <Avatar
+            size="large"
+            src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+          />
+        </Header>
+        <Content style={{ margin: "16px 16px" }}>
           <Outlet />
         </Content>
 
