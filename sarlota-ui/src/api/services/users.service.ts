@@ -1,5 +1,5 @@
 // Constants
-import { BACKEND_URL } from "../../constants";
+import { BACKEND_URL } from "../../util/constants";
 
 // Methods
 import { post } from "../client";

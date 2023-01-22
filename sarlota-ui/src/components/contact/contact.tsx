@@ -10,17 +10,26 @@ import {
   SmileTwoTone,
 } from "@ant-design/icons";
 
+// Service
+import { Contact } from "../../api/services/contacts.service";
+
+// Styles
 import "./contact.scss";
 
 interface ContactCardProps {
+  contact: Contact;
   onEditClick?: () => void;
   onDeleteClick?: () => void;
 }
 
-export const ContactCard: React.FunctionComponent<ContactCardProps> = () => {
+export const ContactCard: React.FunctionComponent<ContactCardProps> = ({
+  contact,
+  onEditClick,
+  onDeleteClick,
+}) => {
   return (
     <Card
-      title="Ime Prezime"
+      title={`${contact.ime}  ${contact.prezime}`}
       className="contact"
       hoverable
       actions={[
@@ -29,15 +38,15 @@ export const ContactCard: React.FunctionComponent<ContactCardProps> = () => {
       ]}
     >
       <p>
-        <PhoneTwoTone />+ 387 65 123 456
+        <PhoneTwoTone /> {contact.brojTelefona}
       </p>
       <p>
         <MailTwoTone />
-        test@mail.com
+        {contact.email}
       </p>
       <p>
         <SmileTwoTone />
-        <a href="/" target="_blank">
+        <a href={contact.linkProfila} target="_blank">
           Profil
         </a>
       </p>

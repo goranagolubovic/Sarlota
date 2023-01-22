@@ -1,9 +1,10 @@
 // Libs
 import { useRoutes } from "react-router";
+
+// Layout
 import { AdminLayout } from "./layouts/admin-layout";
 
 // Pages
-import { LandingPage } from "./pages/landing-page";
 import { LoginPage } from "./pages/login";
 import { SignUpPage } from "./pages/sign-up";
 import { StatisticsPage } from "./pages/statistics";
@@ -17,7 +18,7 @@ import { OrdersPage } from "./pages/orders";
 
 function App() {
   const routes = useRoutes([
-    { path: "/", element: <LandingPage /> },
+    { path: "/", element: <LoginPage /> },
     { path: "/prijava", element: <LoginPage /> },
     { path: "/signup", element: <SignUpPage /> },
     {
@@ -35,7 +36,7 @@ function App() {
         { path: "*", element: <HomePage /> },
       ],
     },
-    { path: "*", element: <LandingPage /> },
+    { path: "*", element: <LoginPage /> },
   ]);
 
   return routes;
