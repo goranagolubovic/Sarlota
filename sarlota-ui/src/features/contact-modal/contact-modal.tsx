@@ -1,7 +1,7 @@
 import { Button, Form, Input, InputNumber, Modal } from "antd";
-import { UserOutlined } from "@ant-design/icons";
 
 import "./contact-modal.scss";
+import { Contact } from "../../api/services/contacts.service";
 
 interface NewContactModalProps {
   isModalOpen: boolean;
@@ -12,12 +12,14 @@ export const ContactModal: React.FunctionComponent<NewContactModalProps> = ({
   isModalOpen,
   onModalClose,
 }) => {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<Contact>();
 
   const handleOk = (values: any) => {
     console.log(values);
+    form.resetFields();
     onModalClose();
   };
+
   const handleCancel = () => {
     onModalClose();
   };
@@ -27,12 +29,17 @@ export const ContactModal: React.FunctionComponent<NewContactModalProps> = ({
       title="Novi kontakt"
       open={isModalOpen}
       onCancel={handleCancel}
-      onOk={handleOk}
+      onOk={form.submit}
       footer={[
         <Button key="back" onClick={handleCancel}>
           Poništi
         </Button>,
-        <Button key="back" type="primary" onClick={handleOk} htmlType="submit">
+        <Button
+          key="back"
+          type="primary"
+          htmlType="submit"
+          onClick={form.submit}
+        >
           Potvrdi
         </Button>,
       ]}
@@ -45,20 +52,20 @@ export const ContactModal: React.FunctionComponent<NewContactModalProps> = ({
         form={form}
         style={{ maxWidth: 700 }}
       >
-        <Form.Item label="Ime">
-          <Input name="ime" />
+        <Form.Item label="Ime" name="ime">
+          <Input />
         </Form.Item>
-        <Form.Item label="Prezime">
+        <Form.Item label="Prezime" name="prezime">
           <Input name="prezime" />
         </Form.Item>
 
-        <Form.Item label="Broj Telefona">
+        <Form.Item label="Broj Telefona" name="brojTelefona">
           <Input />
         </Form.Item>
-        <Form.Item label="Email">
+        <Form.Item label="Email" name="email">
           <Input />
         </Form.Item>
-        <Form.Item label="Link profila">
+        <Form.Item label="Link profila" name="linkProfila">
           <Input />
         </Form.Item>
       </Form>
