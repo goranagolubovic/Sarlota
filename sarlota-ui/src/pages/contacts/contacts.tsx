@@ -9,12 +9,29 @@ import { ContactCard } from "../../components/contact";
 import { UserAddOutlined } from "@ant-design/icons";
 
 import "./contacts.scss";
+import { useState } from "react";
+import { ContactModal } from "../../features/contact-modal";
 
 const { Title } = Typography;
 const { Search } = Input;
 
 export const ContactsPage: React.FunctionComponent = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+
   const onSearch = (value: string) => console.log(value);
+
+  const onNewContactClick = () => {
+    setShowModal(true);
+  };
+
+  const onModalClose = () => {
+    setShowModal(false);
+  };
+
+  const onContactDelete = () => {};
+
+  const onContactEdit = () => {};
 
   return (
     <div className="contacts">
@@ -23,8 +40,15 @@ export const ContactsPage: React.FunctionComponent = () => {
           Kontakti
         </Title>
 
+        <ContactModal isModalOpen={showModal} onModalClose={onModalClose} />
+
         <div className="contacts__header__actions">
-          <Button type="primary" size="large" icon={<UserAddOutlined />}>
+          <Button
+            type="primary"
+            size="large"
+            icon={<UserAddOutlined />}
+            onClick={onNewContactClick}
+          >
             Dodaj kontakt
           </Button>
           <Search

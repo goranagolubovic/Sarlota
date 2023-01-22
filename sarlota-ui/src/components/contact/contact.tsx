@@ -12,14 +12,17 @@ import {
 
 import "./contact.scss";
 
-interface ContactCardProps {}
+interface ContactCardProps {
+  onEditClick?: () => void;
+  onDeleteClick?: () => void;
+}
 
 export const ContactCard: React.FunctionComponent<ContactCardProps> = () => {
   return (
     <Card
       title="Ime Prezime"
-      bordered
       className="contact"
+      hoverable
       actions={[
         <EditOutlined key="izmjena" />,
         <DeleteOutlined key="brisanje" />,
@@ -33,7 +36,7 @@ export const ContactCard: React.FunctionComponent<ContactCardProps> = () => {
         test@mail.com
       </p>
       <p>
-        <SmileTwoTone />{" "}
+        <SmileTwoTone />
         <a href="/" target="_blank">
           Profil
         </a>

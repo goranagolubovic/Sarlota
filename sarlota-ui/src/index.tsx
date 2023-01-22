@@ -1,3 +1,4 @@
+import { ConfigProvider } from "antd";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router } from "react-router-dom";
@@ -12,7 +13,17 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Router>
+      {/* <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: "#ED4192",
+            colorPrimaryBg: "#fff0f6",
+            colorBgContainer: "#fff",
+          },
+        }}
+      > */}
       <App />
+      {/* </ConfigProvider> */}
     </Router>
   </React.StrictMode>
 );

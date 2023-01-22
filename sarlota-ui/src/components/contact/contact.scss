@@ -1,5 +1,7 @@
 .contact {
   width: 300px;
+  border: 1px solid var(--border-color);
+
   & * p {
     margin: 3px;
     display: flex;

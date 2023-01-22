@@ -1,7 +1,7 @@
 // Libs
 import { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { Avatar, Layout, Menu, theme, Typography } from "antd";
+import { Avatar, Badge, Layout, Menu, theme, Typography } from "antd";
 
 import "./admin-layout.scss";
 
@@ -15,7 +15,9 @@ import {
   CalendarOutlined,
   ContactsOutlined,
   ShopOutlined,
+  BellOutlined,
 } from "@ant-design/icons";
+import logo from "../../assets/logo.png";
 
 import type { MenuProps } from "antd";
 
@@ -46,7 +48,7 @@ const items: MenuItem[] = [
   getItem("Zaposleni", "zaposleni", <TeamOutlined />),
   getItem("Recepti", "recepti", <FileTextOutlined />),
   getItem("Kontakti", "kontakti", <ContactsOutlined />),
-  getItem("Podešavanja", "podesavanja", <SettingOutlined />),
+  getItem("Profil", "podesavanja", <SettingOutlined />),
 ];
 
 export const AdminLayout: React.FunctionComponent = () => {
@@ -64,16 +66,17 @@ export const AdminLayout: React.FunctionComponent = () => {
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider
+        className="sider"
         collapsible
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
+        theme="dark"
+        // style= {{background: colorBgContainer}}
       >
-        <div
-          style={{
-            height: 90,
-            margin: 16,
-            background: "rgba(255, 255, 255, 0.2)",
-          }}
+        <img
+          className="logo"
+          src={logo}
+          style={{ paddingInline: collapsed ? "10px" : "30px" }}
         />
         <Menu
           theme="dark"
@@ -93,11 +96,16 @@ export const AdminLayout: React.FunctionComponent = () => {
           </div>
 
           <div className="admin-header__avatar">
-            <Text>Ime Prezime</Text>
-            <Avatar
-              size="large"
-              src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-            />
+            <Badge dot={true}>
+              <BellOutlined />
+            </Badge>
+            <div>
+              <Avatar
+                size="large"
+                src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+              />
+              <Text>Ime Prezime</Text>
+            </div>
           </div>
         </Header>
         <Content style={{ margin: "16px 16px" }}>

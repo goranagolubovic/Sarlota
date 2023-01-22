@@ -1,5 +1,19 @@
+.sider {
+  border-right: 1px solid var(--border-color);
+}
 .site-layout {
   background: #e6ecf5;
+}
+
+.ant-layout-sider-trigger {
+  // background-color: #fff0f6ab !important;
+}
+
+.logo {
+  width: 100%;
+  padding: 10px;
+  object-fit: contain;
+  object-position: top;
 }
 
 .admin-header {
@@ -11,10 +25,12 @@
 
   &__avatar {
     display: flex;
-    gap: 10px;
+    gap: 20px;
     align-items: center;
   }
+
   .ant-avatar {
     background-color: #0045f5;
+    margin-right: 10px;
   }
 }
