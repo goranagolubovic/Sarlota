@@ -2,6 +2,7 @@ import { Button, Form, Input, InputNumber, Modal } from "antd";
 
 import "./contact-modal.scss";
 import { Contact } from "../../api/services/contacts.service";
+import { api } from "../../api";
 
 interface NewContactModalProps {
   isModalOpen: boolean;
@@ -14,10 +15,13 @@ export const ContactModal: React.FunctionComponent<NewContactModalProps> = ({
 }) => {
   const [form] = Form.useForm<Contact>();
 
-  const handleOk = (values: any) => {
+  const handleOk = async (values: Contact) => {
     console.log(values);
-    form.resetFields();
-    onModalClose();
+    const response = await api.kontakti.addContact(values);
+    if (response.status === 200) {
+      form.resetFields();
+      onModalClose();
+    }
   };
 
   const handleCancel = () => {
@@ -52,20 +56,40 @@ export const ContactModal: React.FunctionComponent<NewContactModalProps> = ({
         form={form}
         style={{ maxWidth: 700 }}
       >
-        <Form.Item label="Ime" name="ime">
+        <Form.Item
+          label="Ime"
+          name="ime"
+          rules={[{ required: true, message: "Polje je obavezno!" }]}
+        >
           <Input />
         </Form.Item>
-        <Form.Item label="Prezime" name="prezime">
+        <Form.Item
+          label="Prezime"
+          name="prezime"
+          rules={[{ required: true, message: "Polje je obavezno!" }]}
+        >
           <Input name="prezime" />
         </Form.Item>
 
-        <Form.Item label="Broj Telefona" name="brojTelefona">
+        <Form.Item
+          label="Broj Telefona"
+          name="brojTelefona"
+          rules={[{ required: true, message: "Polje je obavezno!" }]}
+        >
           <Input />
         </Form.Item>
-        <Form.Item label="Email" name="email">
+        <Form.Item
+          label="Email"
+          name="email"
+          rules={[{ required: true, message: "Polje je obavezno!" }]}
+        >
           <Input />
         </Form.Item>
-        <Form.Item label="Link profila" name="linkProfila">
+        <Form.Item
+          label="Link profila"
+          name="linkProfila"
+          rules={[{ required: true, message: "Polje je obavezno!" }]}
+        >
           <Input />
         </Form.Item>
       </Form>

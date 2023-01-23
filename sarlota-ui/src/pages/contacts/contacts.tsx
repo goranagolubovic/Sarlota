@@ -24,6 +24,7 @@ export const ContactsPage: React.FunctionComponent = () => {
 
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
 
   const fetchContacts = useCallback(async () => {
@@ -43,6 +44,7 @@ export const ContactsPage: React.FunctionComponent = () => {
 
   const onModalClose = () => {
     setShowModal(false);
+    setRefresh((is) => !is);
   };
 
   const onContactDelete = () => {};
@@ -51,7 +53,7 @@ export const ContactsPage: React.FunctionComponent = () => {
 
   useEffect(() => {
     fetchContacts();
-  }, [fetchContacts]);
+  }, [fetchContacts, refresh]);
 
   return (
     <div className="contacts">
