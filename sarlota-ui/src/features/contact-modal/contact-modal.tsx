@@ -49,12 +49,13 @@ export const ContactModal: React.FunctionComponent<NewContactModalProps> = ({
       ]}
     >
       <Form
-        labelCol={{ span: 4 }}
+        // layout="vertical"
+        labelAlign="left"
+        labelCol={{ span: 6 }}
         wrapperCol={{ span: 14 }}
-        // layout="horizontal"
+        style={{ maxWidth: 500, marginTop: "25px" }}
         onFinish={handleOk}
         form={form}
-        style={{ maxWidth: 700 }}
       >
         <Form.Item
           label="Ime"

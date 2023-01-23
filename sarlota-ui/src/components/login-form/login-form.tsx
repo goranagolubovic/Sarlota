@@ -29,10 +29,10 @@ export const LoginForm: React.FunctionComponent = () => {
       <Form
         name="basic"
         form={form}
-        labelCol={{ span: 4 }}
-        layout="vertical"
-        wrapperCol={{ span: 14 }}
-        style={{ maxWidth: 600 }}
+        labelAlign="left"
+        labelCol={{ span: 8 }}
+        wrapperCol={{ span: 18 }}
+        style={{ maxWidth: 800 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
