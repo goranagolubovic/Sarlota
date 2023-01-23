@@ -1,5 +1,5 @@
 // Libs
-import { Card } from "antd";
+import { Card, Modal } from "antd";
 
 // Assets
 import {
@@ -7,6 +7,7 @@ import {
   DeleteOutlined,
   PhoneTwoTone,
   MailTwoTone,
+  ExclamationCircleFilled,
   SmileTwoTone,
 } from "@ant-design/icons";
 
@@ -16,10 +17,12 @@ import { Contact } from "../../api/services/contacts.service";
 // Styles
 import "./contact.scss";
 
+const { confirm } = Modal;
+
 interface ContactCardProps {
   contact: Contact;
   onEditClick?: () => void;
-  onDeleteClick?: () => void;
+  onDeleteClick: (id: number) => void;
 }
 
 export const ContactCard: React.FunctionComponent<ContactCardProps> = ({
@@ -27,6 +30,18 @@ export const ContactCard: React.FunctionComponent<ContactCardProps> = ({
   onEditClick,
   onDeleteClick,
 }) => {
+  const onDelete = () => {
+    confirm({
+      title: "Da li ste sigurni da želite da obrišete ovaj kontakt?",
+      icon: <ExclamationCircleFilled />,
+      content: "Ovu akciju ne možete opozvati.",
+      onOk() {
+        onDeleteClick(contact.id);
+      },
+      cancelText: "Poništi",
+    });
+  };
+
   return (
     <Card
       title={`${contact.ime}  ${contact.prezime}`}
@@ -34,7 +49,7 @@ export const ContactCard: React.FunctionComponent<ContactCardProps> = ({
       hoverable
       actions={[
         <EditOutlined key="izmjena" />,
-        <DeleteOutlined key="brisanje" />,
+        <DeleteOutlined key="brisanje" onClick={onDelete} />,
       ]}
     >
       <p>

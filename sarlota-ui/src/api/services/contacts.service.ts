@@ -1,4 +1,4 @@
-import { get, post } from "../client";
+import { get, post, remove } from "../client";
 
 // Constants
 import { BACKEND_URL } from "../../util/constants";
@@ -23,10 +23,14 @@ export const fetchContacts = async () => {
 };
 
 export const addContact = async (body: Contact) => {
-  console.log("add contact", body);
   const response = await post(BACKEND_URL + "kontakti", {
     headers,
     body: JSON.stringify(body),
   });
+  return response;
+};
+
+export const deleteContact = async (id: number) => {
+  const response = await remove(BACKEND_URL + "kontakti/" + id);
   return response;
 };

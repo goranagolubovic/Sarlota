@@ -16,7 +16,6 @@ export const ContactModal: React.FunctionComponent<NewContactModalProps> = ({
   const [form] = Form.useForm<Contact>();
 
   const handleOk = async (values: Contact) => {
-    console.log(values);
     const response = await api.kontakti.addContact(values);
     if (response.status === 200) {
       form.resetFields();

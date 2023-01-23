@@ -1,6 +1,6 @@
 // Libs
 import { useCallback, useEffect, useState } from "react";
-import { Typography } from "antd";
+import { message, Typography } from "antd";
 import { Input, Button } from "antd";
 
 // Components
@@ -23,9 +23,12 @@ export const ContactsPage: React.FunctionComponent = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
 
   const [loading, setLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
   const [refresh, setRefresh] = useState(false);
+
+  const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+
+  const [messageApi, contextHolder] = message.useMessage();
 
   const fetchContacts = useCallback(async () => {
     setLoading(true);
@@ -47,7 +50,23 @@ export const ContactsPage: React.FunctionComponent = () => {
     setRefresh((is) => !is);
   };
 
-  const onContactDelete = () => {};
+  const onContactDelete = async (id: number) => {
+    const response = await api.kontakti.deleteContact(id);
+
+    if (response.status === 200) {
+      messageApi.open({
+        type: "success",
+        content: "Kontakt je uspješno obrisan!",
+      });
+    } else {
+      messageApi.open({
+        type: "error",
+        content: "Došlo je do greške.",
+      });
+    }
+
+    setRefresh((is) => !is);
+  };
 
   const onContactEdit = () => {};
 
@@ -57,7 +76,9 @@ export const ContactsPage: React.FunctionComponent = () => {
 
   return (
     <div className="contacts">
+      {contextHolder}
       <ContactModal isModalOpen={showModal} onModalClose={onModalClose} />
+
       <div className="contacts__header">
         <Title level={3} style={{ marginTop: 0 }}>
           Kontakti
@@ -88,7 +109,7 @@ export const ContactsPage: React.FunctionComponent = () => {
       ) : (
         <div className="contacts__content">
           {contacts?.map((contact) => (
-            <ContactCard contact={contact} />
+            <ContactCard contact={contact} onDeleteClick={onContactDelete} />
           ))}
         </div>
       )}
