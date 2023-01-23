@@ -21,7 +21,7 @@ const { confirm } = Modal;
 
 interface ContactCardProps {
   contact: Contact;
-  onEditClick?: () => void;
+  onEditClick: (contact: Contact) => void;
   onDeleteClick: (id: number) => void;
 }
 
@@ -30,6 +30,10 @@ export const ContactCard: React.FunctionComponent<ContactCardProps> = ({
   onEditClick,
   onDeleteClick,
 }) => {
+  const onEdit = () => {
+    onEditClick(contact);
+  };
+
   const onDelete = () => {
     confirm({
       title: "Da li ste sigurni da želite da obrišete ovaj kontakt?",
@@ -48,7 +52,7 @@ export const ContactCard: React.FunctionComponent<ContactCardProps> = ({
       className="contact"
       hoverable
       actions={[
-        <EditOutlined key="izmjena" />,
+        <EditOutlined key="izmjena" onClick={onEdit} />,
         <DeleteOutlined key="brisanje" onClick={onDelete} />,
       ]}
     >
@@ -61,7 +65,7 @@ export const ContactCard: React.FunctionComponent<ContactCardProps> = ({
       </p>
       <p>
         <SmileTwoTone />
-        <a href={contact.linkProfila} target="_blank">
+        <a href={contact.linkProfila} rel="noreferrer" target="_blank">
           Profil
         </a>
       </p>

@@ -1,12 +1,11 @@
-import { get, post, remove } from "../client";
+import { get, post, put, remove } from "../client";
 
 // Constants
 import { BACKEND_URL } from "../../util/constants";
 
-// Interfaces
-import { Employee } from "./employee.service";
-
 const headers = { "Content-Type": "application/json" };
+
+const URL = BACKEND_URL + "kontakti";
 
 export interface Contact {
   id: number;
@@ -18,12 +17,12 @@ export interface Contact {
 }
 
 export const fetchContacts = async () => {
-  const response = await get(BACKEND_URL + "kontakti");
+  const response = await get(URL);
   return response;
 };
 
 export const addContact = async (body: Contact) => {
-  const response = await post(BACKEND_URL + "kontakti", {
+  const response = await post(URL, {
     headers,
     body: JSON.stringify(body),
   });
@@ -31,6 +30,14 @@ export const addContact = async (body: Contact) => {
 };
 
 export const deleteContact = async (id: number) => {
-  const response = await remove(BACKEND_URL + "kontakti/" + id);
+  const response = await remove(`${URL}/${id}`);
+  return response;
+};
+
+export const editContact = async (id: number, body: Contact) => {
+  const response = await put(`${URL}/${id}`, {
+    headers,
+    body: JSON.stringify(body),
+  });
   return response;
 };

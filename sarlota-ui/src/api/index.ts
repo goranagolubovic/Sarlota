@@ -2,6 +2,7 @@ import {
   fetchContacts,
   addContact,
   deleteContact,
+  editContact,
 } from "./services/contacts.service";
 
 export const api = {
@@ -9,5 +10,6 @@ export const api = {
     fetchContacts,
     addContact,
     deleteContact,
+    editContact,
   },
 };

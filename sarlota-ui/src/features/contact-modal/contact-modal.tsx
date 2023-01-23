@@ -1,22 +1,35 @@
-import { Button, Form, Input, InputNumber, Modal } from "antd";
+// Libs
+import { Button, Form, Input, Modal } from "antd";
 
-import "./contact-modal.scss";
+// Services
 import { Contact } from "../../api/services/contacts.service";
 import { api } from "../../api";
 
+// Rest
+import "./contact-modal.scss";
+import { useEffect } from "react";
+
 interface NewContactModalProps {
+  title?: string;
+  contact: Contact | null | undefined;
   isModalOpen: boolean;
   onModalClose: () => void;
 }
 
 export const ContactModal: React.FunctionComponent<NewContactModalProps> = ({
+  title,
+  contact,
   isModalOpen,
   onModalClose,
 }) => {
   const [form] = Form.useForm<Contact>();
 
   const handleOk = async (values: Contact) => {
-    const response = await api.kontakti.addContact(values);
+    let response;
+
+    if (contact) response = await api.kontakti.editContact(contact.id, values);
+    else response = await api.kontakti.addContact(values);
+
     if (response.status === 200) {
       form.resetFields();
       onModalClose();
@@ -24,12 +37,25 @@ export const ContactModal: React.FunctionComponent<NewContactModalProps> = ({
   };
 
   const handleCancel = () => {
+    form.resetFields();
     onModalClose();
   };
 
+  useEffect(() => {
+    if (contact) {
+      form.setFieldsValue({
+        ime: contact.ime,
+        prezime: contact.prezime,
+        brojTelefona: contact.brojTelefona,
+        email: contact.email,
+        linkProfila: contact.linkProfila,
+      });
+    }
+  });
+
   return (
     <Modal
-      title="Novi kontakt"
+      title={title}
       open={isModalOpen}
       onCancel={handleCancel}
       onOk={form.submit}

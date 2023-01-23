@@ -21,12 +21,14 @@ const { Search } = Input;
 
 export const ContactsPage: React.FunctionComponent = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
+  const [contactToEdit, setContactToEdit] = useState<
+    Contact | null | undefined
+  >(null);
 
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
 
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -35,7 +37,6 @@ export const ContactsPage: React.FunctionComponent = () => {
     const response = await api.kontakti.fetchContacts();
     const data = await response.json();
     setContacts(data);
-
     setLoading(false);
   }, []);
 
@@ -43,10 +44,12 @@ export const ContactsPage: React.FunctionComponent = () => {
 
   const onNewContactClick = () => {
     setShowModal(true);
+    setContactToEdit(null);
   };
 
   const onModalClose = () => {
     setShowModal(false);
+    setContactToEdit(null);
     setRefresh((is) => !is);
   };
 
@@ -68,7 +71,11 @@ export const ContactsPage: React.FunctionComponent = () => {
     setRefresh((is) => !is);
   };
 
-  const onContactEdit = () => {};
+  const onContactEdit = (contact: Contact) => {
+    setContactToEdit(contact);
+    setShowModal(true);
+    setRefresh((is) => !is);
+  };
 
   useEffect(() => {
     fetchContacts();
@@ -77,7 +84,13 @@ export const ContactsPage: React.FunctionComponent = () => {
   return (
     <div className="contacts">
       {contextHolder}
-      <ContactModal isModalOpen={showModal} onModalClose={onModalClose} />
+
+      <ContactModal
+        title={contactToEdit ? "Izmijenite kontakt" : "Dodajte novi kontakt"}
+        isModalOpen={showModal}
+        onModalClose={onModalClose}
+        contact={contactToEdit}
+      />
 
       <div className="contacts__header">
         <Title level={3} style={{ marginTop: 0 }}>
@@ -93,6 +106,7 @@ export const ContactsPage: React.FunctionComponent = () => {
           >
             Dodaj kontakt
           </Button>
+
           <Search
             className="contacts__header__actions__search"
             placeholder="Pretraži kontakte"
@@ -109,7 +123,11 @@ export const ContactsPage: React.FunctionComponent = () => {
       ) : (
         <div className="contacts__content">
           {contacts?.map((contact) => (
-            <ContactCard contact={contact} onDeleteClick={onContactDelete} />
+            <ContactCard
+              contact={contact}
+              onDeleteClick={onContactDelete}
+              onEditClick={onContactEdit}
+            />
           ))}
         </div>
       )}
