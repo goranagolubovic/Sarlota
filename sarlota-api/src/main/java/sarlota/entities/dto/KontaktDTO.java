@@ -14,5 +14,4 @@ public class KontaktDTO {
     private String brojTelefona;
     private String linkProfila;
     private String email;
-    private Integer idZaposlenog;
 }

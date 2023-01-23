@@ -50,8 +50,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http = http.cors().and().csrf().disable().sessionManagement().sessionCreationPolicy((SessionCreationPolicy.STATELESS)).and();
-        http = createAuthorizationRules(http);
-        http.addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
+//        http = createAuthorizationRules(http);
+//        http.addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
     }
 
@@ -59,8 +59,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         AuthorizationRules authorizationRules = new ObjectMapper().readValue(new ClassPathResource("rules.json").getInputStream(), AuthorizationRules.class);
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry interceptor = http.authorizeRequests();
         interceptor = interceptor.antMatchers(HttpMethod.GET, "/login").permitAll()
-                .antMatchers("/swagger-ui/").permitAll()
-                .antMatchers("/swagger-ui/**").permitAll()
+//                .antMatchers("/swagger-ui/").permitAll()
+//                .antMatchers("/swagger-ui/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/signup").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.GET, "/signup").permitAll()
@@ -73,6 +73,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                interceptor = interceptor.antMatchers(HttpMethod.resolve(method), rule.getPattern()).hasAnyAuthority(rule.getRoles().toArray(String[]::new));
 //            }
 //        }
+
+//        return interceptor.anyRequest().authenticated().and();
 //        return interceptor.anyRequest().denyAll().and();
         return interceptor.anyRequest().permitAll().and();
     }

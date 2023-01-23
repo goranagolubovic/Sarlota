@@ -2,13 +2,6 @@
   "rules": [
     {
       "methods": [],
-      "pattern": "/swagger-ui/",
-      "roles": [
-        "POSLASTICAR","OBICNI_RADNIK"
-      ]
-    },
-    {
-      "methods": [],
       "pattern": "/zaposleni",
       "roles": [
         "POSLASTICAR"

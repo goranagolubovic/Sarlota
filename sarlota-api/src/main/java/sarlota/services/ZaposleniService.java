@@ -37,7 +37,6 @@ public class ZaposleniService {
                 zaposleniDTO.getTipZaposlenog(),
                 null,
                 null,
-                null,
                 null
         );
         return zaposleniRepository.save(zaposleni);
