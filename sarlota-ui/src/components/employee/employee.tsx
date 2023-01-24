@@ -9,15 +9,18 @@ import {
 } from "@ant-design/icons";
 
 import "./employee.scss";
+import { Employee } from "../../api/services/employee.service";
 
 const { Meta } = Card;
 const { confirm } = Modal;
 
 interface EmployeeCardProps {
+  employee: Employee;
   onDetailsClick: () => void;
 }
 
 export const EmployeeCard: React.FunctionComponent<EmployeeCardProps> = ({
+  employee,
   onDetailsClick,
 }) => {
   const onEdit = () => {};
@@ -45,8 +48,8 @@ export const EmployeeCard: React.FunctionComponent<EmployeeCardProps> = ({
     >
       <Meta
         avatar={<Avatar>A</Avatar>}
-        title="Ime prezime"
-        description="This is the description"
+        title={`${employee.ime} ${employee.prezime}`}
+        description={`Pozicija: ${employee.tipZaposlenog.replace("_", " ")}`}
       />
     </Card>
   );

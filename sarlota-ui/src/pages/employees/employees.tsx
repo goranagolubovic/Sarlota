@@ -1,5 +1,5 @@
 // Libs
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button, Typography } from "antd";
 import Search from "antd/es/input/Search";
 
@@ -12,13 +12,28 @@ import { EmployeeModal } from "../../features/employee-modal";
 import { UserAddOutlined } from "@ant-design/icons";
 
 import "./employees.scss";
+import { Employee } from "../../api/services/employee.service";
+import { api } from "../../api";
+import { Spinner } from "../../components/spinner";
 
 const { Title } = Typography;
 
 export const EmployeesPage: React.FunctionComponent = () => {
-  const [showModal, setShowModal] = useState(false);
+  const [employees, setEmployees] = useState<Employee[]>([]);
+
   const [loading, setLoading] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+
+  const [showModal, setShowModal] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
+
+  const fetchEmployees = useCallback(async () => {
+    setLoading(true);
+    const response = await api.zaposleni.fetchEmployees();
+    const data = await response.json();
+    setEmployees(data);
+    setLoading(false);
+  }, []);
 
   const onSearch = (value: string) => console.log(value);
 
@@ -28,6 +43,7 @@ export const EmployeesPage: React.FunctionComponent = () => {
 
   const onModalClose = () => {
     setShowModal(false);
+    setRefresh((is) => !is);
   };
 
   const onEmployeeDelete = () => {};
@@ -41,6 +57,10 @@ export const EmployeesPage: React.FunctionComponent = () => {
   const onEmployeeDetailsClose = () => {
     setShowDetails(false);
   };
+
+  useEffect(() => {
+    fetchEmployees();
+  }, [fetchEmployees, refresh]);
 
   return (
     <div className="employees">
@@ -77,11 +97,18 @@ export const EmployeesPage: React.FunctionComponent = () => {
         </div>
       </div>
 
-      <div className="employees__content">
-        <EmployeeCard onDetailsClick={onEmployeeDetailsClick} />
-        <EmployeeCard onDetailsClick={onEmployeeDetailsClick} />
-        <EmployeeCard onDetailsClick={onEmployeeDetailsClick} />
-      </div>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <div className="employees__content">
+          {employees?.map((employee) => (
+            <EmployeeCard
+              employee={employee}
+              onDetailsClick={onEmployeeDetailsClick}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
