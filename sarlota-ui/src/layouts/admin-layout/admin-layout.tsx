@@ -45,8 +45,8 @@ const items: MenuItem[] = [
   getItem("Narudžbe", "narudzbe", <ShopOutlined />),
   getItem("Kalendar", "kalendar", <CalendarOutlined />),
   getItem("Statistika", "statistika", <PieChartOutlined />),
-  getItem("Zaposleni", "zaposleni", <TeamOutlined />),
   getItem("Recepti", "recepti", <FileTextOutlined />),
+  getItem("Zaposleni", "zaposleni", <TeamOutlined />),
   getItem("Kontakti", "kontakti", <ContactsOutlined />),
   getItem("Profil", "podesavanja", <SettingOutlined />),
 ];

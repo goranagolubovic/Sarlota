@@ -2,8 +2,9 @@
 import { Button, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 
+import { login, LoginRequest } from "../../api/services/users.service";
+
 // Utils
-import { login, LoginRequest } from "../../api/services";
 
 import "./login-form.scss";
 

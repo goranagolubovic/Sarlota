@@ -1,10 +1,12 @@
 // Libs
+import { useState } from "react";
 import { Button, Typography } from "antd";
 import Search from "antd/es/input/Search";
-import { useState } from "react";
 
 // Components
 import { EmployeeCard } from "../../components/employee";
+import { EmployeeDetails } from "../../features/employee-details";
+import { EmployeeModal } from "../../features/employee-modal";
 
 // Assets
 import { UserAddOutlined } from "@ant-design/icons";
@@ -15,10 +17,12 @@ const { Title } = Typography;
 
 export const EmployeesPage: React.FunctionComponent = () => {
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
 
   const onSearch = (value: string) => console.log(value);
 
-  const onNewContactClick = () => {
+  const onNewEmployeeClick = () => {
     setShowModal(true);
   };
 
@@ -26,12 +30,28 @@ export const EmployeesPage: React.FunctionComponent = () => {
     setShowModal(false);
   };
 
-  const onContactDelete = () => {};
+  const onEmployeeDelete = () => {};
 
-  const onContactEdit = () => {};
+  const onEmployeeEdit = () => {};
+
+  const onEmployeeDetailsClick = () => {
+    setShowDetails(true);
+  };
+
+  const onEmployeeDetailsClose = () => {
+    setShowDetails(false);
+  };
 
   return (
     <div className="employees">
+      <EmployeeDetails open={showDetails} onClose={onEmployeeDetailsClose} />
+
+      <EmployeeModal
+        title="Dodajte novog zaposlenog"
+        isModalOpen={showModal}
+        onModalClose={onModalClose}
+      />
+
       <div className="contacts__header">
         <Title level={3} style={{ marginTop: 0 }}>
           Zaposleni
@@ -42,7 +62,7 @@ export const EmployeesPage: React.FunctionComponent = () => {
             type="primary"
             size="large"
             icon={<UserAddOutlined />}
-            onClick={onNewContactClick}
+            onClick={onNewEmployeeClick}
           >
             Dodaj zaposlenog
           </Button>
@@ -58,9 +78,9 @@ export const EmployeesPage: React.FunctionComponent = () => {
       </div>
 
       <div className="employees__content">
-        <EmployeeCard />
-        <EmployeeCard />
-        <EmployeeCard />
+        <EmployeeCard onDetailsClick={onEmployeeDetailsClick} />
+        <EmployeeCard onDetailsClick={onEmployeeDetailsClick} />
+        <EmployeeCard onDetailsClick={onEmployeeDetailsClick} />
       </div>
     </div>
   );
