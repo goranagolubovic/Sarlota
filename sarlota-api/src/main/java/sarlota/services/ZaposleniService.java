@@ -3,12 +3,14 @@ package sarlota.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import sarlota.entities.Kontakt;
 import sarlota.entities.Zaposleni;
 import sarlota.entities.dto.ZaposleniDTO;
 import sarlota.entities.requests.SignUpRequest;
 import sarlota.entities.requests.ZaposleniUpdateRequest;
-import sarlota.repositories.ZaposleniRepository;
+import sarlota.services.repositories.ZaposleniRepository;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,6 +23,22 @@ public class ZaposleniService {
     public List<Zaposleni> getAll() {
         return zaposleniRepository.findAll();
     }
+
+
+    public List<Zaposleni> search(String keyword) {
+        try{
+            int id = Integer.parseInt(keyword);
+            Zaposleni z = zaposleniRepository.findById(id).orElse(null);
+            List<Zaposleni> zaposleni = new ArrayList<Zaposleni>();
+            if(z != null){
+                zaposleni.add(z);
+            }
+            return zaposleni;
+        }
+        catch(NumberFormatException e){}
+        return zaposleniRepository.findByKeyword(keyword);
+    }
+
 
     public Zaposleni getOne(int id) {
         return zaposleniRepository.findById(id).orElse(null);

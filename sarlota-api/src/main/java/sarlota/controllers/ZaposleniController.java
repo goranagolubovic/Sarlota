@@ -18,6 +18,13 @@ import java.util.List;
 public class ZaposleniController {
     private final ZaposleniService zaposleniService;
 
+    @GetMapping("/search")
+    ResponseEntity<List<Zaposleni>> search(@RequestParam(value = "query") String keyword) {
+        if(keyword.length() == 0) return ResponseEntity.ok(zaposleniService.getAll());
+        else return ResponseEntity.ok(zaposleniService.search(keyword));
+    }
+
+
     @GetMapping
     public ResponseEntity<List<Zaposleni>> getAll() {
         return ResponseEntity.ok(zaposleniService.getAll());
