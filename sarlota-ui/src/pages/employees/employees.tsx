@@ -1,20 +1,23 @@
 // Libs
 import { useCallback, useEffect, useState } from "react";
-import { Button, Typography } from "antd";
+import { Button, message, Typography } from "antd";
 import Search from "antd/es/input/Search";
 
 // Components
 import { EmployeeCard } from "../../components/employee";
 import { EmployeeDetails } from "../../features/employee-details";
 import { EmployeeModal } from "../../features/employee-modal";
+import { Spinner } from "../../components/spinner";
 
 // Assets
 import { UserAddOutlined } from "@ant-design/icons";
 
-import "./employees.scss";
+// Services
 import { Employee } from "../../api/services/employee.service";
 import { api } from "../../api";
-import { Spinner } from "../../components/spinner";
+
+// Rest
+import "./employees.scss";
 
 const { Title } = Typography;
 
@@ -26,6 +29,8 @@ export const EmployeesPage: React.FunctionComponent = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
+
+  const [messageApi, contextHolder] = message.useMessage();
 
   const fetchEmployees = useCallback(async () => {
     setLoading(true);
@@ -46,7 +51,23 @@ export const EmployeesPage: React.FunctionComponent = () => {
     setRefresh((is) => !is);
   };
 
-  const onEmployeeDelete = () => {};
+  const onEmployeeDelete = async (id: number) => {
+    const response = await api.zaposleni.deleteEmployee(id);
+
+    if (response.status === 200) {
+      messageApi.open({
+        type: "success",
+        content: "Kontakt je uspješno obrisan!",
+      });
+    } else {
+      messageApi.open({
+        type: "error",
+        content: "Došlo je do greške.",
+      });
+    }
+
+    setRefresh((is) => !is);
+  };
 
   const onEmployeeEdit = () => {};
 
@@ -64,6 +85,7 @@ export const EmployeesPage: React.FunctionComponent = () => {
 
   return (
     <div className="employees">
+      {contextHolder}
       <EmployeeDetails open={showDetails} onClose={onEmployeeDetailsClose} />
 
       <EmployeeModal
@@ -105,6 +127,7 @@ export const EmployeesPage: React.FunctionComponent = () => {
             <EmployeeCard
               employee={employee}
               onDetailsClick={onEmployeeDetailsClick}
+              onDeleteClick={onEmployeeDelete}
             />
           ))}
         </div>
