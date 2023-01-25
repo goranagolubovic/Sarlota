@@ -31,7 +31,7 @@ public class KontaktService {
             return kontakti;
         }
         catch(NumberFormatException e){}
-       return kontaktRepository.findByKeyword(keyword);
+       return kontaktRepository.findByKeyword("%" + keyword + "%");
     }
 
     public Kontakt getOne(int id) {

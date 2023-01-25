@@ -36,7 +36,7 @@ public class ZaposleniService {
             return zaposleni;
         }
         catch(NumberFormatException e){}
-        return zaposleniRepository.findByKeyword(keyword);
+        return zaposleniRepository.findByKeyword("%" + keyword + "%");
     }
 
 
