@@ -1,5 +1,5 @@
 // Libs
-import { Avatar, Card, Modal } from "antd";
+import { Avatar, Card, Modal, Tooltip } from "antd";
 
 // Assets
 import {
@@ -49,9 +49,15 @@ export const EmployeeCard: React.FunctionComponent<EmployeeCardProps> = ({
       className="employee"
       cover={<img alt="example" src="https://bit.ly/3WrLuBw" />}
       actions={[
-        <UserOutlined key="detalji" onClick={onDetailsClick} />,
-        <EditOutlined key="izmjena" onClick={onEdit} />,
-        <UserDeleteOutlined key="brisanje" onClick={onDelete} />,
+        <Tooltip title="Detalji" placement="bottom">
+          <UserOutlined key="detalji" onClick={onDetailsClick} />
+        </Tooltip>,
+        <Tooltip title="Izmjena" placement="bottom">
+          <EditOutlined key="izmjena" onClick={onEdit} />
+        </Tooltip>,
+        <Tooltip title="Brisanje" placement="bottom">
+          <UserDeleteOutlined key="brisanje" onClick={onDelete} />
+        </Tooltip>,
       ]}
     >
       <Meta
