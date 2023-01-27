@@ -1,17 +1,28 @@
 package sarlota.services;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import sarlota.entities.Kontakt;
 import sarlota.entities.Zaposleni;
+import sarlota.entities.dto.JwtZaposleni;
+import sarlota.entities.dto.TokenResponse;
 import sarlota.entities.dto.ZaposleniDTO;
+import sarlota.entities.requests.LoginRequest;
 import sarlota.entities.requests.SignUpRequest;
+import sarlota.entities.requests.ZaposleniPasswordAndUsernameUpdateRequest;
 import sarlota.entities.requests.ZaposleniUpdateRequest;
 import sarlota.services.repositories.ZaposleniRepository;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import org.springframework.util.Base64Utils;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +34,7 @@ public class ZaposleniService {
     public List<Zaposleni> getAll() {
         return zaposleniRepository.findAll();
     }
+
 
 
     public List<Zaposleni> search(String keyword) {
@@ -53,6 +65,7 @@ public class ZaposleniService {
                 zaposleniDTO.getLozinka(),
                 zaposleniDTO.getPlata(),
                 zaposleniDTO.getTipZaposlenog(),
+                zaposleniDTO.getFotografija(),
                 null,
                 null,
                 null
@@ -70,8 +83,15 @@ public class ZaposleniService {
         z.setPrezime(request.getPrezime());
         z.setKorisnickoIme(request.getKorisnickoIme());
         z.setPlata(request.getPlata());
-        z.setLozinka(passwordEncoder.encode(request.getLozinka()));
         z.setTipZaposlenog(request.getTipZaposlenog());
+        z.setFotografija(Base64Utils.decodeFromString(request.getFotografija()));
+        return zaposleniRepository.save(z);
+    }
+
+    public Zaposleni updatePasswordAndUsername(int id, ZaposleniPasswordAndUsernameUpdateRequest request){
+        Zaposleni z = zaposleniRepository.findById(id).orElse(null);
+        z.setLozinka( passwordEncoder.encode(request.getNovaLozinka()));
+        z.setKorisnickoIme(request.getNovoKorisnickoIme());
         return zaposleniRepository.save(z);
     }
 
@@ -85,7 +105,7 @@ public class ZaposleniService {
             return;
         }
         Zaposleni z = new Zaposleni(null, request.getKorisnickoIme(), request.getIme(), request.getPrezime(),
-                passwordEncoder.encode(request.getLozinka()), new BigDecimal(0), request.getTipZaposlenog());
+                passwordEncoder.encode(request.getLozinka()), new BigDecimal(0), request.getTipZaposlenog(), Base64Utils.decodeFromString(request.getFotografija()));
         zaposleniRepository.save(z);
     }
 

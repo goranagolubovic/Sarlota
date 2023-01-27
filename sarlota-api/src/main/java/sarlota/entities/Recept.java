@@ -12,8 +12,13 @@ import java.util.Objects;
 public class Recept {
     @Basic@Column(name = "priprema")
     private String priprema;
+    @Basic@Column(name = "naslov")
+    private String naslov;
     @Basic@Column(name = "sastojci")
     private String sastojci;
+    @Lob
+    @Column (name = "fotografija")
+    private byte[] fotografija;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id@Column(name = "id")
     private Integer id;

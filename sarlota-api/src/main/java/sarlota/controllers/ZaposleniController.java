@@ -7,8 +7,11 @@ import org.springframework.web.bind.annotation.*;
 import sarlota.entities.Kontakt;
 import sarlota.entities.Zaposleni;
 import sarlota.entities.dto.KontaktDTO;
+import sarlota.entities.dto.TokenResponse;
 import sarlota.entities.dto.ZaposleniDTO;
+import sarlota.entities.requests.ZaposleniPasswordAndUsernameUpdateRequest;
 import sarlota.entities.requests.ZaposleniUpdateRequest;
+import sarlota.services.AuthService;
 import sarlota.services.ZaposleniService;
 import java.util.List;
 
@@ -17,6 +20,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ZaposleniController {
     private final ZaposleniService zaposleniService;
+
+    private final AuthService authService;
+
+    @PutMapping("/{id}/edit")
+    public ResponseEntity<?> updateCredentials(@PathVariable int id, @RequestBody ZaposleniPasswordAndUsernameUpdateRequest request){
+        try {
+            TokenResponse token = authService.updateCredentials(id, request);
+            return token == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build() : ResponseEntity.ok(token);
+        }
+        catch (Exception e) {
+            return ResponseEntity.status((HttpStatus.NOT_FOUND)).build();
+        }
+    }
 
     @GetMapping("/search")
     ResponseEntity<List<Zaposleni>> search(@RequestParam(value = "query") String keyword) {

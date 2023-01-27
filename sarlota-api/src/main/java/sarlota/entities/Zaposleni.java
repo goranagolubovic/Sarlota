@@ -36,6 +36,9 @@ public class Zaposleni {
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "tip_zaposlenog", nullable = false)
     private Role tipZaposlenog;
+    @Lob
+    @Column (name = "fotografija")
+    private byte[] fotografija;
     @JsonIgnore
     @OneToMany(mappedBy = "zaposleniByZaposleniId")
     private List<Narudzba> narudzbasById;
@@ -47,7 +50,7 @@ public class Zaposleni {
     private List<Zaduzenje> zaduzenjesById;
 
 
-    public Zaposleni(Integer id, String username, String firstName, String lastName, String password, BigDecimal plata, Role tipZaposlenog) {
+    public Zaposleni(Integer id, String username, String firstName, String lastName, String password, BigDecimal plata, Role tipZaposlenog, byte[] fotografija) {
         this.id = id;
         this.korisnickoIme = username;
         this.ime = firstName;
@@ -55,6 +58,7 @@ public class Zaposleni {
         this.plata = plata;
         this.tipZaposlenog = tipZaposlenog;
         this.lozinka = password;
+        this.fotografija = fotografija;
     }
 
     public Zaposleni(Integer id, String korisnickoIme, Object o, Role tipZaposlenog) {
