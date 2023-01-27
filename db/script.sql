@@ -42,9 +42,10 @@ CREATE TABLE IF NOT EXISTS `db_sarlota`.`zaposleni` (
   `ime` VARCHAR(45) NULL,
   `prezime` VARCHAR(45) NULL,
   `korisnicko_ime` VARCHAR(45) NULL,
-  `lozinka` VARCHAR(45) NULL,
+  `lozinka` VARCHAR(90) NULL,
   `plata` FLOAT NULL,
   `tip_zaposlenog` TINYINT NOT NULL,
+  `fotografija` MEDIUMBLOB NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
@@ -118,10 +119,12 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `db_sarlota`.`recept` (
   `ponuda_id` INT NULL,
+  `naslov` VARCHAR(64) NULL,
   `priprema` VARCHAR(512) NULL,
   `sastojci` VARCHAR(256) NULL,
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `zaposleni_id` INT NOT NULL,
+  `fotografija` MEDIUMBLOB NULL DEFAULT NULL,
   INDEX `fk_sirovina_has_proizvod_proizvod1_idx` (`ponuda_id` ASC) VISIBLE,
   PRIMARY KEY (`id`),
   INDEX `fk_recept_zaposleni1_idx` (`zaposleni_id` ASC) VISIBLE,

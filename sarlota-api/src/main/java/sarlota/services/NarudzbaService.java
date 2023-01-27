@@ -2,10 +2,8 @@ package sarlota.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import sarlota.entities.Kontakt;
 import sarlota.entities.Narudzba;
 import sarlota.entities.Zaposleni;
-import sarlota.entities.dto.KontaktDTO;
 import sarlota.entities.dto.NarudzbaDTO;
 import sarlota.repositories.NarudzbaRepository;
 import sarlota.repositories.ZaposleniRepository;
