@@ -4,8 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import sarlota.entities.Kontakt;
 import sarlota.entities.dto.KontaktDTO;
-import sarlota.repositories.KontaktRepository;
+import sarlota.services.repositories.KontaktRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,6 +17,21 @@ public class KontaktService {
 
     public List<Kontakt> getAll() {
         return kontaktRepository.findAll();
+    }
+
+
+    public List<Kontakt> search(String keyword) {
+        try{
+            int id = Integer.parseInt(keyword);
+            Kontakt k = kontaktRepository.findById(id).orElse(null);
+            List<Kontakt> kontakti = new ArrayList<Kontakt>();
+            if(k != null){
+                kontakti.add(k);
+            }
+            return kontakti;
+        }
+        catch(NumberFormatException e){}
+       return kontaktRepository.findByKeyword("%" + keyword + "%");
     }
 
     public Kontakt getOne(int id) {

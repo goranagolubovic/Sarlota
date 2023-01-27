@@ -5,13 +5,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
 import sarlota.entities.Zaposleni;
 import sarlota.entities.dto.JwtZaposleni;
 import sarlota.entities.dto.TokenResponse;
 import sarlota.entities.enums.Role;
 import sarlota.entities.requests.LoginRequest;
 import sarlota.entities.requests.RefreshRequest;
+import sarlota.entities.requests.ZaposleniPasswordAndUsernameUpdateRequest;
+import sarlota.entities.requests.ZaposleniUpdateRequest;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -20,22 +24,23 @@ import java.util.Date;
 public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final ZaposleniService zaposleniService;
+
+    private final PasswordEncoder passwordEncoder;
     @Value("${authorization.token.expiration-time}")
     private String tokenExpirationTime;
     @Value("${authorization.token.secret}")
     private String tokenSecret;
 
-    public AuthService(AuthenticationManager authenticationManager, ZaposleniService zaposleniService) {
+    public AuthService(AuthenticationManager authenticationManager, ZaposleniService zaposleniService, PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.zaposleniService = zaposleniService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public TokenResponse login(LoginRequest request) {
         String response = null;
 
-        Authentication authenticate = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getKorisnickoIme(), request.getLozinka())
-        );
+        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getKorisnickoIme(), request.getLozinka()));
         JwtZaposleni jwtZaposleni = (JwtZaposleni) authenticate.getPrincipal();
         jwtZaposleni.setZaposleni(zaposleniService.getOne(jwtZaposleni.getZaposleni().getId()));
         response = generateJwt(jwtZaposleni);
@@ -45,30 +50,37 @@ public class AuthService {
 
     public TokenResponse refreshToken(RefreshRequest request) {
         try {
-            Claims claims = Jwts.parser()
-                    .setSigningKey(tokenSecret)
-                    .parseClaimsJws(request.getToken())
-                    .getBody();
+            Claims claims = Jwts.parser().setSigningKey(tokenSecret).parseClaimsJws(request.getToken()).getBody();
 
         } catch (ExpiredJwtException e) {
             Claims c = e.getClaims();
-            Zaposleni z = new Zaposleni(Integer.valueOf(c.getId()), c.getSubject(), c.get("firstName", String.class), c.get("lastName", String.class),
-                    null, new BigDecimal((Double) c.get("salary", Double.class)), Role.valueOf(c.get("role", String.class)));
+            Zaposleni z = new Zaposleni(Integer.valueOf(c.getId()), c.getSubject(), c.get("firstName", String.class), c.get("lastName", String.class), null, new BigDecimal((Double) c.get("salary", Double.class)), Role.valueOf(c.get("role", String.class)), null);
             return new TokenResponse(generateJwt(new JwtZaposleni(z)));
         }
         return null;
     }
 
+
+    public TokenResponse updateCredentials(int id, ZaposleniPasswordAndUsernameUpdateRequest request) throws Exception {
+        String response = null;
+
+        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getKorisnickoIme(), request.getLozinka()));
+        JwtZaposleni jwtZaposleni = (JwtZaposleni) authenticate.getPrincipal();
+        Zaposleni z = zaposleniService.getOne(id);
+        if(z == null){
+            return null;
+        }
+        z.setKorisnickoIme(request.getNovoKorisnickoIme());
+        z.setLozinka(passwordEncoder.encode(request.getNovaLozinka()));
+        jwtZaposleni.setZaposleni(z);
+        response = generateJwt(jwtZaposleni);
+        z = zaposleniService.updatePasswordAndUsername(z.getId(), request);
+        if(z == null) return null;
+        return new TokenResponse(response);
+    }
+
+
     public String generateJwt(JwtZaposleni jwtZaposleni) {
-        return Jwts.builder()
-                .setId(jwtZaposleni.getZaposleni().getId().toString())
-                .setSubject(jwtZaposleni.getZaposleni().getKorisnickoIme())
-                .claim("role", jwtZaposleni.getZaposleni().getTipZaposlenog().name())
-                .claim("firstName", jwtZaposleni.getZaposleni().getIme())
-                .claim("lastName", jwtZaposleni.getZaposleni().getPrezime())
-                .claim("salary", jwtZaposleni.getZaposleni().getPlata())
-                .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(tokenExpirationTime)))
-                .signWith(SignatureAlgorithm.HS512, tokenSecret)
-                .compact();
+        return Jwts.builder().setId(jwtZaposleni.getZaposleni().getId().toString()).setSubject(jwtZaposleni.getZaposleni().getKorisnickoIme()).claim("role", jwtZaposleni.getZaposleni().getTipZaposlenog().name()).claim("firstName", jwtZaposleni.getZaposleni().getIme()).claim("lastName", jwtZaposleni.getZaposleni().getPrezime()).claim("salary", jwtZaposleni.getZaposleni().getPlata()).setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(tokenExpirationTime))).signWith(SignatureAlgorithm.HS512, tokenSecret).compact();
     }
 }

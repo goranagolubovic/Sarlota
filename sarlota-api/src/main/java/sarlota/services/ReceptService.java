@@ -2,13 +2,14 @@ package sarlota.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
 import sarlota.entities.Ponuda;
 import sarlota.entities.Recept;
 import sarlota.entities.Zaposleni;
 import sarlota.entities.dto.ReceptDTO;
-import sarlota.repositories.PonudaRepository;
-import sarlota.repositories.ReceptRepository;
-import sarlota.repositories.ZaposleniRepository;
+import sarlota.services.repositories.PonudaRepository;
+import sarlota.services.repositories.ReceptRepository;
+import sarlota.services.repositories.ZaposleniRepository;
 
 import java.util.List;
 
@@ -39,6 +40,8 @@ public class ReceptService {
         Recept recept = new Recept(
                 receptDTO.getPriprema(),
                 receptDTO.getSastojci(),
+                receptDTO.getNaslov(),
+                Base64Utils.decodeFromString(receptDTO.getFotografija()),
                 null,
                 ponuda,
                 zaposleni
@@ -53,6 +56,7 @@ public class ReceptService {
         }
         r.setPriprema(receptDTO.getPriprema());
         r.setSastojci(receptDTO.getSastojci());
+        r.setFotografija(Base64Utils.decodeFromString(receptDTO.getFotografija()));
         return receptRepository.save(r);
     }
 

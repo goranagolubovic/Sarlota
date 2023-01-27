@@ -11,4 +11,5 @@ public class SignUpRequest {
     private String prezime;
     private String lozinka;
     private Role tipZaposlenog;
+    private String fotografija;
 }
