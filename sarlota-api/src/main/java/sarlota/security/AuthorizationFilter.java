@@ -19,8 +19,6 @@ import java.io.IOException;
 
 @Component
 public class AuthorizationFilter extends OncePerRequestFilter {
-
-
     @Value("${authorization.token.header.name}")
     private String authorizationHeaderName;
     @Value("${authorization.token.header.prefix}")

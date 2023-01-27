@@ -32,10 +32,9 @@ public class ZaposleniService {
                 zaposleniDTO.getIme(),
                 zaposleniDTO.getPrezime(),
                 zaposleniDTO.getKorisnickoIme(),
-                zaposleniDTO.getLozinka(),
+                passwordEncoder.encode(zaposleniDTO.getLozinka()),
                 zaposleniDTO.getPlata(),
                 zaposleniDTO.getTipZaposlenog(),
-                null,
                 null,
                 null,
                 null
@@ -51,9 +50,9 @@ public class ZaposleniService {
         }
         z.setIme(request.getIme());
         z.setPrezime(request.getPrezime());
-        z.setKorisnickoIme(request.getKorisnickoIme());
+//        z.setKorisnickoIme(request.getKorisnickoIme());
         z.setPlata(request.getPlata());
-        z.setLozinka(passwordEncoder.encode(request.getLozinka()));
+//        z.setLozinka(passwordEncoder.encode(request.getLozinka()));
         z.setTipZaposlenog(request.getTipZaposlenog());
         return zaposleniRepository.save(z);
     }

@@ -6,6 +6,7 @@ import sarlota.entities.Ponuda;
 import sarlota.entities.Recept;
 import sarlota.entities.Zaposleni;
 import sarlota.entities.dto.ReceptDTO;
+import sarlota.repositories.PonudaRepository;
 import sarlota.repositories.ReceptRepository;
 import sarlota.repositories.ZaposleniRepository;
 
@@ -19,7 +20,7 @@ public class ReceptService {
 
     private final ZaposleniRepository zaposleniRepository;
 
-    // private final PonudaRepository ponudaRepository;
+     private final PonudaRepository ponudaRepository;
 
     public List<Recept> getAll() {
         return receptRepository.findAll();

@@ -4,13 +4,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sarlota.entities.Kontakt;
 import sarlota.entities.Zaposleni;
+import sarlota.entities.dto.KontaktDTO;
+import sarlota.entities.dto.ZaposleniDTO;
 import sarlota.entities.requests.ZaposleniUpdateRequest;
 import sarlota.services.ZaposleniService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/zaposleni")
+@RequestMapping("api/v1/zaposleni")
 @RequiredArgsConstructor
 public class ZaposleniController {
     private final ZaposleniService zaposleniService;
@@ -26,6 +29,16 @@ public class ZaposleniController {
         return z == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build() : ResponseEntity.ok(z);
     }
 
+    @PostMapping
+    public ResponseEntity<Zaposleni> add(@RequestBody ZaposleniDTO zaposleniDTO) {
+        try {
+            Zaposleni z = zaposleniService.add(zaposleniDTO);
+            return z == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build() : ResponseEntity.ok(z);
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
     @PutMapping("/{id}")
     public ResponseEntity<Zaposleni> update(@PathVariable int id, @RequestBody ZaposleniUpdateRequest request) {
         try {

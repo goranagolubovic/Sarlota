@@ -38,9 +38,6 @@ public class Zaposleni {
     private Role tipZaposlenog;
     @JsonIgnore
     @OneToMany(mappedBy = "zaposleniByZaposleniId")
-    private List<Kontakt> kontaktsById;
-    @JsonIgnore
-    @OneToMany(mappedBy = "zaposleniByZaposleniId")
     private List<Narudzba> narudzbasById;
     @JsonIgnore
     @OneToMany(mappedBy = "zaposleniByZaposleniId")

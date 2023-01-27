@@ -1,5 +1,6 @@
 package sarlota.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.util.Objects;
 @AllArgsConstructor
 public class Kontakt {
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
     @Basic
@@ -28,8 +30,4 @@ public class Kontakt {
     @Basic
     @Column(name = "email")
     private String email;
-    @ManyToOne
-    @JoinColumn(name = "zaposleni_id", referencedColumnName = "id", nullable = false)
-    private Zaposleni zaposleniByZaposleniId;
-
 }

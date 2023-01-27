@@ -15,7 +15,7 @@ import sarlota.services.NarudzbaService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/narudzbe")
+@RequestMapping("api/v1/narudzbe")
 @RequiredArgsConstructor
 public class NarudzbaController {
     private final NarudzbaService narudzbaService;

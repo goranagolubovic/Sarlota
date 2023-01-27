@@ -19,6 +19,22 @@ CREATE SCHEMA IF NOT EXISTS `db_sarlota` DEFAULT CHARACTER SET utf8 COLLATE utf8
 USE `db_sarlota` ;
 
 -- -----------------------------------------------------
+-- Table `db_sarlota`.`kontakt`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_sarlota`.`kontakt` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `ime` VARCHAR(45) NULL,
+  `prezime` VARCHAR(45) NULL,
+  `broj_telefona` VARCHAR(20) NULL,
+  `link_profila` VARCHAR(50) NULL DEFAULT NULL,
+  `email` VARCHAR(50) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
+
+-- -----------------------------------------------------
 -- Table `db_sarlota`.`zaposleni`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `db_sarlota`.`zaposleni` (
@@ -30,29 +46,6 @@ CREATE TABLE IF NOT EXISTS `db_sarlota`.`zaposleni` (
   `plata` FLOAT NULL,
   `tip_zaposlenog` TINYINT NOT NULL,
   PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_unicode_ci;
-
-
--- -----------------------------------------------------
--- Table `db_sarlota`.`kontakt`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_sarlota`.`kontakt` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `ime` VARCHAR(45) NULL,
-  `prezime` VARCHAR(45) NULL,
-  `broj_telefona` VARCHAR(20) NULL,
-  `link_profila` VARCHAR(50) NULL DEFAULT NULL,
-  `email` VARCHAR(50) NULL DEFAULT NULL,
-  `zaposleni_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_kontakt_zaposleni_idx` (`zaposleni_id` ASC) VISIBLE,
-  CONSTRAINT `fk_kontakt_zaposleni`
-    FOREIGN KEY (`zaposleni_id`)
-    REFERENCES `db_sarlota`.`zaposleni` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;

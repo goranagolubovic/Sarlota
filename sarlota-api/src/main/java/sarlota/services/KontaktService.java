@@ -3,10 +3,8 @@ package sarlota.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import sarlota.entities.Kontakt;
-import sarlota.entities.Zaposleni;
 import sarlota.entities.dto.KontaktDTO;
 import sarlota.repositories.KontaktRepository;
-import sarlota.repositories.ZaposleniRepository;
 
 import java.util.List;
 
@@ -15,7 +13,6 @@ import java.util.List;
 public class KontaktService {
 
     private final KontaktRepository kontaktRepository;
-    private final ZaposleniRepository zaposleniRepository;
 
     public List<Kontakt> getAll() {
         return kontaktRepository.findAll();
@@ -26,18 +23,13 @@ public class KontaktService {
     }
 
     public Kontakt add(KontaktDTO kontaktDTO) {
-        Zaposleni zaposleni = zaposleniRepository.findById(kontaktDTO.getIdZaposlenog()).orElse(null);
-        if(zaposleni == null) {
-            return null;
-        }
         Kontakt kontakt = new Kontakt(
                 null,
                 kontaktDTO.getIme(),
                 kontaktDTO.getPrezime(),
                 kontaktDTO.getBrojTelefona(),
                 kontaktDTO.getLinkProfila(),
-                kontaktDTO.getEmail(),
-                zaposleni
+                kontaktDTO.getEmail()
         );
         return kontaktRepository.save(kontakt);
     }

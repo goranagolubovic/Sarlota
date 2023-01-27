@@ -14,7 +14,7 @@ import sarlota.services.ZaduzenjeService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/zaduzenja")
+@RequestMapping("api/v1/zaduzenja")
 @RequiredArgsConstructor
 public class ZaduzenjeController {
     private final ZaduzenjeService zaduzenjeService;
