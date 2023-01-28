@@ -1,26 +1,16 @@
 package sarlota.services;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import sarlota.entities.Kontakt;
 import sarlota.entities.Zaposleni;
-import sarlota.entities.dto.JwtZaposleni;
-import sarlota.entities.dto.TokenResponse;
 import sarlota.entities.dto.ZaposleniDTO;
-import sarlota.entities.requests.LoginRequest;
 import sarlota.entities.requests.SignUpRequest;
 import sarlota.entities.requests.ZaposleniPasswordAndUsernameUpdateRequest;
 import sarlota.entities.requests.ZaposleniUpdateRequest;
-import sarlota.services.repositories.ZaposleniRepository;
+import sarlota.repositories.ZaposleniRepository;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import org.springframework.util.Base64Utils;
 

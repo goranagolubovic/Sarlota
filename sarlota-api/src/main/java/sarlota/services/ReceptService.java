@@ -7,9 +7,9 @@ import sarlota.entities.Ponuda;
 import sarlota.entities.Recept;
 import sarlota.entities.Zaposleni;
 import sarlota.entities.dto.ReceptDTO;
-import sarlota.services.repositories.PonudaRepository;
-import sarlota.services.repositories.ReceptRepository;
-import sarlota.services.repositories.ZaposleniRepository;
+import sarlota.repositories.PonudaRepository;
+import sarlota.repositories.ReceptRepository;
+import sarlota.repositories.ZaposleniRepository;
 
 import java.util.List;
 

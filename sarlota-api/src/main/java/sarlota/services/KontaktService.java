@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import sarlota.entities.Kontakt;
 import sarlota.entities.dto.KontaktDTO;
-import sarlota.services.repositories.KontaktRepository;
+import sarlota.repositories.KontaktRepository;
 
 import java.util.ArrayList;
 import java.util.List;
