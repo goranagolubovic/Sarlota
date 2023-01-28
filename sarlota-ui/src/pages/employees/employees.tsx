@@ -1,6 +1,6 @@
 // Libs
 import { useCallback, useEffect, useState } from "react";
-import { Button, message, Typography } from "antd";
+import { Button, Empty, message, Typography } from "antd";
 import Search from "antd/es/input/Search";
 
 // Components
@@ -41,7 +41,15 @@ export const EmployeesPage: React.FunctionComponent = () => {
     setLoading(false);
   }, []);
 
-  const onSearch = (value: string) => console.log(value);
+  const onSearch = async (value: string) => {
+    if (value === "") {
+      fetchEmployees();
+    } else {
+      const response = await api.zaposleni.searchEmployees(value);
+      const data = await response.json();
+      setEmployees(data);
+    }
+  };
 
   const onNewEmployeeClick = () => {
     setShowModal(true);
@@ -135,14 +143,21 @@ export const EmployeesPage: React.FunctionComponent = () => {
         <Spinner />
       ) : (
         <div className="employees__content">
-          {employees?.map((employee) => (
-            <EmployeeCard
-              employee={employee}
-              onDetailsClick={onEmployeeDetailsClick}
-              onDeleteClick={onEmployeeDelete}
-              onEditClick={onEmployeeEdit}
+          {employees.length > 0 ? (
+            employees?.map((employee) => (
+              <EmployeeCard
+                employee={employee}
+                onDetailsClick={onEmployeeDetailsClick}
+                onDeleteClick={onEmployeeDelete}
+                onEditClick={onEmployeeEdit}
+              />
+            ))
+          ) : (
+            <Empty
+              description="Nisu pronađeni zaposleni"
+              style={{ margin: "auto", marginTop: "20vh" }}
             />
-          ))}
+          )}
         </div>
       )}
     </div>

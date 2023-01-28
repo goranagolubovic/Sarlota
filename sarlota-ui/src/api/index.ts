@@ -10,6 +10,7 @@ import {
   deleteEmployee,
   editEmployee,
   fetchEmployees,
+  searchEmployees,
 } from "./services/employee.service";
 
 import { login, signUp } from "./services/users.service";
@@ -31,5 +32,6 @@ export const api = {
     addEmployee,
     deleteEmployee,
     editEmployee,
+    searchEmployees,
   },
 };
