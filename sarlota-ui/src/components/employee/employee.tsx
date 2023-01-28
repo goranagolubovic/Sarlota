@@ -20,7 +20,7 @@ const { confirm } = Modal;
 
 interface EmployeeCardProps {
   employee: Employee;
-  onDetailsClick: () => void;
+  onDetailsClick: (employee: Employee) => void;
   onDeleteClick: (id: number) => void;
   onEditClick: (employee: Employee) => void;
 }
@@ -31,6 +31,10 @@ export const EmployeeCard: React.FunctionComponent<EmployeeCardProps> = ({
   onDeleteClick,
   onEditClick,
 }) => {
+  const onDetails = () => {
+    onDetailsClick(employee);
+  };
+
   const onEdit = () => {
     onEditClick(employee);
   };
@@ -54,7 +58,7 @@ export const EmployeeCard: React.FunctionComponent<EmployeeCardProps> = ({
       cover={<img alt="example" src="https://bit.ly/3WrLuBw" />}
       actions={[
         <Tooltip title="Detalji" placement="bottom">
-          <UserOutlined key="detalji" onClick={onDetailsClick} />
+          <UserOutlined key="detalji" onClick={onDetails} />
         </Tooltip>,
         <Tooltip title="Izmjena" placement="bottom">
           <EditOutlined key="izmjena" onClick={onEdit} />
