@@ -3,6 +3,7 @@ import {
   addContact,
   deleteContact,
   editContact,
+  searchContacts,
 } from "./services/contacts.service";
 import {
   addEmployee,
@@ -19,6 +20,7 @@ export const api = {
     addContact,
     deleteContact,
     editContact,
+    searchContacts,
   },
   login: {
     login,
