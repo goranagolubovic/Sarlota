@@ -7,6 +7,7 @@ import Title from "antd/es/typography/Title";
 // Components
 import { Spinner } from "../../components/spinner";
 import { RecipeCard } from "../../components/recipe";
+import { RecipeDrawer } from "../../features/recipe-drawer";
 
 // Assets
 import { FileTextOutlined } from "@ant-design/icons";
@@ -33,6 +34,10 @@ export const RecipesPage: React.FunctionComponent = () => {
     setShowNewRecipeDrawer(true);
   };
 
+  const onDrawerClose = () => {
+    setShowNewRecipeDrawer(false);
+  };
+
   const onSearch = async (value: string) => {
     if (value === "") {
       fetchRecipes();
@@ -45,6 +50,8 @@ export const RecipesPage: React.FunctionComponent = () => {
 
   return (
     <div className="recipes">
+      <RecipeDrawer open={showNewRecipeDrawer} onClose={onDrawerClose} />
+
       <div className="recipes__header">
         <Title level={3} style={{ marginTop: 0 }}>
           Recepti
