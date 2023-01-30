@@ -13,7 +13,7 @@ export interface Recipe {
   fotografija: Blob;
 }
 
-export const fetchEmployees = async () => {
+export const fetchRecipes = async () => {
   const response = await get(URL);
   return response;
 };
