@@ -1,15 +1,25 @@
+.ant-upload-wrapper.ant-upload-picture-card-wrapper {
+    display: flex;
+}
+
 .card{
         width: 30%;
         display: flex;
         flex-wrap: wrap;
         justify-content:center;
         align-items: center;
+        gap:100px;
         &__row{
             display: flex;
-            flex-direction: row;
+            justify-content:center;
+            align-items: center;
+            gap: 5px;
+            padding-top: 10px;
+        }
+        &__image{
+            display: flex;
            justify-content:center;
            align-items: center;
-           gap: 50px;
         }
 
 }
