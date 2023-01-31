@@ -14,8 +14,7 @@ import sarlota.entities.dto.TokenResponse;
 import sarlota.entities.enums.Role;
 import sarlota.entities.requests.LoginRequest;
 import sarlota.entities.requests.RefreshRequest;
-import sarlota.entities.requests.ZaposleniPasswordAndUsernameUpdateRequest;
-import sarlota.entities.requests.ZaposleniUpdateRequest;
+import sarlota.entities.requests.ZaposleniUpdateZaposleniRequest;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -45,7 +44,7 @@ public class AuthService {
         jwtZaposleni.setZaposleni(zaposleniService.getOne(jwtZaposleni.getZaposleni().getId()));
         response = generateJwt(jwtZaposleni);
 
-        return new TokenResponse(response);
+        return new TokenResponse(response, Base64Utils.encodeToString(jwtZaposleni.getZaposleni().getFotografija()));
     }
 
     public TokenResponse refreshToken(RefreshRequest request) {
@@ -55,13 +54,12 @@ public class AuthService {
         } catch (ExpiredJwtException e) {
             Claims c = e.getClaims();
             Zaposleni z = new Zaposleni(Integer.valueOf(c.getId()), c.getSubject(), c.get("firstName", String.class), c.get("lastName", String.class), null, new BigDecimal((Double) c.get("salary", Double.class)), Role.valueOf(c.get("role", String.class)), null);
-            return new TokenResponse(generateJwt(new JwtZaposleni(z)));
+            return new TokenResponse(generateJwt(new JwtZaposleni(z)), null);
         }
         return null;
     }
 
-
-    public TokenResponse updateCredentials(int id, ZaposleniPasswordAndUsernameUpdateRequest request) throws Exception {
+    public Zaposleni edit(int id, ZaposleniUpdateZaposleniRequest request) throws Exception {
         String response = null;
 
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getKorisnickoIme(), request.getLozinka()));
@@ -70,14 +68,11 @@ public class AuthService {
         if(z == null){
             return null;
         }
-        z.setKorisnickoIme(request.getNovoKorisnickoIme());
-        z.setLozinka(passwordEncoder.encode(request.getNovaLozinka()));
-        jwtZaposleni.setZaposleni(z);
-        response = generateJwt(jwtZaposleni);
-        z = zaposleniService.updatePasswordAndUsername(z.getId(), request);
-        if(z == null) return null;
-        return new TokenResponse(response);
+        return zaposleniService.edit(z, request);
+
     }
+
+
 
 
     public String generateJwt(JwtZaposleni jwtZaposleni) {

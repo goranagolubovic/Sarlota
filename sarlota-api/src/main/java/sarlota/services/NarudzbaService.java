@@ -8,6 +8,7 @@ import sarlota.entities.dto.NarudzbaDTO;
 import sarlota.repositories.NarudzbaRepository;
 import sarlota.repositories.ZaposleniRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -57,5 +58,12 @@ public class NarudzbaService {
 
     public void delete(int id) {
         narudzbaRepository.deleteById(id);
+    }
+
+    public List<Narudzba> searchByDeliveryDate(LocalDateTime startDate, LocalDateTime endDate) {
+        return narudzbaRepository.findByDatumIsporuke(startDate, endDate);
+    }
+    public List<Narudzba> searchByOrderDate(LocalDateTime startDate, LocalDateTime endDate) {
+        return narudzbaRepository.findByDatumPrijema(startDate, endDate);
     }
 }
