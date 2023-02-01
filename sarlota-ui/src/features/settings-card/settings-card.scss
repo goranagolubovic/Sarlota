@@ -1,6 +1,9 @@
 .ant-upload-wrapper.ant-upload-picture-card-wrapper {
     display: flex;
 }
+.ant-input::placeholder{
+    color:black;
+}
 
 .card{
         width: 30%;
