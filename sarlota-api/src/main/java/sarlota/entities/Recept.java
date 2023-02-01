@@ -22,9 +22,4 @@ public class Recept {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id@Column(name = "id")
     private Integer id;
-    @ManyToOne@JoinColumn(name = "ponuda_id", referencedColumnName = "id")
-    private Ponuda ponudaByPonudaId;
-    @ManyToOne@JoinColumn(name = "zaposleni_id", referencedColumnName = "id", nullable = false)
-    private Zaposleni zaposleniByZaposleniId;
-
 }

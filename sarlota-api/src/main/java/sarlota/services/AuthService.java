@@ -18,6 +18,7 @@ import sarlota.entities.requests.ZaposleniUpdateZaposleniRequest;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class AuthService {
@@ -38,7 +39,6 @@ public class AuthService {
 
     public TokenResponse login(LoginRequest request) {
         String response = null;
-
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getKorisnickoIme(), request.getLozinka()));
         JwtZaposleni jwtZaposleni = (JwtZaposleni) authenticate.getPrincipal();
         jwtZaposleni.setZaposleni(zaposleniService.getOne(jwtZaposleni.getZaposleni().getId()));
@@ -59,19 +59,12 @@ public class AuthService {
         return null;
     }
 
-    public Zaposleni edit(int id, ZaposleniUpdateZaposleniRequest request) throws Exception {
-        String response = null;
-
-        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getKorisnickoIme(), request.getLozinka()));
-        JwtZaposleni jwtZaposleni = (JwtZaposleni) authenticate.getPrincipal();
+    public Zaposleni edit(int id, ZaposleniUpdateZaposleniRequest request) throws ExecutionException {
         Zaposleni z = zaposleniService.getOne(id);
-        if(z == null){
-            return null;
-        }
+        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(z.getKorisnickoIme(), request.getLozinka()));
         return zaposleniService.edit(z, request);
 
     }
-
 
 
 

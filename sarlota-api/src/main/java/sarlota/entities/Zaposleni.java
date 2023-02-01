@@ -44,9 +44,6 @@ public class Zaposleni {
     private List<Narudzba> narudzbasById;
     @JsonIgnore
     @OneToMany(mappedBy = "zaposleniByZaposleniId")
-    private List<Recept> receptsById;
-    @JsonIgnore
-    @OneToMany(mappedBy = "zaposleniByZaposleniId")
     private List<Zaduzenje> zaduzenjesById;
 
 

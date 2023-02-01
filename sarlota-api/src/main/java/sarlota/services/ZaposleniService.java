@@ -13,9 +13,11 @@ import sarlota.entities.requests.SignUpRequest;
 import sarlota.entities.requests.ZaposleniUpdateRequest;
 import sarlota.entities.requests.ZaposleniUpdateZaposleniRequest;
 import sarlota.repositories.ZaposleniRepository;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.util.Base64Utils;
 
 @Service
@@ -31,6 +33,11 @@ public class ZaposleniService {
 
 
     public Zaposleni edit(Zaposleni z, ZaposleniUpdateZaposleniRequest request) {
+        Zaposleni otherZaposleni = zaposleniRepository.findByUsername(request.getKorisnickoIme());
+        if(otherZaposleni != null && otherZaposleni.getId() != z.getId() && otherZaposleni.getKorisnickoIme().equals(request.getKorisnickoIme()))
+            return null;
+
+
 
         z.setKorisnickoIme(request.getKorisnickoIme());
         z.setLozinka(passwordEncoder.encode(request.getNovaLozinka()));
@@ -42,16 +49,16 @@ public class ZaposleniService {
 
 
     public List<Zaposleni> search(String keyword) {
-        try{
+        try {
             int id = Integer.parseInt(keyword);
             Zaposleni z = zaposleniRepository.findById(id).orElse(null);
             List<Zaposleni> zaposleni = new ArrayList<Zaposleni>();
-            if(z != null){
+            if (z != null) {
                 zaposleni.add(z);
             }
             return zaposleni;
+        } catch (NumberFormatException e) {
         }
-        catch(NumberFormatException e){}
         return zaposleniRepository.findByKeyword("%" + keyword + "%");
     }
 
@@ -71,7 +78,6 @@ public class ZaposleniService {
                 zaposleniDTO.getTipZaposlenog(),
                 Base64Utils.decodeFromString(zaposleniDTO.getFotografija()),
                 null,
-                null,
                 null
         );
         return zaposleniRepository.save(zaposleni);
@@ -83,6 +89,13 @@ public class ZaposleniService {
         if (z == null) {
             return null;
         }
+        Zaposleni otherZaposleni = zaposleniRepository.findByUsername(request.getKorisnickoIme());
+
+        if(otherZaposleni != null && id != otherZaposleni.getId() && otherZaposleni.getKorisnickoIme().equals(request.getKorisnickoIme())){
+            return null;
+        }
+
+
         z.setIme(request.getIme());
         z.setPrezime(request.getPrezime());
         z.setKorisnickoIme(request.getKorisnickoIme());
@@ -97,7 +110,7 @@ public class ZaposleniService {
         zaposleniRepository.deleteById(id);
     }
 
-    public void signup(SignUpRequest request) throws Exception{
+    public void signup(SignUpRequest request) throws Exception {
         if (zaposleniRepository.findByUsername(request.getKorisnickoIme()) != null) {
             throw new Exception();
         }

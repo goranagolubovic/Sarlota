@@ -11,6 +11,7 @@ import sarlota.repositories.PonudaRepository;
 import sarlota.repositories.ReceptRepository;
 import sarlota.repositories.ZaposleniRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,19 +33,12 @@ public class ReceptService {
     }
 
     public Recept add(ReceptDTO receptDTO) {
-        Zaposleni zaposleni = zaposleniRepository.findById(receptDTO.getIdZaposlenog()).orElse(null);
-        Ponuda ponuda = ponudaRepository.findById(receptDTO.getIdPonude()).orElse(null);
-        if (zaposleni == null || ponuda == null) {
-            return null;
-        }
         Recept recept = new Recept(
                 receptDTO.getPriprema(),
                 receptDTO.getSastojci(),
                 receptDTO.getNaslov(),
                 Base64Utils.decodeFromString(receptDTO.getFotografija()),
-                null,
-                ponuda,
-                zaposleni
+                null
         );
         return receptRepository.save(recept);
     }
@@ -58,6 +52,20 @@ public class ReceptService {
         r.setSastojci(receptDTO.getSastojci());
         r.setFotografija(Base64Utils.decodeFromString(receptDTO.getFotografija()));
         return receptRepository.save(r);
+    }
+
+    public List<Recept> search(String keyword) {
+        try {
+            int id = Integer.parseInt(keyword);
+            Recept r = receptRepository.findById(id).orElse(null);
+            List<Recept> recept = new ArrayList<Recept>();
+            if (r != null) {
+                recept.add(r);
+            }
+            return recept;
+        } catch (NumberFormatException e) {
+        }
+        return receptRepository.findByKeyword("%" + keyword + "%");
     }
 
     public void delete(int id) {
