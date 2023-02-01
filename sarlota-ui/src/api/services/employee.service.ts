@@ -9,7 +9,7 @@ export interface Employee {
   id: number;
   ime: string;
   prezime: string;
-  korisnickoIme: string;
+  korisnickoIme?: string;
   plata: number;
   tipZaposlenog: string;
 }
@@ -33,6 +33,8 @@ export const deleteEmployee = async (id: number) => {
 };
 
 export const editEmployee = async (id: number, body: Employee) => {
+  delete body["korisnickoIme"];
+
   const response = await put(`${URL}/${id}`, {
     headers,
     body: JSON.stringify(body),

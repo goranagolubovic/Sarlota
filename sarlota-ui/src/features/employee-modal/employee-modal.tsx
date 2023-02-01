@@ -10,12 +10,14 @@ import { useEffect } from "react";
 
 interface EmployeeModalProps {
   title?: string;
+  employee: Employee | null;
   isModalOpen: boolean;
   onModalClose: () => void;
 }
 
 export const EmployeeModal: React.FunctionComponent<EmployeeModalProps> = ({
   title,
+  employee,
   isModalOpen,
   onModalClose,
 }) => {
@@ -24,13 +26,15 @@ export const EmployeeModal: React.FunctionComponent<EmployeeModalProps> = ({
   const handleOk = async (values: Employee) => {
     let response;
 
-    // if (contact) response = await api.kontakti.editContact(contact.id, values);
+    if (employee)
+      response = await api.zaposleni.editEmployee(employee.id, values);
     response = await api.zaposleni.addEmployee(values);
 
     if (response.status === 200) {
       form.resetFields();
       onModalClose();
     }
+    onModalClose();
   };
 
   const handleCancel = () => {
@@ -39,15 +43,14 @@ export const EmployeeModal: React.FunctionComponent<EmployeeModalProps> = ({
   };
 
   useEffect(() => {
-    // if (contact) {
-    //   form.setFieldsValue({
-    //     ime: contact.ime,
-    //     prezime: contact.prezime,
-    //     brojTelefona: contact.brojTelefona,
-    //     email: contact.email,
-    //     linkProfila: contact.linkProfila,
-    //   });
-    // }
+    if (employee) {
+      form.setFieldsValue({
+        ime: employee.ime,
+        prezime: employee.prezime,
+        tipZaposlenog: employee.tipZaposlenog === "POSLASTICAR" ? "0" : "1",
+        plata: employee.plata,
+      });
+    }
   });
 
   return (
@@ -109,20 +112,24 @@ export const EmployeeModal: React.FunctionComponent<EmployeeModalProps> = ({
             ]}
           />
         </Form.Item>
-        <Form.Item
-          label="Korisničko ime"
-          name="korisnickoIme"
-          rules={[{ required: true, message: "Polje je obavezno!" }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Lozinka"
-          name="lozinka"
-          rules={[{ required: true, message: "Polje je obavezno!" }]}
-        >
-          <Input.Password />
-        </Form.Item>
+        {!employee && (
+          <Form.Item
+            label="Korisničko ime"
+            name="korisnickoIme"
+            rules={[{ required: true, message: "Polje je obavezno!" }]}
+          >
+            <Input />
+          </Form.Item>
+        )}
+        {!employee && (
+          <Form.Item
+            label="Lozinka"
+            name="lozinka"
+            rules={[{ required: true, message: "Polje je obavezno!" }]}
+          >
+            <Input.Password />
+          </Form.Item>
+        )}
         <Form.Item
           label="Plata"
           name="plata"
