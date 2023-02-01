@@ -23,6 +23,7 @@ const { Title } = Typography;
 
 export const EmployeesPage: React.FunctionComponent = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);
+  const [employeeToEdit, setEmployeeToEdit] = useState<Employee | null>(null);
 
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
@@ -44,9 +45,11 @@ export const EmployeesPage: React.FunctionComponent = () => {
 
   const onNewEmployeeClick = () => {
     setShowModal(true);
+    setEmployeeToEdit(null);
   };
 
   const onModalClose = () => {
+    console.log("close");
     setShowModal(false);
     setRefresh((is) => !is);
   };
@@ -69,7 +72,11 @@ export const EmployeesPage: React.FunctionComponent = () => {
     setRefresh((is) => !is);
   };
 
-  const onEmployeeEdit = () => {};
+  const onEmployeeEdit = (employee: Employee) => {
+    setEmployeeToEdit(employee);
+    setShowModal(true);
+    setRefresh((is) => !is);
+  };
 
   const onEmployeeDetailsClick = () => {
     setShowDetails(true);
@@ -89,7 +96,12 @@ export const EmployeesPage: React.FunctionComponent = () => {
       <EmployeeDetails open={showDetails} onClose={onEmployeeDetailsClose} />
 
       <EmployeeModal
-        title="Dodajte novog zaposlenog"
+        employee={employeeToEdit}
+        title={
+          employeeToEdit
+            ? "Izmijenite informacije o zaposlenom"
+            : "Dodajte novog zaposlenog"
+        }
         isModalOpen={showModal}
         onModalClose={onModalClose}
       />
@@ -128,6 +140,7 @@ export const EmployeesPage: React.FunctionComponent = () => {
               employee={employee}
               onDetailsClick={onEmployeeDetailsClick}
               onDeleteClick={onEmployeeDelete}
+              onEditClick={onEmployeeEdit}
             />
           ))}
         </div>

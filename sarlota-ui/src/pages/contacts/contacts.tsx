@@ -88,8 +88,8 @@ export const ContactsPage: React.FunctionComponent = () => {
       <ContactModal
         title={contactToEdit ? "Izmijenite kontakt" : "Dodajte novi kontakt"}
         isModalOpen={showModal}
-        onModalClose={onModalClose}
         contact={contactToEdit}
+        onModalClose={onModalClose}
       />
 
       <div className="contacts__header">

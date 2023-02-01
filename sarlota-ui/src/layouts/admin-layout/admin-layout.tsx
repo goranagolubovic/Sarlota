@@ -76,6 +76,7 @@ export const AdminLayout: React.FunctionComponent = () => {
         <img
           className="logo"
           src={logo}
+          alt="logo"
           style={{ paddingInline: collapsed ? "10px" : "30px" }}
         />
         <Menu

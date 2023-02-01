@@ -73,7 +73,7 @@ public class ZaposleniService {
                 zaposleniDTO.getIme(),
                 zaposleniDTO.getPrezime(),
                 zaposleniDTO.getKorisnickoIme(),
-                zaposleniDTO.getLozinka(),
+                passwordEncoder.encode(zaposleniDTO.getLozinka()),
                 zaposleniDTO.getPlata(),
                 zaposleniDTO.getTipZaposlenog(),
                 Base64Utils.decodeFromString(zaposleniDTO.getFotografija()),
@@ -98,7 +98,7 @@ public class ZaposleniService {
 
         z.setIme(request.getIme());
         z.setPrezime(request.getPrezime());
-        z.setKorisnickoIme(request.getKorisnickoIme());
+         z.setKorisnickoIme(request.getKorisnickoIme());
         z.setPlata(request.getPlata());
         z.setTipZaposlenog(request.getTipZaposlenog());
         z.setFotografija(Base64Utils.decodeFromString(request.getFotografija()));

@@ -22,14 +22,18 @@ interface EmployeeCardProps {
   employee: Employee;
   onDetailsClick: () => void;
   onDeleteClick: (id: number) => void;
+  onEditClick: (employee: Employee) => void;
 }
 
 export const EmployeeCard: React.FunctionComponent<EmployeeCardProps> = ({
   employee,
   onDetailsClick,
   onDeleteClick,
+  onEditClick,
 }) => {
-  const onEdit = () => {};
+  const onEdit = () => {
+    onEditClick(employee);
+  };
 
   const onDelete = () => {
     confirm({
