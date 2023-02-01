@@ -38,7 +38,7 @@ public class Zaposleni {
     private Role tipZaposlenog;
     @Lob
     @Column (name = "fotografija")
-    private byte[] fotografija;
+    private String fotografija;
     @JsonIgnore
     @OneToMany(mappedBy = "zaposleniByZaposleniId")
     private List<Narudzba> narudzbasById;
@@ -47,7 +47,7 @@ public class Zaposleni {
     private List<Zaduzenje> zaduzenjesById;
 
 
-    public Zaposleni(Integer id, String username, String firstName, String lastName, String password, BigDecimal plata, Role tipZaposlenog, byte[] fotografija) {
+    public Zaposleni(Integer id, String username, String firstName, String lastName, String password, BigDecimal plata, Role tipZaposlenog, String fotografija) {
         this.id = id;
         this.korisnickoIme = username;
         this.ime = firstName;

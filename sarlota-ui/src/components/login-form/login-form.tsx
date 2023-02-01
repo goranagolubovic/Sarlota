@@ -3,7 +3,6 @@ import { Button, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 
 import { login, LoginRequest } from "../../api/services/users.service";
-import jwt_decode, { JwtPayload } from "jwt-decode";
 // Utils
 
 import "./login-form.scss";
@@ -16,10 +15,16 @@ export const LoginForm: React.FunctionComponent = () => {
     const response = await login(values);
     if (response.status === 200) {
       const responseData = await response.json();
-      console.log(responseData.token);
-      const decodedToken = jwt_decode<JwtPayload>(responseData.token);
-      localStorage.setItem("USER", JSON.stringify(decodedToken));
-      console.log(decodedToken);
+      const user = {
+        ime: responseData.ime,
+        prezime: responseData.prezime,
+        korisnickoIme: responseData.korisnickoIme,
+        plata: responseData.plata,
+        id: responseData.id,
+        tipZaposlenog: responseData.tipZaposlenpg,
+        fotografija: responseData.fotografija,
+      };
+      localStorage.setItem("USER", JSON.stringify(user));
       navigate("/admin/pregled");
     } else onFinishFailed("Error");
   };
