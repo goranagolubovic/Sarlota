@@ -26,6 +26,7 @@ public class Narudzba {
     @Basic@Column(name = "aktivna")
     private Boolean aktivna;
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "zaposleni_id", referencedColumnName = "id", nullable = false)
     private Zaposleni zaposleniByZaposleniId;
     @JsonIgnore

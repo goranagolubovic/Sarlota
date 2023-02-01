@@ -7,4 +7,5 @@ import lombok.Data;
 @Data
 public class TokenResponse {
     String token;
+    String fotografija;
 }

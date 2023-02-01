@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class ReceptDTO {
     private String priprema;
     private String sastojci;
-    private Integer idPonude;
-    private Integer idZaposlenog;
+    private String naslov;
+    private String fotografija;
 }

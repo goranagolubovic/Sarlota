@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sarlota.entities.Recept;
+import sarlota.entities.Zaposleni;
 import sarlota.entities.dto.ReceptDTO;
 import sarlota.services.ReceptService;
 
@@ -47,6 +48,14 @@ public class ReceptController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+
+    @GetMapping("/search")
+    ResponseEntity<List<Recept>> search(@RequestParam(value = "query") String keyword) {
+        if(keyword.length() == 0) return ResponseEntity.ok(receptService.getAll());
+        else return ResponseEntity.ok(receptService.search(keyword));
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable int id) {
