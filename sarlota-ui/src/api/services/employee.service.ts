@@ -32,12 +32,11 @@ export const deleteEmployee = async (id: number) => {
   return response;
 };
 
-export const editEmployee = async (id: number, body: Employee) => {
-  delete body["korisnickoIme"];
-
-  const response = await get("https://run.mocky.io/v3/e2e38e7a-f46c-43ed-a1ac-a9ed29f95fe1", {
+export const editEmployee = async (id: number, body: any) => {
+  // console.log(body)
+  const response = await put(`${URL}/${id}/edit`, {
     headers,
-    // body: JSON.stringify(body),
+    body: JSON.stringify(body),
   });
   return response;
 };

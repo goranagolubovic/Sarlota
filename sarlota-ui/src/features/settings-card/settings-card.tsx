@@ -8,6 +8,7 @@ import {
   UploadProps,
 } from "antd";
 import { EditOutlined, CloseOutlined, CheckOutlined } from "@ant-design/icons";
+import { Employee } from "../../api/services/employee.service";
 import React, { useEffect, useState } from "react";
 import "./settings-card.scss";
 import { api } from "../../api";
@@ -39,6 +40,7 @@ const SettingsCard = () => {
       setFirstName(user.firstName);
       setLastName(user.lastName);
       //setFileList(user.picture);
+
       setPassword("********");
     } else {
       setUsername("");
@@ -46,9 +48,18 @@ const SettingsCard = () => {
       setLastName("");
       setPassword("");
     }
-  }, [user, isEditeActive]);
+  }, [isEditeActive]);
+  useEffect(() => {
+    console.log("User changed");
+    setUsername(user.sub);
+    setFirstName(user.firstName);
+    setLastName(user.lastName);
+    //setFileList(user.picture);
 
-  const [form] = Form.useForm<any>();
+    setPassword("********");
+  }, [user]);
+
+  const [form] = Form.useForm<Employee>();
   const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
     setFileList(newFileList);
     console.log("aa" + JSON.stringify(fileList));
@@ -59,14 +70,34 @@ const SettingsCard = () => {
     setIsEditActive(!isEditeActive);
   };
 
+  const formatFormData = (values: any) => {
+    return {
+      ime: values.ime,
+      prezime: values.prezime,
+      korisnickoIme: values.korisnickoIme,
+      lozinka: values.lozinka,
+      novaLozinka: values.novaLozinka,
+      fotografija: fileList[0].thumbUrl?.substring(
+        "data:image/webp;base64,".length
+      ),
+    };
+  };
+
   const save = async (values: any) => {
-    values.slika = fileList[0].thumbUrl;
-    let response = await api.zaposleni.editEmployee(user.jti, values);
-    let responseData = await response.json();
-    console.log("RR" + responseData);
-    localStorage.setItem("USER", JSON.stringify(responseData));
+    // values.fotografija = fileList[0].thumbUrl;
+    //console.log("RR" + JSON.stringify(values));
+    console.log(values);
+    const employee = formatFormData(values);
+    console.log(employee);
+    console.log(user.jti);
+    let response = await api.zaposleni.editEmployee(user.jti, employee);
+    console.log(response);
+    let responseData = await response.text();
+    console.log(responseData);
+    localStorage.setItem("USER", responseData);
     editProfile();
-    setUser(responseData);
+    console.log(JSON.parse(localStorage.getItem("USER") || ""));
+    setUser(JSON.parse(localStorage.getItem("USER") || ""));
   };
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
@@ -87,7 +118,7 @@ const SettingsCard = () => {
         autoComplete="off"
         form={form}
       >
-        <Form.Item name="slika">
+        <Form.Item name="fotografija">
           <Upload
             listType="picture-card"
             fileList={fileList}
@@ -110,11 +141,7 @@ const SettingsCard = () => {
           name="prezime"
           rules={[{ required: true, message: "Polje je obavezno!" }]}
         >
-          <Input
-            name="prezime"
-            disabled={!isEditeActive}
-            placeholder={lastName}
-          />
+          <Input disabled={!isEditeActive} placeholder={lastName} />
         </Form.Item>
 
         <Form.Item
@@ -133,14 +160,23 @@ const SettingsCard = () => {
         </Form.Item>
         {isEditeActive && (
           <Form.Item
+            label="Nova lozinka"
+            name="novaLozinka"
+            rules={[{ required: true, message: "Polje je obavezno!" }]}
+          >
+            <Input disabled={!isEditeActive} />
+          </Form.Item>
+        )}
+        {isEditeActive && (
+          <Form.Item
             label="Potvrda lozinke"
             name="potvrdaLozinke"
-            dependencies={["lozinka"]}
+            dependencies={["novaLozinka"]}
             rules={[
               { required: true, message: "Polje je obavezno!" },
               ({ getFieldValue }) => ({
                 validator(_, value) {
-                  if (!value || getFieldValue("lozinka") === value) {
+                  if (!value || getFieldValue("novaLozinka") === value) {
                     return Promise.resolve();
                   }
                   return Promise.reject(new Error("Lozinke se ne podudaraju!"));
@@ -169,7 +205,6 @@ const SettingsCard = () => {
                 size="large"
                 htmlType="submit"
                 icon={<CheckOutlined />}
-                onClick={save}
               >
                 Sačuvaj
               </Button>
