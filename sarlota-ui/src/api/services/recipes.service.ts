@@ -6,7 +6,6 @@ const URL = BACKEND_URL + "recepti";
 const headers = { "Content-Type": "application/json" };
 
 export interface Recipe {
-  id: number;
   naslov: string;
   priprema: string;
   sastojci: string;

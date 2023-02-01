@@ -105,6 +105,7 @@ export const EmployeesPage: React.FunctionComponent = () => {
   return (
     <div className="employees">
       {contextHolder}
+
       <EmployeeDetails
         employee={employeeDetails}
         open={showDetails}
