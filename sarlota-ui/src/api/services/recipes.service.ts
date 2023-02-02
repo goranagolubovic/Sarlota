@@ -6,10 +6,12 @@ const URL = BACKEND_URL + "recepti";
 const headers = { "Content-Type": "application/json" };
 
 export interface Recipe {
+  id: number;
   naslov: string;
   priprema: string;
   sastojci: string;
-  fotografija: Blob;
+  fotografija: string;
+  omiljeni: boolean;
 }
 
 export const fetchRecipes = async () => {
@@ -41,4 +43,8 @@ export const editRecipe = async (id: number, body: Recipe) => {
 export const searchRecipes = async (query: string) => {
   const response = await get(`${URL}/search?query=${query}`);
   return response;
+};
+
+export const toggleFavorite = async (id: number) => {
+  const response = await get(`${URL}/${id}`);
 };

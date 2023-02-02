@@ -8,12 +8,12 @@ import "./admin-layout.scss";
 // Assets
 import {
   DesktopOutlined,
-  PieChartOutlined,
   TeamOutlined,
   FileTextOutlined,
   SettingOutlined,
   CalendarOutlined,
   ContactsOutlined,
+  LineChartOutlined,
   ShopOutlined,
   BellOutlined,
 } from "@ant-design/icons";
@@ -44,7 +44,7 @@ const items: MenuItem[] = [
   getItem("Pregled", "pregled", <DesktopOutlined />),
   getItem("Narudžbe", "narudzbe", <ShopOutlined />),
   getItem("Kalendar", "kalendar", <CalendarOutlined />),
-  getItem("Statistika", "statistika", <PieChartOutlined />),
+  getItem("Statistika", "statistika", <LineChartOutlined />),
   getItem("Recepti", "recepti", <FileTextOutlined />),
   getItem("Zaposleni", "zaposleni", <TeamOutlined />),
   getItem("Kontakti", "kontakti", <ContactsOutlined />),

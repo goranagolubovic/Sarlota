@@ -18,6 +18,7 @@ import {
   editRecipe,
   searchRecipes,
   addRecipe,
+  toggleFavorite,
 } from "./services/recipes.service";
 
 import { login, signUp } from "./services/users.service";
@@ -47,5 +48,6 @@ export const api = {
     editRecipe,
     searchRecipes,
     addRecipe,
+    toggleFavorite,
   },
 };

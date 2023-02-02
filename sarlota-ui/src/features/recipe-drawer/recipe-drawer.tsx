@@ -1,4 +1,5 @@
-import { useState } from "react";
+// Libs
+import { useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -9,22 +10,21 @@ import {
   Row,
   Space,
 } from "antd";
-import Upload, { RcFile } from "antd/es/upload";
+import Upload from "antd/es/upload";
+
+// Assets
 import { InboxOutlined } from "@ant-design/icons";
+
 import { Recipe } from "../../api/services/recipes.service";
 
 const { Dragger } = Upload;
 
-const getBase64 = async (img: RcFile, callback?: (url: string) => void) => {
-  const reader = new FileReader();
-  // reader.addEventListener("load", () => callback(reader.result as string));
-  reader.readAsDataURL(img);
-  return reader.result as string;
-};
-
-interface RecipeDrawerProps extends DrawerProps {}
+interface RecipeDrawerProps extends DrawerProps {
+  recipe?: Recipe | null;
+}
 
 export const RecipeDrawer: React.FunctionComponent<RecipeDrawerProps> = ({
+  recipe,
   open,
   onClose,
 }) => {
@@ -41,9 +41,20 @@ export const RecipeDrawer: React.FunctionComponent<RecipeDrawerProps> = ({
     console.log("here", e.dataTransfer.files);
   };
 
+  useEffect(() => {
+    if (recipe) {
+      form.setFieldsValue({
+        naslov: recipe.naslov,
+        sastojci: recipe.sastojci,
+        priprema: recipe.priprema,
+        fotografija: recipe.fotografija,
+      });
+    }
+  }, []);
+
   return (
     <Drawer
-      title="Dodajte novi recept"
+      title={recipe ? "Izmijenite recept" : "Dodajte novi recept"}
       width={720}
       onClose={onClose}
       open={open}

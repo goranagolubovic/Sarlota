@@ -1,12 +1,10 @@
 // Libs
+import { useEffect } from "react";
 import { Button, Form, Input, Modal, Select } from "antd";
 
 // Services
 import { Employee } from "../../api/services/employee.service";
 import { api } from "../../api";
-
-// Rest
-import { useEffect } from "react";
 
 interface EmployeeModalProps {
   title?: string;
@@ -93,7 +91,7 @@ export const EmployeeModal: React.FunctionComponent<EmployeeModalProps> = ({
           name="prezime"
           rules={[{ required: true, message: "Polje je obavezno!" }]}
         >
-          <Input name="prezime" />
+          <Input />
         </Form.Item>
 
         <Form.Item
@@ -102,9 +100,6 @@ export const EmployeeModal: React.FunctionComponent<EmployeeModalProps> = ({
           rules={[{ required: true, message: "Polje je obavezno!" }]}
         >
           <Select
-            // defaultValue="1"
-            // style={{ width: 120 }}
-
             onChange={(value) => form.setFieldValue("tipZaposlenog", value)}
             options={[
               { value: "0", label: "Poslastičar" },
