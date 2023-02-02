@@ -22,7 +22,7 @@ interface EmployeeCardProps {
   employee: Employee;
   onDetailsClick: () => void;
   onDeleteClick: (id: number) => void;
-  onEditClick: (employee: Employee) => void;
+  onEditClick: (order: Employee) => void;
 }
 
 export const EmployeeCard: React.FunctionComponent<EmployeeCardProps> = ({

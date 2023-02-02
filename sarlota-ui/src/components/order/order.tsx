@@ -1,0 +1,89 @@
+// Libs
+import { Avatar, Card, Modal, Tooltip } from "antd";
+
+// Assets
+import {
+  EditOutlined,
+  DeleteOutlined,
+  ExclamationCircleFilled,
+  EyeOutlined,
+} from "@ant-design/icons";
+
+// Services
+import { Orders } from "../../api/services/orders.service";
+
+// Rest
+import "./order.scss";
+
+const { Meta } = Card;
+const { confirm } = Modal;
+
+interface OrderCardProps {
+  order: Orders;
+  onDetailsClick: (order: Orders) => void;
+  onDeleteClick: (id: number) => void;
+  onEditClick: (order: Orders) => void;
+}
+
+export const OrderCard: React.FunctionComponent<OrderCardProps> = ({
+  order,
+  onDetailsClick,
+  onDeleteClick,
+  onEditClick,
+}) => {
+  const onEdit = () => {
+    onEditClick(order);
+  };
+
+  const onDetails = () => {
+    onDetailsClick(order);
+  };
+
+  const onDelete = () => {
+    confirm({
+      title: "Da li ste sigurni da želite da obrišete narudžbu?",
+      icon: <ExclamationCircleFilled />,
+      content: "Ovu akciju ne možete opozvati.",
+      onOk() {
+        onDeleteClick(order.id ? order.id : 0);
+      },
+      cancelText: "Poništi",
+    });
+  };
+  const formatDateTime = (date: string) => {
+    return new Date(date).toLocaleDateString("en-GB", {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
+  return (
+    <Card
+      hoverable
+      className="order"
+      cover={<img alt="example" src="https://bit.ly/3WrLuBw" />}
+      actions={[
+        <Tooltip title="Detalji" placement="bottom">
+          <EyeOutlined key="detalji" onClick={onDetails} />
+        </Tooltip>,
+        <Tooltip title="Izmjena" placement="bottom">
+          <EditOutlined key="izmjena" onClick={onEdit} />
+        </Tooltip>,
+        <Tooltip title="Brisanje" placement="bottom">
+          <DeleteOutlined key="brisanje" onClick={onDelete} />
+        </Tooltip>,
+      ]}
+    >
+      <Meta
+        avatar={<Avatar>A</Avatar>}
+        //title={`${formatDateTime(order.datumPrijema)} ${order.datumIsporuke}`}
+        //description={`Opis: ${order.opis}`}
+      />
+      <p>Datum prijema: {formatDateTime(order.datumPrijema)}</p>
+      <p>Datum isporuke: {formatDateTime(order.datumIsporuke)}</p>
+    </Card>
+  );
+};

@@ -10,6 +10,12 @@ import {
   editEmployee,
   fetchEmployees,
 } from "./services/employee.service";
+import {
+  fetchOrders,
+  editOrder,
+  addOrder,
+  deleteOrder
+} from "./services/orders.service";
 
 import { login, signUp } from "./services/users.service";
 
@@ -30,4 +36,10 @@ export const api = {
     deleteEmployee,
     editEmployee,
   },
+  narudzbe: {
+    fetchOrders,
+    editOrder,
+    addOrder,
+    deleteOrder
+  }
 };
