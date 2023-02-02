@@ -18,7 +18,12 @@ import java.util.List;
 public class NarudzbaDTO {
     private LocalDateTime datumPrijema;
     private LocalDateTime datumIsporuke;
-    private String opis;
     private Boolean aktivna;
-    private Integer idZaposlenog;
+    private Integer brojKomada;
+    private String naziv;
+    private String napomene;
+    private String slika;
+    private String kontakt;
+    private String adresa;
+
 }

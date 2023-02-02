@@ -15,7 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NarudzbaService {
     private final NarudzbaRepository narudzbaRepository;
-    private final ZaposleniRepository zaposleniRepository;
 
     public List<Narudzba> getAll() { return narudzbaRepository.findAll(); }
 
@@ -24,18 +23,18 @@ public class NarudzbaService {
     }
 
     public Narudzba add(NarudzbaDTO narudzbaDTO){
-        Zaposleni zaposleni = zaposleniRepository.findById(narudzbaDTO.getIdZaposlenog()).orElse(null);
-        if(zaposleni == null) {
-            return null;
-        }
 
         Narudzba narudzba = new Narudzba(
                 null,
                 narudzbaDTO.getDatumPrijema(),
                 narudzbaDTO.getDatumIsporuke(),
-                narudzbaDTO.getOpis(),
                 narudzbaDTO.getAktivna(),
-                zaposleni,
+                narudzbaDTO.getBrojKomada(),
+                narudzbaDTO.getNaziv(),
+                narudzbaDTO.getNapomene(),
+                narudzbaDTO.getSlika(),
+                narudzbaDTO.getKontakt(),
+                narudzbaDTO.getAdresa(),
                 null
         );
 
@@ -50,8 +49,12 @@ public class NarudzbaService {
 
         narudzba.setDatumIsporuke(narudzbaDTO.getDatumIsporuke());
         narudzba.setDatumPrijema(narudzbaDTO.getDatumPrijema());
-        narudzba.setOpis(narudzbaDTO.getOpis());
-        narudzba.setAktivna(narudzbaDTO.getAktivna());
+        narudzba.setBrojKomada(narudzbaDTO.getBrojKomada());
+        narudzba.setNaziv(narudzbaDTO.getNaziv());
+        narudzba.setNapomene(narudzbaDTO.getNapomene());
+        narudzba.setSlika(narudzbaDTO.getSlika());
+        narudzba.setKontakt(narudzbaDTO.getKontakt());
+        narudzba.setAdresa(narudzbaDTO.getAdresa());
 
         return narudzbaRepository.save(narudzba);
     }

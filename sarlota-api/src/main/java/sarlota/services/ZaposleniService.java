@@ -77,7 +77,6 @@ public class ZaposleniService {
                 zaposleniDTO.getPlata(),
                 zaposleniDTO.getTipZaposlenog(),
                 Base64Utils.decodeFromString(zaposleniDTO.getFotografija()),
-                null,
                 null
         );
         return zaposleniRepository.save(zaposleni);

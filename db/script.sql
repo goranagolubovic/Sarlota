@@ -59,16 +59,14 @@ CREATE TABLE IF NOT EXISTS `db_sarlota`.`narudzba` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `datum_prijema` DATETIME NULL,
   `datum_isporuke` DATETIME NULL,
-  `opis` VARCHAR(255) NULL DEFAULT NULL,
+  `broj_komada` INT NULL DEFAULT NULL,
+  `napomene` VARCHAR(255) NULL DEFAULT NULL,
+  `naziv` VARCHAR(64) NULL DEFAULT NULL,
+  `slika` LONGTEXT NULL DEFAULT NULL,
+  `kontakt` VARCHAR(20) NULL DEFAULT NULL,
+  `adresa` VARCHAR(100) NULL DEFAULT NULL,
   `aktivna` TINYINT NULL,
-  `zaposleni_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_narudzba_zaposleni1_idx` (`zaposleni_id` ASC) VISIBLE,
-  CONSTRAINT `fk_narudzba_zaposleni1`
-    FOREIGN KEY (`zaposleni_id`)
-    REFERENCES `db_sarlota`.`zaposleni` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_unicode_ci;
@@ -158,3 +156,6 @@ COLLATE = utf8_unicode_ci;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+
