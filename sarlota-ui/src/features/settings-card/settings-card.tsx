@@ -32,6 +32,7 @@ const SettingsCard = () => {
       thumbUrl: user.fotografija,
     },
   ]);
+  const [form] = Form.useForm<Employee>();
 
   useEffect(() => {
     if (!isEditeActive) {
@@ -53,8 +54,6 @@ const SettingsCard = () => {
     setLastName(user.prezime);
     setPassword("********");
   }, [user]);
-
-  const [form] = Form.useForm<Employee>();
 
   const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
     setFileList(newFileList);
