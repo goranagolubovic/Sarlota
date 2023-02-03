@@ -3,7 +3,6 @@ import { Button, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 
 import { login, LoginRequest } from "../../api/services/users.service";
-
 // Utils
 
 import "./login-form.scss";
@@ -15,8 +14,17 @@ export const LoginForm: React.FunctionComponent = () => {
   const onFinish = async (values: LoginRequest) => {
     const response = await login(values);
     if (response.status === 200) {
-      const token = await response.json();
-      console.log(token);
+      const responseData = await response.json();
+      const user = {
+        ime: responseData.ime,
+        prezime: responseData.prezime,
+        korisnickoIme: responseData.korisnickoIme,
+        plata: responseData.plata,
+        id: responseData.id,
+        tipZaposlenog: responseData.tipZaposlenpg,
+        fotografija: responseData.fotografija,
+      };
+      localStorage.setItem("USER", JSON.stringify(user));
       navigate("/admin/pregled");
     } else onFinishFailed("Error");
   };

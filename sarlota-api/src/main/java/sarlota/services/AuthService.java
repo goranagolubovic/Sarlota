@@ -47,7 +47,7 @@ public class AuthService {
         jwtZaposleni.setZaposleni(z);
         response = generateJwt(jwtZaposleni);
 
-        return new LoginResponse(z.getId(), response, z.getPlata(), z.getTipZaposlenog(), z.getIme(), z.getPrezime(), z.getKorisnickoIme(), Base64Utils.encodeToString(z.getFotografija()));
+        return new LoginResponse(z.getId(), response, z.getPlata(), z.getTipZaposlenog(), z.getIme(), z.getPrezime(), z.getKorisnickoIme(), z.getFotografija());
     }
 
     public TokenResponse refreshToken(RefreshRequest request) {
