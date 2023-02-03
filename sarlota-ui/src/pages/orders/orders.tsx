@@ -1,14 +1,17 @@
 // Libs
 import { useCallback, useEffect, useState } from "react";
-import { Button, message, Typography } from "antd";
+import { Button, Dropdown, message, Typography } from "antd";
 import Search from "antd/es/input/Search";
-
 // Components
 import { OrderDetails } from "../../features/order-details/order-details";
 import { Spinner } from "../../components/spinner";
 
 // Assets
-import { PlusOutlined, UserAddOutlined } from "@ant-design/icons";
+import {
+  FilterOutlined,
+  PlusOutlined,
+  UserAddOutlined,
+} from "@ant-design/icons";
 
 // Services
 import { Orders } from "../../api/services/orders.service";
@@ -18,6 +21,7 @@ import { api } from "../../api";
 import "./orders.scss";
 import { OrderModal } from "../../features/order-modal/order-modal";
 import { OrderCard } from "../../components/order/order";
+import Filter from "../../components/filter/filter";
 
 const { Title } = Typography;
 
@@ -32,6 +36,8 @@ export const OrdersPage: React.FunctionComponent = () => {
   const [showModal, setShowModal] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
 
+  const [filterDialogActive, setFilterDialogActive] = useState(false);
+  const [checkedOptions, setCheckedOptions] = useState([]);
   const [messageApi, contextHolder] = message.useMessage();
 
   const fetchOrders = useCallback(async () => {
@@ -40,7 +46,8 @@ export const OrdersPage: React.FunctionComponent = () => {
     const data = await response.json();
     setOrders(data);
     setLoading(false);
-  }, []);
+    console.log(checkedOptions);
+  }, [checkedOptions]);
 
   const onSearch = (value: string) => {};
 
@@ -53,6 +60,7 @@ export const OrdersPage: React.FunctionComponent = () => {
     console.log("close");
     setShowModal(false);
     setRefresh((is) => !is);
+    console.log(refresh);
   };
 
   const onOrderDelete = async (id: number) => {
@@ -88,6 +96,10 @@ export const OrdersPage: React.FunctionComponent = () => {
     setShowDetails(false);
   };
 
+  const onFilterClicked = () => {
+    setFilterDialogActive(!filterDialogActive);
+  };
+
   useEffect(() => {
     fetchOrders();
   }, [fetchOrders, refresh]);
@@ -118,6 +130,7 @@ export const OrdersPage: React.FunctionComponent = () => {
         </Title>
 
         <div className="contacts__header__actions">
+          <Filter setCheckedOptions={setCheckedOptions}></Filter>
           <Button
             type="primary"
             size="large"

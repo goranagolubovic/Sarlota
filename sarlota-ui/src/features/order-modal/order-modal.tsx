@@ -14,6 +14,7 @@ import { format } from "date-fns";
 import { Orders } from "../../api/services/orders.service";
 import { api } from "../../api";
 
+import "./order-modal.scss";
 // Rest
 import { useEffect, useState } from "react";
 
@@ -69,8 +70,15 @@ export const OrderModal: React.FunctionComponent<OrderModalProps> = ({
   useEffect(() => {
     if (order) {
       form.setFieldsValue({
-        datumIsporuke: order.datumIsporuke,
-        datumPrijema: order.datumPrijema,
+        datumIsporuke: new Date(order.datumIsporuke).toLocaleDateString(
+          "fr-CA",
+          { year: "numeric", month: "2-digit", day: "2-digit" }
+        ),
+        datumPrijema: new Date(order.datumPrijema).toLocaleDateString("fr-CA", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        }),
         naziv: order.naziv,
         kontakt: order.kontakt,
         adresa: order.adresa,
@@ -117,7 +125,7 @@ export const OrderModal: React.FunctionComponent<OrderModalProps> = ({
         onFinish={handleOk}
         form={form}
       >
-        <Form.Item>
+        <Form.Item className="order_upload">
           <Upload
             listType="picture-card"
             fileList={fileList}
