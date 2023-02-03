@@ -12,4 +12,5 @@ public class ReceptDTO {
     private String sastojci;
     private String naslov;
     private String fotografija;
+    private Boolean omiljeni;
 }

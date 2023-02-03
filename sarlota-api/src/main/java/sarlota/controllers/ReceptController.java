@@ -18,6 +18,12 @@ import java.util.List;
 public class ReceptController {
     private final ReceptService receptService;
 
+    @GetMapping("/toggle-favorite/{id}")
+    public ResponseEntity<?> toggleFavorite(@PathVariable int id) {
+        Recept r = receptService.toggleFavorite(id);
+        return r == null ? ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build() : ResponseEntity.ok().build();
+    }
+
     @GetMapping
     public ResponseEntity<List<Recept>> getAll() {
         return ResponseEntity.ok(receptService.getAll());
@@ -52,7 +58,7 @@ public class ReceptController {
 
     @GetMapping("/search")
     ResponseEntity<List<Recept>> search(@RequestParam(value = "query") String keyword) {
-        if(keyword.length() == 0) return ResponseEntity.ok(receptService.getAll());
+        if (keyword.length() == 0) return ResponseEntity.ok(receptService.getAll());
         else return ResponseEntity.ok(receptService.search(keyword));
     }
 

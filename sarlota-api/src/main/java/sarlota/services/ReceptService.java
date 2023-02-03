@@ -37,10 +37,20 @@ public class ReceptService {
                 receptDTO.getPriprema(),
                 receptDTO.getSastojci(),
                 receptDTO.getNaslov(),
-                Base64Utils.decodeFromString(receptDTO.getFotografija()),
+                receptDTO.getFotografija(),
+                receptDTO.getOmiljeni(),
                 null
         );
         return receptRepository.save(recept);
+    }
+
+    public Recept toggleFavorite(int id) {
+        Recept r = receptRepository.findById(id).orElse(null);
+        if(r == null) return null;
+        if(r.getOmiljeni()) r.setOmiljeni(false);
+        else r.setOmiljeni(true);
+        receptRepository.save(r);
+        return r;
     }
 
     public Recept update(int id, ReceptDTO receptDTO) {
@@ -50,7 +60,7 @@ public class ReceptService {
         }
         r.setPriprema(receptDTO.getPriprema());
         r.setSastojci(receptDTO.getSastojci());
-        r.setFotografija(Base64Utils.decodeFromString(receptDTO.getFotografija()));
+        r.setFotografija(receptDTO.getFotografija());
         return receptRepository.save(r);
     }
 
