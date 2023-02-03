@@ -43,7 +43,7 @@ public class ZaposleniService {
         z.setLozinka(passwordEncoder.encode(request.getNovaLozinka()));
         z.setPrezime(request.getPrezime());
         z.setIme(request.getIme());
-        z.setFotografija(Base64Utils.decodeFromString(request.getFotografija()));
+        z.setFotografija(request.getFotografija());
         return zaposleniRepository.save(z);
     }
 
@@ -76,7 +76,8 @@ public class ZaposleniService {
                 passwordEncoder.encode(zaposleniDTO.getLozinka()),
                 zaposleniDTO.getPlata(),
                 zaposleniDTO.getTipZaposlenog(),
-                Base64Utils.decodeFromString(zaposleniDTO.getFotografija()),
+                zaposleniDTO.getFotografija(),
+                null,
                 null
         );
         return zaposleniRepository.save(zaposleni);
@@ -100,7 +101,7 @@ public class ZaposleniService {
          z.setKorisnickoIme(request.getKorisnickoIme());
         z.setPlata(request.getPlata());
         z.setTipZaposlenog(request.getTipZaposlenog());
-        z.setFotografija(Base64Utils.decodeFromString(request.getFotografija()));
+        z.setFotografija(request.getFotografija());
         return zaposleniRepository.save(z);
     }
 
@@ -114,7 +115,7 @@ public class ZaposleniService {
             throw new Exception();
         }
         Zaposleni z = new Zaposleni(null, request.getKorisnickoIme(), request.getIme(), request.getPrezime(),
-                passwordEncoder.encode(request.getLozinka()), new BigDecimal(0), request.getTipZaposlenog(), Base64Utils.decodeFromString(request.getFotografija()));
+                passwordEncoder.encode(request.getLozinka()), new BigDecimal(0), request.getTipZaposlenog(), request.getFotografija());
         zaposleniRepository.save(z);
     }
 
