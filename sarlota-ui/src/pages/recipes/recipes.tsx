@@ -40,11 +40,13 @@ export const RecipesPage: React.FunctionComponent = () => {
   };
 
   const onNewRecipeClick = () => {
+    setRecipeToEdit(null);
     setShowNewRecipeDrawer(true);
   };
 
   const onDrawerClose = () => {
     setShowNewRecipeDrawer(false);
+    setRecipeToEdit(null);
   };
 
   const onRecipeDetails = () => {};
@@ -93,7 +95,6 @@ export const RecipesPage: React.FunctionComponent = () => {
   };
 
   const onRecipesFilterChange = async (value: SegmentedValue) => {
-    console.log(value);
     if (value === "Svi recepti") {
       fetchRecipes();
     } else {
