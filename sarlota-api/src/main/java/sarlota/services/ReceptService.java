@@ -41,7 +41,7 @@ public class ReceptService {
                 receptDTO.getPriprema(),
                 receptDTO.getSastojci(),
                 receptDTO.getNaslov(),
-                Base64Utils.decodeFromString(receptDTO.getFotografija()),
+                receptDTO.getFotografija(),
                 null,
                 ponuda,
                 zaposleni
@@ -56,7 +56,7 @@ public class ReceptService {
         }
         r.setPriprema(receptDTO.getPriprema());
         r.setSastojci(receptDTO.getSastojci());
-        r.setFotografija(Base64Utils.decodeFromString(receptDTO.getFotografija()));
+        r.setFotografija(receptDTO.getFotografija());
         return receptRepository.save(r);
     }
 

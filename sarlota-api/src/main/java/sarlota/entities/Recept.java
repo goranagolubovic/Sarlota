@@ -18,7 +18,7 @@ public class Recept {
     private String sastojci;
     @Lob
     @Column (name = "fotografija")
-    private byte[] fotografija;
+    private String fotografija;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id@Column(name = "id")
     private Integer id;
