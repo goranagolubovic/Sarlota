@@ -42,7 +42,7 @@ export const OrdersPage: React.FunctionComponent = () => {
     setLoading(false);
   }, []);
 
-  const onSearch = (value: string) => console.log(value);
+  const onSearch = (value: string) => {};
 
   const onNewOrderClick = () => {
     setShowModal(true);

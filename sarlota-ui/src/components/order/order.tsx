@@ -64,7 +64,16 @@ export const OrderCard: React.FunctionComponent<OrderCardProps> = ({
     <Card
       hoverable
       className="order"
-      cover={<img alt="example" src="https://bit.ly/3WrLuBw" />}
+      cover={
+        <img
+          alt="example"
+          src={
+            order?.slika !== ""
+              ? order.slika
+              : "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png"
+          }
+        />
+      }
       actions={[
         <Tooltip title="Detalji" placement="bottom">
           <EyeOutlined key="detalji" onClick={onDetails} />
@@ -77,11 +86,7 @@ export const OrderCard: React.FunctionComponent<OrderCardProps> = ({
         </Tooltip>,
       ]}
     >
-      <Meta
-        avatar={<Avatar>A</Avatar>}
-        //title={`${formatDateTime(order.datumPrijema)} ${order.datumIsporuke}`}
-        //description={`Opis: ${order.opis}`}
-      />
+      <Meta title={`${order?.naziv}`} />
       <p>Datum prijema: {formatDateTime(order.datumPrijema)}</p>
       <p>Datum isporuke: {formatDateTime(order.datumIsporuke)}</p>
     </Card>

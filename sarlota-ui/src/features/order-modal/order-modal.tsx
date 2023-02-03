@@ -1,12 +1,21 @@
 // Libs
-import { Button, Form, Input, Modal, Select } from "antd";
-
+import {
+  Button,
+  Form,
+  Input,
+  Modal,
+  Select,
+  Upload,
+  UploadFile,
+  UploadProps,
+} from "antd";
+import { format } from "date-fns";
 // Services
 import { Orders } from "../../api/services/orders.service";
 import { api } from "../../api";
 
 // Rest
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface OrderModalProps {
   title?: string;
@@ -22,13 +31,27 @@ export const OrderModal: React.FunctionComponent<OrderModalProps> = ({
   onModalClose,
 }) => {
   const [form] = Form.useForm<Orders>();
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
+    setFileList(newFileList);
+  };
 
   const handleOk = async (values: Orders) => {
     let response;
 
+    values = {
+      ...values,
+      datumIsporuke: new Date(values.datumIsporuke).toISOString(),
+      datumPrijema: new Date(values.datumPrijema).toISOString(),
+      aktivna: true,
+      slika: fileList[0]?.thumbUrl || "",
+    };
     if (order)
       response = await api.narudzbe.editOrder(order.id ? order.id : 0, values);
-    response = await api.narudzbe.addOrder(values);
+    else {
+      response = await api.narudzbe.addOrder(values);
+      setFileList([]);
+    }
 
     if (response.status === 200) {
       form.resetFields();
@@ -38,6 +61,7 @@ export const OrderModal: React.FunctionComponent<OrderModalProps> = ({
   };
 
   const handleCancel = () => {
+    setFileList([]);
     form.resetFields();
     onModalClose();
   };
@@ -47,12 +71,23 @@ export const OrderModal: React.FunctionComponent<OrderModalProps> = ({
       form.setFieldsValue({
         datumIsporuke: order.datumIsporuke,
         datumPrijema: order.datumPrijema,
-        opis: order.opis,
-        aktivna: 1,
-        zaposleniId: 1,
+        naziv: order.naziv,
+        kontakt: order.kontakt,
+        adresa: order.adresa,
+        brojKomada: order.brojKomada,
+        slika: order.slika,
+        napomene: order.napomene,
       });
+      setFileList([
+        {
+          uid: "-1",
+          name: "Dodajte fotografiju",
+          status: "done",
+          thumbUrl: order?.slika,
+        },
+      ]);
     }
-  });
+  }, [order]);
 
   return (
     <Modal
@@ -82,26 +117,64 @@ export const OrderModal: React.FunctionComponent<OrderModalProps> = ({
         onFinish={handleOk}
         form={form}
       >
+        <Form.Item>
+          <Upload
+            listType="picture-card"
+            fileList={fileList}
+            onChange={onChange}
+            //onPreview={onPreview}
+          >
+            {fileList.length < 1 && "+ Upload"}
+          </Upload>
+        </Form.Item>
         <Form.Item
           label="Datum prijema"
           name="datumPrijema"
           rules={[{ required: true, message: "Polje je obavezno!" }]}
         >
-          <Input />
+          <Input type="date" />
         </Form.Item>
         <Form.Item
           label="Datum isporuke"
           name="datumIsporuke"
           rules={[{ required: true, message: "Polje je obavezno!" }]}
         >
-          <Input name="datumIsporuke" />
+          <Input name="datumIsporuke" type="date" />
         </Form.Item>
         <Form.Item
-          label="Opis"
-          name="opis"
+          label="Napomene"
+          name="napomene"
           rules={[{ required: true, message: "Polje je obavezno!" }]}
         >
-          <Input name="opis" />
+          <Input name="napomene" />
+        </Form.Item>
+        <Form.Item
+          label="Naziv"
+          name="naziv"
+          rules={[{ required: true, message: "Polje je obavezno!" }]}
+        >
+          <Input name="naziv" />
+        </Form.Item>
+        <Form.Item
+          label="Broj komada"
+          name="brojKomada"
+          rules={[{ required: true, message: "Polje je obavezno!" }]}
+        >
+          <Input name="brojKomada" type="number" />
+        </Form.Item>
+        <Form.Item
+          label="Kontakt"
+          name="kontakt"
+          rules={[{ required: true, message: "Polje je obavezno!" }]}
+        >
+          <Input name="kontakt" />
+        </Form.Item>
+        <Form.Item
+          label="Adresa"
+          name="adresa"
+          rules={[{ required: true, message: "Polje je obavezno!" }]}
+        >
+          <Input name="adresa" />
         </Form.Item>
       </Form>
     </Modal>

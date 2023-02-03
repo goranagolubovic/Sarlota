@@ -1,3 +1,4 @@
+import internal from "stream";
 import { BACKEND_URL } from "../../util/constants";
 import { get, post, put, remove } from "../client";
 
@@ -9,9 +10,13 @@ export interface Orders {
     id: number;
     datumPrijema: string;
     datumIsporuke: string;
-    opis?: string;
-    aktivna: number;
-    zaposleniId: number;
+    slika: string;
+    napomene: string;
+    aktivna: boolean;
+    kontakt: string;
+    adresa: string;
+    brojKomada: number;
+    naziv: string;
 }
 
 export const fetchOrders = async () => {

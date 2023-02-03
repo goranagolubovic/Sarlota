@@ -20,9 +20,11 @@ export const OrderDetails: React.FunctionComponent<OrderDetailsProps> = ({
       onClose={onClose}
       open={open}
     >
-      <p>{order?.id}</p>
-      <p>{order?.opis}</p>
-      <p>...</p>
+      <p>{order?.naziv}</p>
+      <p>Broj komada:{order?.brojKomada}</p>
+      <p>Napomene:{order?.napomene}</p>
+      <p>Kontakt:{order?.kontakt}</p>
+      <p>Adresa:{order?.adresa}</p>
     </Drawer>
   );
 };
