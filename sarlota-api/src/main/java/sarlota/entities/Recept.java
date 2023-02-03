@@ -16,15 +16,11 @@ public class Recept {
     private String naslov;
     @Basic@Column(name = "sastojci")
     private String sastojci;
-    @Lob
     @Column (name = "fotografija")
     private String fotografija;
+    @Column (name = "omiljeni")
+    private Boolean omiljeni;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id@Column(name = "id")
     private Integer id;
-    @ManyToOne@JoinColumn(name = "ponuda_id", referencedColumnName = "id")
-    private Ponuda ponudaByPonudaId;
-    @ManyToOne@JoinColumn(name = "zaposleni_id", referencedColumnName = "id", nullable = false)
-    private Zaposleni zaposleniByZaposleniId;
-
 }

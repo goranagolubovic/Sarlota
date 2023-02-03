@@ -38,19 +38,13 @@ public class Zaposleni {
     private Role tipZaposlenog;
     @Lob
     @Column (name = "fotografija")
-    private byte[] fotografija;
-    @JsonIgnore
-    @OneToMany(mappedBy = "zaposleniByZaposleniId")
-    private List<Narudzba> narudzbasById;
-    @JsonIgnore
-    @OneToMany(mappedBy = "zaposleniByZaposleniId")
-    private List<Recept> receptsById;
+    private String fotografija;
     @JsonIgnore
     @OneToMany(mappedBy = "zaposleniByZaposleniId")
     private List<Zaduzenje> zaduzenjesById;
 
 
-    public Zaposleni(Integer id, String username, String firstName, String lastName, String password, BigDecimal plata, Role tipZaposlenog, byte[] fotografija) {
+    public Zaposleni(Integer id, String username, String firstName, String lastName, String password, BigDecimal plata, Role tipZaposlenog, String fotografija) {
         this.id = id;
         this.korisnickoIme = username;
         this.ime = firstName;

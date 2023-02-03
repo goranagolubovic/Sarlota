@@ -11,7 +11,6 @@ public class ReceptDTO {
     private String priprema;
     private String sastojci;
     private String naslov;
-    private Integer idPonude;
-    private Integer idZaposlenog;
     private String fotografija;
+    private Boolean omiljeni;
 }

@@ -1,17 +1,23 @@
 package sarlota.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import sarlota.entities.Zaposleni;
+import sarlota.entities.dto.JwtZaposleni;
+import sarlota.entities.dto.TokenResponse;
 import sarlota.entities.dto.ZaposleniDTO;
 import sarlota.entities.requests.SignUpRequest;
-import sarlota.entities.requests.ZaposleniPasswordAndUsernameUpdateRequest;
 import sarlota.entities.requests.ZaposleniUpdateRequest;
+import sarlota.entities.requests.ZaposleniUpdateZaposleniRequest;
 import sarlota.repositories.ZaposleniRepository;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.util.Base64Utils;
 
 @Service
@@ -26,18 +32,33 @@ public class ZaposleniService {
     }
 
 
+    public Zaposleni edit(Zaposleni z, ZaposleniUpdateZaposleniRequest request) {
+        Zaposleni otherZaposleni = zaposleniRepository.findByUsername(request.getKorisnickoIme());
+        if(otherZaposleni != null && otherZaposleni.getId() != z.getId() && otherZaposleni.getKorisnickoIme().equals(request.getKorisnickoIme()))
+            return null;
+
+
+
+        z.setKorisnickoIme(request.getKorisnickoIme());
+        z.setLozinka(passwordEncoder.encode(request.getNovaLozinka()));
+        z.setPrezime(request.getPrezime());
+        z.setIme(request.getIme());
+        z.setFotografija(request.getFotografija());
+        return zaposleniRepository.save(z);
+    }
+
 
     public List<Zaposleni> search(String keyword) {
-        try{
+        try {
             int id = Integer.parseInt(keyword);
             Zaposleni z = zaposleniRepository.findById(id).orElse(null);
             List<Zaposleni> zaposleni = new ArrayList<Zaposleni>();
-            if(z != null){
+            if (z != null) {
                 zaposleni.add(z);
             }
             return zaposleni;
+        } catch (NumberFormatException e) {
         }
-        catch(NumberFormatException e){}
         return zaposleniRepository.findByKeyword("%" + keyword + "%");
     }
 
@@ -57,7 +78,6 @@ public class ZaposleniService {
                 zaposleniDTO.getTipZaposlenog(),
                 zaposleniDTO.getFotografija(),
                 null,
-                null,
                 null
         );
         return zaposleniRepository.save(zaposleni);
@@ -69,21 +89,19 @@ public class ZaposleniService {
         if (z == null) {
             return null;
         }
+        Zaposleni otherZaposleni = zaposleniRepository.findByUsername(request.getKorisnickoIme());
+
+        if(otherZaposleni != null && id != otherZaposleni.getId() && otherZaposleni.getKorisnickoIme().equals(request.getKorisnickoIme())){
+            return null;
+        }
+
+
         z.setIme(request.getIme());
         z.setPrezime(request.getPrezime());
-//        z.setKorisnickoIme(request.getKorisnickoIme());
+         z.setKorisnickoIme(request.getKorisnickoIme());
         z.setPlata(request.getPlata());
-//        z.setLozinka(passwordEncoder.encode(request.getLozinka()));
-
         z.setTipZaposlenog(request.getTipZaposlenog());
-        z.setFotografija(Base64Utils.decodeFromString(request.getFotografija()));
-        return zaposleniRepository.save(z);
-    }
-
-    public Zaposleni updatePasswordAndUsername(int id, ZaposleniPasswordAndUsernameUpdateRequest request){
-        Zaposleni z = zaposleniRepository.findById(id).orElse(null);
-        z.setLozinka( passwordEncoder.encode(request.getNovaLozinka()));
-        z.setKorisnickoIme(request.getNovoKorisnickoIme());
+        z.setFotografija(request.getFotografija());
         return zaposleniRepository.save(z);
     }
 
@@ -92,12 +110,12 @@ public class ZaposleniService {
         zaposleniRepository.deleteById(id);
     }
 
-    public void signup(SignUpRequest request) {
+    public void signup(SignUpRequest request) throws Exception {
         if (zaposleniRepository.findByUsername(request.getKorisnickoIme()) != null) {
-            return;
+            throw new Exception();
         }
         Zaposleni z = new Zaposleni(null, request.getKorisnickoIme(), request.getIme(), request.getPrezime(),
-                passwordEncoder.encode(request.getLozinka()), new BigDecimal(0), request.getTipZaposlenog(), Base64Utils.decodeFromString(request.getFotografija()));
+                passwordEncoder.encode(request.getLozinka()), new BigDecimal(0), request.getTipZaposlenog(), request.getFotografija());
         zaposleniRepository.save(z);
     }
 

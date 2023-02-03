@@ -10,15 +10,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 import sarlota.entities.Zaposleni;
 import sarlota.entities.dto.JwtZaposleni;
+import sarlota.entities.dto.LoginResponse;
 import sarlota.entities.dto.TokenResponse;
 import sarlota.entities.enums.Role;
 import sarlota.entities.requests.LoginRequest;
 import sarlota.entities.requests.RefreshRequest;
-import sarlota.entities.requests.ZaposleniPasswordAndUsernameUpdateRequest;
-import sarlota.entities.requests.ZaposleniUpdateRequest;
+import sarlota.entities.requests.ZaposleniUpdateZaposleniRequest;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class AuthService {
@@ -37,15 +38,16 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public TokenResponse login(LoginRequest request) {
+    public LoginResponse login(LoginRequest request) throws Exception {
         String response = null;
 
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getKorisnickoIme(), request.getLozinka()));
         JwtZaposleni jwtZaposleni = (JwtZaposleni) authenticate.getPrincipal();
-        jwtZaposleni.setZaposleni(zaposleniService.getOne(jwtZaposleni.getZaposleni().getId()));
+        Zaposleni z = zaposleniService.getOne(jwtZaposleni.getZaposleni().getId());
+        jwtZaposleni.setZaposleni(z);
         response = generateJwt(jwtZaposleni);
 
-        return new TokenResponse(response);
+        return new LoginResponse(z.getId(), response, z.getPlata(), z.getTipZaposlenog(), z.getIme(), z.getPrezime(), z.getKorisnickoIme(), z.getFotografija());
     }
 
     public TokenResponse refreshToken(RefreshRequest request) {
@@ -60,24 +62,16 @@ public class AuthService {
         return null;
     }
 
-
-    public TokenResponse updateCredentials(int id, ZaposleniPasswordAndUsernameUpdateRequest request) throws Exception {
-        String response = null;
-
-        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getKorisnickoIme(), request.getLozinka()));
-        JwtZaposleni jwtZaposleni = (JwtZaposleni) authenticate.getPrincipal();
+    public Zaposleni edit(int id, ZaposleniUpdateZaposleniRequest request) throws Exception {
         Zaposleni z = zaposleniService.getOne(id);
-        if(z == null){
-            return null;
-        }
-        z.setKorisnickoIme(request.getNovoKorisnickoIme());
-        z.setLozinka(passwordEncoder.encode(request.getNovaLozinka()));
-        jwtZaposleni.setZaposleni(z);
-        response = generateJwt(jwtZaposleni);
-        z = zaposleniService.updatePasswordAndUsername(z.getId(), request);
-        if(z == null) return null;
-        return new TokenResponse(response);
+
+        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(z.getKorisnickoIme(), request.getLozinka()));
+
+
+        return zaposleniService.edit(z, request);
+
     }
+
 
 
     public String generateJwt(JwtZaposleni jwtZaposleni) {

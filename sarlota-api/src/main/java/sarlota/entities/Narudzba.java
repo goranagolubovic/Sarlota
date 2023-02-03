@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -15,19 +14,36 @@ import java.util.Objects;
 @AllArgsConstructor
 public class Narudzba {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id@Column(name = "id")
+    @Id
+    @Column(name = "id")
     private Integer id;
-    @Basic@Column(name = "datum_prijema")
+    @Basic
+    @Column(name = "datum_prijema")
     private LocalDateTime datumPrijema;
-    @Basic@Column(name = "datum_isporuke")
+    @Basic
+    @Column(name = "datum_isporuke")
     private LocalDateTime datumIsporuke;
-    @Basic@Column(name = "opis")
-    private String opis;
-    @Basic@Column(name = "aktivna")
+    @Basic
+    @Column(name = "aktivna")
     private Boolean aktivna;
-    @ManyToOne
-    @JoinColumn(name = "zaposleni_id", referencedColumnName = "id", nullable = false)
-    private Zaposleni zaposleniByZaposleniId;
+    @Basic
+    @Column(name = "broj_komada")
+    private Integer brojKomada;
+    @Basic
+    @Column(name = "naziv")
+    private String naziv;
+    @Basic
+    @Column(name = "napomene")
+    private String napomene;
+    @Basic
+    @Column(name = "slika")
+    private String slika;
+    @Basic
+    @Column(name = "kontakt")
+    private String kontakt;
+    @Basic
+    @Column(name = "adresa")
+    private String adresa;
     @JsonIgnore
     @OneToMany(mappedBy = "narudzbaByNarudzbaId")
     private List<Proizvod> proizvodsById;

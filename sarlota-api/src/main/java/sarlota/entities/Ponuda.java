@@ -27,15 +27,12 @@ public class Ponuda {
     @Basic@Column(name = "tezina")
     private String tezina;
     @Basic@Column(name = "slika")
-    private byte[] slika;
+    private String slika;
     @Basic
     @Column(name = "tip_proizvoda")
     private String tipProizvoda;
     @JsonIgnore
     @OneToMany(mappedBy = "ponudaByPonudaId")
     private List<Proizvod> proizvodsById;
-    @JsonIgnore
-    @OneToMany(mappedBy = "ponudaByPonudaId")
-    private List<Recept> receptsById;
 
 }

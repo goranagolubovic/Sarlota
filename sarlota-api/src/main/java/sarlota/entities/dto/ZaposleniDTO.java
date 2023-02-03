@@ -19,5 +19,5 @@ public class ZaposleniDTO {
     private String lozinka;
     private BigDecimal plata;
     private Role tipZaposlenog;
-    private byte[] fotografija;
+    private String fotografija;
 }
