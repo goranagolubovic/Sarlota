@@ -16,9 +16,10 @@ public class Recept {
     private String naslov;
     @Basic@Column(name = "sastojci")
     private String sastojci;
-    @Lob
     @Column (name = "fotografija")
-    private byte[] fotografija;
+    private String fotografija;
+    @Column (name = "omiljeni")
+    private Boolean omiljeni;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id@Column(name = "id")
     private Integer id;
