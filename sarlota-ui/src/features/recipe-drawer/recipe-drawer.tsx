@@ -7,23 +7,18 @@ import {
   DrawerProps,
   Form,
   Input,
-  Modal,
   Row,
   Space,
 } from "antd";
-import Upload, { RcFile, UploadFile, UploadProps } from "antd/es/upload";
-import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import Upload, { UploadFile, UploadProps } from "antd/es/upload";
 
-// Assets
-import { InboxOutlined } from "@ant-design/icons";
-
+// Services
 import { Recipe } from "../../api/services/recipes.service";
-import { getBase64 } from "../../util/util";
-
-const { Dragger } = Upload;
+import { api } from "../../api";
 
 interface RecipeDrawerProps extends DrawerProps {
   recipe?: Recipe | null;
+  onClose: () => void;
 }
 
 export const RecipeDrawer: React.FunctionComponent<RecipeDrawerProps> = ({
@@ -32,45 +27,32 @@ export const RecipeDrawer: React.FunctionComponent<RecipeDrawerProps> = ({
   onClose,
 }) => {
   const [form] = Form.useForm<Recipe>();
-  const [imageUrl, setImageUrl] = useState<string>();
-
-  const [loading, setLoading] = useState(false);
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState("");
-  const [previewTitle, setPreviewTitle] = useState("");
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
-  const onSubmit = (values: Recipe) => {
-    console.log({ ...values, fotografija: imageUrl });
-  };
+  const onSubmit = async (values: Recipe) => {
+    const data = { ...values, fotografija: fileList[0]?.thumbUrl || "" };
+    let response;
 
-  const onImageDropped = async (e: any) => {
-    console.log("here", e.dataTransfer.files);
-  };
-
-  const handleCancel = () => setPreviewOpen(false);
-
-  const handlePreview = async (file: UploadFile) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj as RcFile);
+    if (recipe) {
+      response = await api.recepti.editRecipe(recipe.id, data);
+    } else {
+      response = await api.recepti.addRecipe(data);
     }
 
-    setPreviewImage(file.url || (file.preview as string));
-    setPreviewOpen(true);
-    setPreviewTitle(
-      file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1)
-    );
+    if (response.status === 200) {
+      form.resetFields();
+      setFileList([]);
+      onClose();
+    }
+
+    form.resetFields();
+    setFileList([]);
+    onClose();
   };
 
-  const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) =>
+  const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
     setFileList(newFileList);
-
-  const uploadButton = (
-    <div>
-      <PlusOutlined />
-      <div style={{ marginTop: 8 }}>Upload</div>
-    </div>
-  );
+  };
 
   useEffect(() => {
     if (recipe) {
@@ -80,10 +62,17 @@ export const RecipeDrawer: React.FunctionComponent<RecipeDrawerProps> = ({
         priprema: recipe.priprema,
         fotografija: recipe.fotografija,
       });
-      setPreviewImage(recipe.fotografija);
+      setFileList([
+        {
+          uid: "-1",
+          name: "Dodajte fotografiju",
+          status: "done",
+          thumbUrl: recipe?.fotografija,
+        },
+      ]);
     } else {
+      setFileList([]);
       form.resetFields();
-      setPreviewImage("");
     }
   }, [recipe]);
 
@@ -106,39 +95,15 @@ export const RecipeDrawer: React.FunctionComponent<RecipeDrawerProps> = ({
       <Form layout="vertical" hideRequiredMark form={form} onFinish={onSubmit}>
         <Row gutter={16}>
           <Col span={24}>
-            <Upload
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-              listType="picture-card"
-              fileList={fileList}
-              onPreview={handlePreview}
-              onChange={handleChange}
-            >
-              {previewImage ? (
-                <img
-                  src={previewImage}
-                  alt="avatar"
-                  style={{ width: "100%" }}
-                />
-              ) : (
-                uploadButton
-              )}
-            </Upload>
-            <Modal
-              open={previewOpen}
-              title={previewTitle}
-              footer={null}
-              onCancel={handleCancel}
-            >
-              <img alt="example" style={{ width: "100%" }} src={previewImage} />
-            </Modal>
-            {/* <Form.Item name="fotografija">
-              <Dragger multiple={false} onDrop={onImageDropped}>
-                <p className="ant-upload-drag-icon">
-                  <InboxOutlined />
-                </p>
-                <p className="ant-upload-text">Kliknite ili prevucite sliku</p>
-              </Dragger>
-            </Form.Item> */}
+            <Form.Item>
+              <Upload
+                listType="picture-card"
+                fileList={fileList}
+                onChange={onChange}
+              >
+                {fileList.length < 1 && "+ Upload"}
+              </Upload>
+            </Form.Item>
           </Col>
         </Row>
         <Row gutter={16}>

@@ -1,6 +1,8 @@
 // Libs
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+// Ant
 import { Button, Empty, message, Segmented } from "antd";
 import Search from "antd/es/input/Search";
 import Title from "antd/es/typography/Title";
@@ -30,7 +32,6 @@ export const RecipesPage: React.FunctionComponent = () => {
     null
   );
   const [showNewRecipeDrawer, setShowNewRecipeDrawer] = useState(false);
-  const [showEditRecipeDrawer, setShowEditRecipeDrawer] = useState(false);
 
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -50,6 +51,7 @@ export const RecipesPage: React.FunctionComponent = () => {
   const onDrawerClose = () => {
     setShowNewRecipeDrawer(false);
     setRecipeToEdit(null);
+    fetchRecipes();
   };
 
   const onRecipeDetails = (id: number) => {
@@ -86,7 +88,6 @@ export const RecipesPage: React.FunctionComponent = () => {
   const onRecipeEdit = (recipe: Recipe) => {
     setRecipeToEdit(recipe);
     setShowNewRecipeDrawer(true);
-    setRefresh((is) => !is);
   };
 
   const onSearch = async (value: string) => {
@@ -108,6 +109,7 @@ export const RecipesPage: React.FunctionComponent = () => {
   };
 
   useEffect(() => {
+    console.log("first");
     fetchRecipes();
   }, [refresh]);
 

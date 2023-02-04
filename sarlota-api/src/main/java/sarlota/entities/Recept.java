@@ -19,7 +19,7 @@ public class Recept {
     @Column (name = "fotografija")
     private String fotografija;
     @Column (name = "omiljeni")
-    private Boolean omiljeni;
+    private Boolean omiljeni = false;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id@Column(name = "id")
     private Integer id;
