@@ -69,16 +69,14 @@ public class ZaposleniService {
 
     public Zaposleni add(ZaposleniDTO zaposleniDTO) {
         Zaposleni zaposleni = new Zaposleni(
-                null,
+                0,
                 zaposleniDTO.getIme(),
                 zaposleniDTO.getPrezime(),
                 zaposleniDTO.getKorisnickoIme(),
                 passwordEncoder.encode(zaposleniDTO.getLozinka()),
                 zaposleniDTO.getPlata(),
                 zaposleniDTO.getTipZaposlenog(),
-                zaposleniDTO.getFotografija(),
-                null,
-                null
+                zaposleniDTO.getFotografija()
         );
         return zaposleniRepository.save(zaposleni);
 
