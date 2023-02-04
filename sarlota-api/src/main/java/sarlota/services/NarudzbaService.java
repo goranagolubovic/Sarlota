@@ -2,6 +2,7 @@ package sarlota.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import sarlota.entities.Kontakt;
 import sarlota.entities.Narudzba;
 import sarlota.entities.Zaposleni;
 import sarlota.entities.dto.NarudzbaDTO;
@@ -9,6 +10,7 @@ import sarlota.repositories.NarudzbaRepository;
 import sarlota.repositories.ZaposleniRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,6 +37,7 @@ public class NarudzbaService {
                 narudzbaDTO.getSlika(),
                 narudzbaDTO.getKontakt(),
                 narudzbaDTO.getAdresa(),
+                narudzbaDTO.getImeNarucioca(),
                 null
         );
 
@@ -57,6 +60,20 @@ public class NarudzbaService {
         narudzba.setAdresa(narudzbaDTO.getAdresa());
 
         return narudzbaRepository.save(narudzba);
+    }
+
+    public List<Narudzba> search(String keyword) {
+        try{
+            int id = Integer.parseInt(keyword);
+            Narudzba k = narudzbaRepository.findById(id).orElse(null);
+            List<Narudzba> narudzbe = new ArrayList<Narudzba>();
+            if(k != null){
+                narudzbe.add(k);
+            }
+            return narudzbe;
+        }
+        catch(NumberFormatException e){}
+        return narudzbaRepository.findByKeyword("%" + keyword + "%");
     }
 
     public void delete(int id) {
