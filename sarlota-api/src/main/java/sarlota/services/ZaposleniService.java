@@ -69,7 +69,7 @@ public class ZaposleniService {
 
     public Zaposleni add(ZaposleniDTO zaposleniDTO) {
         Zaposleni zaposleni = new Zaposleni(
-                null,
+                0,
                 zaposleniDTO.getIme(),
                 zaposleniDTO.getPrezime(),
                 zaposleniDTO.getKorisnickoIme(),

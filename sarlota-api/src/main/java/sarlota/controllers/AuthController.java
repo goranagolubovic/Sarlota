@@ -33,6 +33,7 @@ public class AuthController {
         try {
             return ResponseEntity.ok(service.login(request));
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }

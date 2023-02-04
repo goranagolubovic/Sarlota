@@ -1,6 +1,6 @@
 // Libs
 import { useCallback, useEffect, useState } from "react";
-import { Button, message, Typography } from "antd";
+import { Button, Empty, message, Typography } from "antd";
 import Search from "antd/es/input/Search";
 
 // Components
@@ -25,6 +25,8 @@ export const EmployeesPage: React.FunctionComponent = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [employeeToEdit, setEmployeeToEdit] = useState<Employee | null>(null);
 
+  const [employeeDetails, setEmployeeDetails] = useState<Employee | null>(null);
+
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
 
@@ -41,7 +43,15 @@ export const EmployeesPage: React.FunctionComponent = () => {
     setLoading(false);
   }, []);
 
-  const onSearch = (value: string) => console.log(value);
+  const onSearch = async (value: string) => {
+    if (value === "") {
+      fetchEmployees();
+    } else {
+      const response = await api.zaposleni.searchEmployees(value);
+      const data = await response.json();
+      setEmployees(data);
+    }
+  };
 
   const onNewEmployeeClick = () => {
     setShowModal(true);
@@ -78,12 +88,14 @@ export const EmployeesPage: React.FunctionComponent = () => {
     setRefresh((is) => !is);
   };
 
-  const onEmployeeDetailsClick = () => {
+  const onEmployeeDetailsClick = (employee: Employee) => {
     setShowDetails(true);
+    setEmployeeDetails(employee);
   };
 
   const onEmployeeDetailsClose = () => {
     setShowDetails(false);
+    setEmployeeDetails(null);
   };
 
   useEffect(() => {
@@ -93,7 +105,12 @@ export const EmployeesPage: React.FunctionComponent = () => {
   return (
     <div className="employees">
       {contextHolder}
-      <EmployeeDetails open={showDetails} onClose={onEmployeeDetailsClose} />
+
+      <EmployeeDetails
+        employee={employeeDetails}
+        open={showDetails}
+        onClose={onEmployeeDetailsClose}
+      />
 
       <EmployeeModal
         employee={employeeToEdit}
@@ -135,14 +152,21 @@ export const EmployeesPage: React.FunctionComponent = () => {
         <Spinner />
       ) : (
         <div className="employees__content">
-          {employees?.map((employee) => (
-            <EmployeeCard
-              employee={employee}
-              onDetailsClick={onEmployeeDetailsClick}
-              onDeleteClick={onEmployeeDelete}
-              onEditClick={onEmployeeEdit}
+          {employees.length > 0 ? (
+            employees?.map((employee) => (
+              <EmployeeCard
+                employee={employee}
+                onDetailsClick={onEmployeeDetailsClick}
+                onDeleteClick={onEmployeeDelete}
+                onEditClick={onEmployeeEdit}
+              />
+            ))
+          ) : (
+            <Empty
+              description="Nisu pronađeni zaposleni"
+              style={{ margin: "auto", marginTop: "20vh" }}
             />
-          ))}
+          )}
         </div>
       )}
     </div>

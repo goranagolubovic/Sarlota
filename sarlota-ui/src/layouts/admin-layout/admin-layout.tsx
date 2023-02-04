@@ -1,26 +1,31 @@
 // Libs
 import { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { Avatar, Badge, Layout, Menu, theme, Typography } from "antd";
+import { Badge, Layout, Menu, theme, Typography } from "antd";
 
 import "./admin-layout.scss";
 
 // Assets
 import {
   DesktopOutlined,
-  PieChartOutlined,
   TeamOutlined,
   FileTextOutlined,
   SettingOutlined,
   CalendarOutlined,
   ContactsOutlined,
+  LineChartOutlined,
   ShopOutlined,
   BellOutlined,
 } from "@ant-design/icons";
+import type { MenuProps } from "antd";
 import logo from "../../assets/logo.png";
 
-import type { MenuProps } from "antd";
+// Context
+import { useAuth } from "../../contexts/user.context";
 
+import { ProfileAvatar } from "../../components/avatar";
+
+const defaultImg = "https://bit.ly/3XjfBLX";
 const { Header, Content, Footer, Sider } = Layout;
 const { Text } = Typography;
 
@@ -44,7 +49,7 @@ const items: MenuItem[] = [
   getItem("Pregled", "pregled", <DesktopOutlined />),
   getItem("Narudžbe", "narudzbe", <ShopOutlined />),
   getItem("Kalendar", "kalendar", <CalendarOutlined />),
-  getItem("Statistika", "statistika", <PieChartOutlined />),
+  getItem("Statistika", "statistika", <LineChartOutlined />),
   getItem("Recepti", "recepti", <FileTextOutlined />),
   getItem("Zaposleni", "zaposleni", <TeamOutlined />),
   getItem("Kontakti", "kontakti", <ContactsOutlined />),
@@ -53,6 +58,7 @@ const items: MenuItem[] = [
 
 export const AdminLayout: React.FunctionComponent = () => {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   const [collapsed, setCollapsed] = useState(false);
   const {
@@ -61,6 +67,11 @@ export const AdminLayout: React.FunctionComponent = () => {
 
   const onNavigate = (item: MenuItem) => {
     navigate(`./${item?.key}`);
+  };
+
+  const onLogout = () => {
+    logout();
+    navigate("/");
   };
 
   return (
@@ -87,13 +98,14 @@ export const AdminLayout: React.FunctionComponent = () => {
           onClick={onNavigate}
         />
       </Sider>
+
       <Layout className="site-layout">
         <Header
           className="admin-header"
           style={{ paddingBlock: "10px", background: colorBgContainer }}
         >
           <div>
-            <strong>Welcome,</strong> User
+            <strong>Welcome,</strong> {user?.korisnickoIme}
           </div>
 
           <div className="admin-header__avatar">
@@ -101,11 +113,13 @@ export const AdminLayout: React.FunctionComponent = () => {
               <BellOutlined />
             </Badge>
             <div>
-              <Avatar
-                size="large"
-                src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+              <Text
+                style={{ marginRight: "10px" }}
+              >{`${user?.ime} ${user?.prezime}`}</Text>
+              <ProfileAvatar
+                src={user?.fotografija ?? defaultImg}
+                onLogout={onLogout}
               />
-              <Text>Ime Prezime</Text>
             </div>
           </div>
         </Header>
