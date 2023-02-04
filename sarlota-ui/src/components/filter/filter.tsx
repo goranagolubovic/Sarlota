@@ -1,21 +1,21 @@
 import React, { useState } from "react";
-import { DownOutlined, FilterOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Input, MenuProps } from "antd";
+import { FilterOutlined } from "@ant-design/icons";
+import { Button, Checkbox, MenuProps } from "antd";
 import { Dropdown, Space } from "antd";
-import "./filter.scss";
 import { CheckboxValueType } from "antd/es/checkbox/Group";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
 
-const CheckboxGroup = Checkbox.Group;
+import "./filter.scss";
 
-const plainOptions = ["Danas", "Sutra"];
-const defaultCheckedList = ["Danas", "Sutra"];
+const CheckboxGroup = Checkbox.Group;
+const options = ["Danas", "Sutra"];
+
 export interface FilterProps {
   setCheckedOptions: (value: any) => void;
 }
+
 const Filter = ({ setCheckedOptions }: FilterProps) => {
   const [checkedList, setCheckedList] = useState<CheckboxValueType[]>([]);
-  const [indeterminate, setIndeterminate] = useState(true);
   const [checkAll, setCheckAll] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -46,22 +46,20 @@ const Filter = ({ setCheckedOptions }: FilterProps) => {
   };
 
   const onChange = (list: CheckboxValueType[]) => {
-    console.log(list);
     setCheckedList(list);
-    //setIndeterminate(!!list.length && list.length < plainOptions.length);
-    setCheckAll(list.length === plainOptions.length);
+    setCheckAll(list.length === options.length);
   };
 
   const onCheckAllChange = (e: CheckboxChangeEvent) => {
     setCheckAll(e.target.checked);
-    setCheckedList(e.target.checked ? plainOptions : []);
-    //setIndeterminate(false);
+    setCheckedList(e.target.checked ? options : []);
   };
+
   const items: MenuProps["items"] = [
     {
       label: (
         <CheckboxGroup
-          options={plainOptions}
+          options={options}
           value={checkedList}
           onChange={onChange}
         />
@@ -73,18 +71,18 @@ const Filter = ({ setCheckedOptions }: FilterProps) => {
     },
     {
       label: (
-        <Checkbox
-          //indeterminate={indeterminate}
-          onChange={onCheckAllChange}
-          checked={checkAll}
-        >
+        <Checkbox onChange={onCheckAllChange} checked={checkAll}>
           Izaberi sve
         </Checkbox>
       ),
       key: "2",
     },
     {
-      label: <Button onClick={handleFilter}>Filtriraj</Button>,
+      label: (
+        <Button onClick={handleFilter} type="primary">
+          Filtriraj
+        </Button>
+      ),
       key: "3",
     },
   ];
@@ -92,6 +90,7 @@ const Filter = ({ setCheckedOptions }: FilterProps) => {
   return (
     <div>
       <Dropdown
+        align={{ offset: [-40, 4] }}
         className="filter"
         menu={{ items, onClick: handleMenuClick }}
         onOpenChange={handleOpenChange}

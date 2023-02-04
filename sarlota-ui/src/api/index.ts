@@ -14,7 +14,8 @@ import {
   fetchOrders,
   editOrder,
   addOrder,
-  deleteOrder
+  deleteOrder,
+  searchOrders
 } from "./services/orders.service";
 
 import { login, signUp } from "./services/users.service";
@@ -40,6 +41,7 @@ export const api = {
     fetchOrders,
     editOrder,
     addOrder,
-    deleteOrder
+    deleteOrder,
+    searchOrders
   }
 };

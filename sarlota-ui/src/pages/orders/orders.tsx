@@ -1,27 +1,25 @@
 // Libs
 import { useCallback, useEffect, useState } from "react";
-import { Button, Dropdown, message, Typography } from "antd";
+import { Button, message, Typography } from "antd";
 import Search from "antd/es/input/Search";
+
 // Components
 import { OrderDetails } from "../../features/order-details/order-details";
 import { Spinner } from "../../components/spinner";
 
 // Assets
-import {
-  FilterOutlined,
-  PlusOutlined,
-  UserAddOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 
 // Services
 import { Orders } from "../../api/services/orders.service";
 import { api } from "../../api";
 
 // Rest
-import "./orders.scss";
 import { OrderModal } from "../../features/order-modal/order-modal";
 import { OrderCard } from "../../components/order/order";
 import Filter from "../../components/filter/filter";
+
+import "./orders.scss";
 
 const { Title } = Typography;
 
@@ -36,31 +34,47 @@ export const OrdersPage: React.FunctionComponent = () => {
   const [showModal, setShowModal] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
 
-  const [filterDialogActive, setFilterDialogActive] = useState(false);
   const [checkedOptions, setCheckedOptions] = useState([]);
   const [messageApi, contextHolder] = message.useMessage();
 
   const fetchOrders = useCallback(async () => {
     setLoading(true);
-    const response = await api.narudzbe.fetchOrders();
+    let response;
+    if (checkedOptions.length === 2) {
+      response = await api.narudzbe.searchOrders(
+        checkedOptions[0],
+        checkedOptions[1]
+      );
+    } else if (checkedOptions.length === 1) {
+      response = await api.narudzbe.searchOrders(checkedOptions[0]);
+    } else {
+      response = await api.narudzbe.fetchOrders();
+    }
     const data = await response.json();
     setOrders(data);
     setLoading(false);
-    console.log(checkedOptions);
   }, [checkedOptions]);
 
   const onSearch = (value: string) => {};
 
+  const formatData = (data: any) => {
+    return data.filter(
+      (elem: any) =>
+        new Date(elem.datumIsporuke).toLocaleDateString("en-GB", {
+          year: "numeric",
+          month: "numeric",
+          day: "numeric",
+        }) === checkedOptions[0]
+    );
+  };
   const onNewOrderClick = () => {
     setShowModal(true);
     setOrderToEdit(null);
   };
 
   const onModalClose = () => {
-    console.log("close");
     setShowModal(false);
     setRefresh((is) => !is);
-    console.log(refresh);
   };
 
   const onOrderDelete = async (id: number) => {
@@ -94,10 +108,6 @@ export const OrdersPage: React.FunctionComponent = () => {
 
   const onOrderDetailsClose = () => {
     setShowDetails(false);
-  };
-
-  const onFilterClicked = () => {
-    setFilterDialogActive(!filterDialogActive);
   };
 
   useEffect(() => {

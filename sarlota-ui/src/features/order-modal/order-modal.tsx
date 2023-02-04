@@ -4,17 +4,17 @@ import {
   Form,
   Input,
   Modal,
-  Select,
   Upload,
   UploadFile,
   UploadProps,
 } from "antd";
-import { format } from "date-fns";
+
 // Services
 import { Orders } from "../../api/services/orders.service";
 import { api } from "../../api";
 
 import "./order-modal.scss";
+
 // Rest
 import { useEffect, useState } from "react";
 
@@ -35,36 +35,6 @@ export const OrderModal: React.FunctionComponent<OrderModalProps> = ({
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
     setFileList(newFileList);
-  };
-
-  const handleOk = async (values: Orders) => {
-    let response;
-
-    values = {
-      ...values,
-      datumIsporuke: new Date(values.datumIsporuke).toISOString(),
-      datumPrijema: new Date(values.datumPrijema).toISOString(),
-      aktivna: true,
-      slika: fileList[0]?.thumbUrl || "",
-    };
-    if (order)
-      response = await api.narudzbe.editOrder(order.id ? order.id : 0, values);
-    else {
-      response = await api.narudzbe.addOrder(values);
-      setFileList([]);
-    }
-
-    if (response.status === 200) {
-      form.resetFields();
-      onModalClose();
-    }
-    onModalClose();
-  };
-
-  const handleCancel = () => {
-    setFileList([]);
-    form.resetFields();
-    onModalClose();
   };
 
   useEffect(() => {
@@ -96,6 +66,34 @@ export const OrderModal: React.FunctionComponent<OrderModalProps> = ({
       ]);
     }
   }, [order]);
+
+  const handleOk = async (values: Orders) => {
+    let response;
+    values = {
+      ...values,
+      datumIsporuke: new Date(values.datumIsporuke).toISOString(),
+      datumPrijema: new Date(values.datumPrijema).toISOString(),
+      aktivna: true,
+      slika: fileList[0]?.thumbUrl || "",
+    };
+    if (order)
+      response = await api.narudzbe.editOrder(order.id ? order.id : 0, values);
+    else {
+      response = await api.narudzbe.addOrder(values);
+      setFileList([]);
+    }
+    if (response.status === 200) {
+      form.resetFields();
+      onModalClose();
+    }
+    onModalClose();
+  };
+
+  const handleCancel = () => {
+    setFileList([]);
+    form.resetFields();
+    onModalClose();
+  };
 
   return (
     <Modal
@@ -130,7 +128,7 @@ export const OrderModal: React.FunctionComponent<OrderModalProps> = ({
             listType="picture-card"
             fileList={fileList}
             onChange={onChange}
-            //onPreview={onPreview}
+            beforeUpload={() => false}
           >
             {fileList.length < 1 && "+ Upload"}
           </Upload>

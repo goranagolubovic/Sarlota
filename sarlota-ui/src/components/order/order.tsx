@@ -1,5 +1,5 @@
 // Libs
-import { Avatar, Card, Modal, Tooltip } from "antd";
+import { Card, Modal, Tooltip } from "antd";
 
 // Assets
 import {
@@ -55,8 +55,6 @@ export const OrderCard: React.FunctionComponent<OrderCardProps> = ({
       year: "numeric",
       month: "numeric",
       day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
     });
   };
 

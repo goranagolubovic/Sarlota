@@ -1,4 +1,4 @@
-import internal from "stream";
+
 import { BACKEND_URL } from "../../util/constants";
 import { get, post, put, remove } from "../client";
 
@@ -38,11 +38,20 @@ export const deleteOrder = async (id: number) => {
 };
 
 export const editOrder = async (id: number, body: Orders) => {
-    // delete body["korisnickoIme"];
-
     const response = await put(`${URL}/${id}`, {
         headers,
         body: JSON.stringify(body),
+    });
+    return response;
+};
+
+export const searchOrders = async (start: string, end?: string) => {
+    let url = `${URL}/search?by=delivery&start=` + start;
+    if (end !== undefined) {
+        url += `&end=` + end;
+    }
+    const response = await get(url, {
+        headers,
     });
     return response;
 };
