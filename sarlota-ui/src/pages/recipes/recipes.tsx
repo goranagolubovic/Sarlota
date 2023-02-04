@@ -1,5 +1,6 @@
 // Libs
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Empty, message, Segmented } from "antd";
 import Search from "antd/es/input/Search";
 import Title from "antd/es/typography/Title";
@@ -22,6 +23,8 @@ export const RecipesPage: React.FunctionComponent = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
+
+  const navigate = useNavigate();
 
   const [recipeToEdit, setRecipeToEdit] = useState<Recipe | null | undefined>(
     null
@@ -49,7 +52,9 @@ export const RecipesPage: React.FunctionComponent = () => {
     setRecipeToEdit(null);
   };
 
-  const onRecipeDetails = () => {};
+  const onRecipeDetails = (id: number) => {
+    navigate(`./${id}`);
+  };
 
   const onToggleFavorite = async (id: number) => {
     await api.recepti.toggleFavorite(id);
@@ -61,12 +66,12 @@ export const RecipesPage: React.FunctionComponent = () => {
   };
 
   const onRecipeDelete = async (id: number) => {
-    const response = await api.zaposleni.deleteEmployee(id);
+    const response = await api.recepti.deleteRecipe(id);
 
     if (response.status === 200) {
       messageApi.open({
         type: "success",
-        content: "Kontakt je uspješno obrisan!",
+        content: "Recept je uspješno obrisan!",
       });
     } else {
       messageApi.open({
@@ -98,7 +103,7 @@ export const RecipesPage: React.FunctionComponent = () => {
     if (value === "Svi recepti") {
       fetchRecipes();
     } else {
-      setRecipes(recipes.filter((recipe) => recipe.omiljeni));
+      setRecipes(recipes.filter((recipe) => recipe.omiljeni === true));
     }
   };
 

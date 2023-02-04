@@ -19,6 +19,11 @@ export const fetchRecipes = async () => {
   return response;
 };
 
+export const fetchRecipe = async (id: number) => {
+  const response = await get(`${URL}/${id}`);
+  return response;
+};
+
 export const addRecipe = async (body: Recipe) => {
   const response = await post(URL, {
     headers,
@@ -46,5 +51,5 @@ export const searchRecipes = async (query: string) => {
 };
 
 export const toggleFavorite = async (id: number) => {
-  const response = await get(`${URL}/${id}`);
+  const response = await get(`${URL}/toggle-favorite/${id}`);
 };

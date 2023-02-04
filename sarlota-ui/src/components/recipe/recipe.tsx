@@ -1,26 +1,23 @@
-import { Button, Card, Tooltip } from "antd";
+import { Button, Card, Popconfirm, Tooltip } from "antd";
 import {
   EditOutlined,
   DeleteOutlined,
-  ExclamationCircleFilled,
   BookOutlined,
   HeartOutlined,
   HeartFilled,
 } from "@ant-design/icons";
 import Meta from "antd/es/card/Meta";
-import confirm from "antd/es/modal/confirm";
 
 import { Recipe } from "../../api/services/recipes.service";
 
 import "./recipe.scss";
-import { useState } from "react";
 
 const defaultImg =
   "https://foodhub.scene7.com/is/image/woolworthsltdprod/2209-easy-choc-crunch-cake:Mobile-1300x1150";
 
 interface RecipeCardProps {
   recipe: Recipe;
-  onDetailsClick: (recipe: Recipe) => void;
+  onDetailsClick: (id: number) => void;
   onDeleteClick: (id: number) => void;
   onEditClick: (recipe: Recipe) => void;
   onToggleFavoriteClick: (id: number) => void;
@@ -33,10 +30,8 @@ export const RecipeCard: React.FunctionComponent<RecipeCardProps> = ({
   onEditClick,
   onToggleFavoriteClick,
 }) => {
-  const [favorite, setFavorite] = useState(false);
-
   const onDetails = () => {
-    onDetailsClick(recipe);
+    onDetailsClick(recipe.id);
   };
 
   const onEdit = () => {
@@ -44,19 +39,10 @@ export const RecipeCard: React.FunctionComponent<RecipeCardProps> = ({
   };
 
   const onDelete = () => {
-    confirm({
-      title: "Da li ste sigurni da želite da obrišete recept?",
-      icon: <ExclamationCircleFilled />,
-      content: "Ovu akciju ne možete opozvati.",
-      onOk() {
-        onDeleteClick(recipe.id);
-      },
-      cancelText: "Poništi",
-    });
+    onDeleteClick(recipe.id);
   };
 
   const onToggleFavorites = () => {
-    setFavorite((is) => !is);
     onToggleFavoriteClick(recipe.id);
   };
 
@@ -78,7 +64,16 @@ export const RecipeCard: React.FunctionComponent<RecipeCardProps> = ({
           <EditOutlined key="edit" onClick={onEdit} />
         </Tooltip>,
         <Tooltip title="Brisanje" placement="bottom">
-          <DeleteOutlined key="brisanje" onClick={onDelete} />
+          <Popconfirm
+            title="Obriši recept"
+            description="Da li ste sigurni da želite obrisati recept?"
+            onConfirm={onDelete}
+            onCancel={() => {}}
+            okText="Potvrdi"
+            cancelText="Poništi"
+          >
+            <DeleteOutlined key="brisanje" />
+          </Popconfirm>
         </Tooltip>,
       ]}
     >
@@ -89,7 +84,7 @@ export const RecipeCard: React.FunctionComponent<RecipeCardProps> = ({
           shape="circle"
           size="large"
           icon={
-            favorite ? (
+            recipe.omiljeni ? (
               <HeartFilled style={{ color: "red" }} />
             ) : (
               <HeartOutlined style={{ color: "red" }} />

@@ -73,7 +73,6 @@ export const RecipeDrawer: React.FunctionComponent<RecipeDrawerProps> = ({
   );
 
   useEffect(() => {
-    console.log(recipe);
     if (recipe) {
       form.setFieldsValue({
         naslov: recipe.naslov,

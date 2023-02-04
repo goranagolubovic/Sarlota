@@ -14,6 +14,7 @@ import {
 } from "./services/employee.service";
 import {
   fetchRecipes,
+  fetchRecipe,
   deleteRecipe,
   editRecipe,
   searchRecipes,
@@ -44,6 +45,7 @@ export const api = {
   },
   recepti: {
     fetchRecipes,
+    fetchRecipe,
     deleteRecipe,
     editRecipe,
     searchRecipes,
