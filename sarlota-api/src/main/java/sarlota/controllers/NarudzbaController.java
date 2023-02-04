@@ -69,7 +69,11 @@ public class NarudzbaController {
         else return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-
+    @GetMapping("/search/narucilac")
+    ResponseEntity<List<Narudzba>> search(@RequestParam(value = "query") String keyword) {
+        if(keyword.length() == 0) return ResponseEntity.ok(narudzbaService.getAll());
+        else return ResponseEntity.ok(narudzbaService.search(keyword));
+    }
 
 
     @GetMapping("/{id}")

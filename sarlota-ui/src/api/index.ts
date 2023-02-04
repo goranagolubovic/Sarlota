@@ -13,6 +13,14 @@ import {
   searchEmployees,
 } from "./services/employee.service";
 import {
+  fetchOrders,
+  editOrder,
+  addOrder,
+  deleteOrder,
+  searchOrders,
+  searchOrdersByPersonName
+} from "./services/orders.service";
+import {
   fetchRecipes,
   fetchRecipe,
   deleteRecipe,
@@ -52,4 +60,12 @@ export const api = {
     addRecipe,
     toggleFavorite,
   },
+  narudzbe: {
+    fetchOrders,
+    editOrder,
+    addOrder,
+    deleteOrder,
+    searchOrders,
+    searchOrdersByPersonName
+  }
 };
