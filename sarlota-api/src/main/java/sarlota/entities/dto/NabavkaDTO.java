@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NabavkaDTO {
+    private Integer id;
     private LocalDateTime datum;
     private double cijena;
     private List<NabavljenaNamirnicaDTO> namirnice;

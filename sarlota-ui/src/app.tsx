@@ -16,6 +16,12 @@ import { ContactsPage } from "./pages/contacts";
 import { RecipesPage } from "./pages/recipes";
 import { OrdersPage } from "./pages/orders";
 import { RecipePage } from "./pages/recipe";
+import { PurchasesPage } from "./pages/purchases";
+
+import "moment/locale/bs";
+import moment from "moment";
+
+moment.locale("bs");
 
 function App() {
   const routes = useRoutes([
@@ -30,6 +36,7 @@ function App() {
         { path: "kalendar", element: <CalendarPage /> },
         { path: "narudzbe", element: <OrdersPage /> },
         { path: "statistika", element: <StatisticsPage /> },
+        { path: "nabavke", element: <PurchasesPage /> },
         { path: "zaposleni", element: <EmployeesPage /> },
         { path: "recepti", element: <RecipesPage /> },
         { path: "recepti/:id", element: <RecipePage /> },

@@ -109,7 +109,6 @@ export const RecipesPage: React.FunctionComponent = () => {
   };
 
   useEffect(() => {
-    console.log("first");
     fetchRecipes();
   }, [refresh]);
 

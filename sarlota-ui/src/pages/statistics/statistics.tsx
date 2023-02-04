@@ -1,4 +1,5 @@
 import "./statistics.scss";
+
 import { Typography } from "antd";
 
 const { Title } = Typography;

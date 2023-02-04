@@ -39,9 +39,8 @@ public class NabavkaService {
                 nabavljeneNamirnice.add(new NabavljenaNamirnicaDTO(namirnica,cijena,nabavkaNamirnica.getKolicina()));
                 ukupnaCijena+=cijena;
             }
-            result.add(new NabavkaDTO(nabavka.getDatum(),ukupnaCijena,nabavljeneNamirnice));
+            result.add(new NabavkaDTO(nabavka.getId(),nabavka.getDatum(),ukupnaCijena,nabavljeneNamirnice));
         }
         return result;
     }
-
 }
