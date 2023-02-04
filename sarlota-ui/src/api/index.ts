@@ -3,13 +3,24 @@ import {
   addContact,
   deleteContact,
   editContact,
+  searchContacts,
 } from "./services/contacts.service";
 import {
   addEmployee,
   deleteEmployee,
   editEmployee,
   fetchEmployees,
+  searchEmployees,
 } from "./services/employee.service";
+import {
+  fetchRecipes,
+  fetchRecipe,
+  deleteRecipe,
+  editRecipe,
+  searchRecipes,
+  addRecipe,
+  toggleFavorite,
+} from "./services/recipes.service";
 
 import { login, signUp } from "./services/users.service";
 
@@ -19,6 +30,7 @@ export const api = {
     addContact,
     deleteContact,
     editContact,
+    searchContacts,
   },
   login: {
     login,
@@ -29,5 +41,15 @@ export const api = {
     addEmployee,
     deleteEmployee,
     editEmployee,
+    searchEmployees,
+  },
+  recepti: {
+    fetchRecipes,
+    fetchRecipe,
+    deleteRecipe,
+    editRecipe,
+    searchRecipes,
+    addRecipe,
+    toggleFavorite,
   },
 };

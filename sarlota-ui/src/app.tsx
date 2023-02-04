@@ -15,6 +15,7 @@ import { SettingsPage } from "./pages/settings";
 import { ContactsPage } from "./pages/contacts";
 import { RecipesPage } from "./pages/recipes";
 import { OrdersPage } from "./pages/orders";
+import { RecipePage } from "./pages/recipe";
 
 function App() {
   const routes = useRoutes([
@@ -31,6 +32,7 @@ function App() {
         { path: "statistika", element: <StatisticsPage /> },
         { path: "zaposleni", element: <EmployeesPage /> },
         { path: "recepti", element: <RecipesPage /> },
+        { path: "recepti/:id", element: <RecipePage /> },
         { path: "kontakti", element: <ContactsPage /> },
         { path: "podesavanja", element: <SettingsPage /> },
         { path: "*", element: <HomePage /> },

@@ -12,6 +12,7 @@ export interface Employee {
   korisnickoIme?: string;
   plata: number;
   tipZaposlenog: string;
+  fotografija: string;
 }
 
 export const fetchEmployees = async () => {
@@ -38,5 +39,10 @@ export const editEmployee = async (id: number, body: any) => {
     headers,
     body: JSON.stringify(body),
   });
+  return response;
+};
+
+export const searchEmployees = async (query: string) => {
+  const response = await get(`${URL}/search?query=${query}`);
   return response;
 };

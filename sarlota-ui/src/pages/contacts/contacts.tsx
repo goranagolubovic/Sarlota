@@ -1,6 +1,6 @@
 // Libs
 import { useCallback, useEffect, useState } from "react";
-import { message, Typography } from "antd";
+import { Empty, message, Typography } from "antd";
 import { Input, Button } from "antd";
 
 // Components
@@ -40,7 +40,15 @@ export const ContactsPage: React.FunctionComponent = () => {
     setLoading(false);
   }, []);
 
-  const onSearch = (value: string) => console.log(value);
+  const onSearch = async (value: string) => {
+    if (value === "") {
+      fetchContacts();
+    } else {
+      const response = await api.kontakti.searchContacts(value);
+      const data = await response.json();
+      setContacts(data);
+    }
+  };
 
   const onNewContactClick = () => {
     setShowModal(true);
@@ -122,13 +130,20 @@ export const ContactsPage: React.FunctionComponent = () => {
         <Spinner />
       ) : (
         <div className="contacts__content">
-          {contacts?.map((contact) => (
-            <ContactCard
-              contact={contact}
-              onDeleteClick={onContactDelete}
-              onEditClick={onContactEdit}
+          {contacts.length > 0 ? (
+            contacts?.map((contact) => (
+              <ContactCard
+                contact={contact}
+                onDeleteClick={onContactDelete}
+                onEditClick={onContactEdit}
+              />
+            ))
+          ) : (
+            <Empty
+              description="Nisu pronađeni kontakti."
+              style={{ margin: "auto", marginTop: "20vh" }}
             />
-          ))}
+          )}
         </div>
       )}
     </div>

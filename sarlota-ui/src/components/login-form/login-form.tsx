@@ -2,17 +2,20 @@
 import { Button, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 
-import { login, LoginRequest } from "../../api/services/users.service";
-// Utils
+import { LoginRequest } from "../../api/services/users.service";
+import { useAuth } from "../../contexts/user.context";
 
+// Utils
+import { api } from "../../api";
 import "./login-form.scss";
 
 export const LoginForm: React.FunctionComponent = () => {
   const [form] = Form.useForm<LoginRequest>();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const onFinish = async (values: LoginRequest) => {
-    const response = await login(values);
+    const response = await api.login.login(values);
     if (response.status === 200) {
       const responseData = await response.json();
       const user = {
@@ -24,7 +27,9 @@ export const LoginForm: React.FunctionComponent = () => {
         tipZaposlenog: responseData.tipZaposlenpg,
         fotografija: responseData.fotografija,
       };
-      localStorage.setItem("USER", JSON.stringify(user));
+      const token = responseData.token;
+
+      login(user, token);
       navigate("/admin/pregled");
     } else onFinishFailed("Error");
   };

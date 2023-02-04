@@ -7,7 +7,7 @@ export const SettingsPage: React.FunctionComponent = () => {
   return (
     <div className="settings">
       <div className="settings__header">
-        <Title level={3} style={{ marginTop: 0 }}>
+        <Title level={3} style={{ marginTop: 0, marginBottom: 0 }}>
           Podešavanje profila
         </Title>
       </div>

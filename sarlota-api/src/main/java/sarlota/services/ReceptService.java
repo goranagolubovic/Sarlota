@@ -38,7 +38,7 @@ public class ReceptService {
                 receptDTO.getSastojci(),
                 receptDTO.getNaslov(),
                 receptDTO.getFotografija(),
-                receptDTO.getOmiljeni(),
+                false,
                 null
         );
         return receptRepository.save(recept);
@@ -47,8 +47,8 @@ public class ReceptService {
     public Recept toggleFavorite(int id) {
         Recept r = receptRepository.findById(id).orElse(null);
         if(r == null) return null;
-        if(r.getOmiljeni()) r.setOmiljeni(false);
-        else r.setOmiljeni(true);
+
+        r.setOmiljeni(!r.getOmiljeni());
         receptRepository.save(r);
         return r;
     }
@@ -58,6 +58,7 @@ public class ReceptService {
         if (r == null) {
             return null;
         }
+        r.setNaslov(receptDTO.getNaslov());
         r.setPriprema(receptDTO.getPriprema());
         r.setSastojci(receptDTO.getSastojci());
         r.setFotografija(receptDTO.getFotografija());

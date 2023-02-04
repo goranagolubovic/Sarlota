@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router } from "react-router-dom";
 
 import App from "./app";
+import { AuthContextProvider } from "./contexts/user.context";
 import "./index.scss";
 import reportWebVitals from "./reportWebVitals";
 
@@ -21,7 +22,9 @@ root.render(
           },
         }}
       > */}
-      <App />
+      <AuthContextProvider>
+        <App />
+      </AuthContextProvider>
       {/* </ConfigProvider> */}
     </Router>
   </React.StrictMode>

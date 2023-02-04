@@ -41,3 +41,8 @@ export const editContact = async (id: number, body: Contact) => {
   });
   return response;
 };
+
+export const searchContacts = async (query: string) => {
+  const response = await get(`${URL}/search?query=${query}`);
+  return response;
+};
