@@ -12,6 +12,7 @@ import { formatDate } from "../../util/util";
 import { api } from "../../api";
 
 import "./purchases.scss";
+import moment from "moment";
 
 const { Title } = Typography;
 const Moment = require("moment");
@@ -31,6 +32,12 @@ const columns: ColumnsType<Nabavka> = [
     sorter: (a, b) =>
       new Moment(a.datum).format("YYYYMMDD") -
       new Moment(b.datum).format("YYYYMMDD"),
+    filters: [
+      { text: "Ovaj mjesec", value: moment().month() },
+      { text: "Prethodni mjesec", value: moment().month() - 1 },
+    ],
+    onFilter: (value: number | string | boolean, record) =>
+      moment(record.datum).month() === value,
   },
   {
     title: "Ukupna cijena [KM]",
