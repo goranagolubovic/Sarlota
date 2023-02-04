@@ -46,12 +46,8 @@ export const editOrder = async (id: number, body: Orders) => {
     return response;
 };
 
-export const searchOrders = async (start: string, end?: string) => {
-    let url = `${URL}/search?by=delivery&start=` + start;
-    if (end !== undefined) {
-        url += `&end=` + end;
-    }
-    const response = await get(url, {
+export const searchOrders = async (today: string, tomorrow?: string) => {
+    const response = await get(`${URL}/filter?today=` + today + `&tomorrow=` + tomorrow, {
         headers,
     });
     return response;

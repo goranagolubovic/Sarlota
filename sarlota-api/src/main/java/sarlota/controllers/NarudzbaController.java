@@ -30,48 +30,49 @@ public class NarudzbaController {
     }
 
     @GetMapping("/search")
-    ResponseEntity<List<Narudzba>> search(@RequestParam(value="by") String searchBy, @RequestParam(value = "start") String startDateTime,
+    ResponseEntity<List<Narudzba>> search(@RequestParam(value = "by") String searchBy, @RequestParam(value = "start") String startDateTime,
                                           @RequestParam(value = "end", required = false) String endDateTime) {
-
         LocalDateTime start = null;
         LocalDateTime end = null;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        if(endDateTime == null) {
-            try{
+        if (endDateTime == null) {
+            try {
                 int numberOfDays = Integer.parseInt(startDateTime);
-                if(numberOfDays > 0){
+                if (numberOfDays > 0) {
                     start = LocalDateTime.now();
                     end = start.plusDays(numberOfDays);
-                }
-                else{
+                } else {
                     end = LocalDateTime.now();
                     start = end.plusDays(numberOfDays);
                 }
+            } catch (NumberFormatException nfe) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
-            catch (NumberFormatException nfe){
-                return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            }
-        }
-        else {
+        } else {
             try {
                 start = LocalDateTime.parse(startDateTime, formatter);
                 end = LocalDateTime.parse(endDateTime, formatter);
             } catch (Exception e) {
-                return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
         }
-        if(searchBy.equals("delivery"))
+        if (searchBy.equals("delivery"))
             return ResponseEntity.ok(narudzbaService.searchByDeliveryDate(start, end));
-        else if(searchBy.equals("order")){
+        else if (searchBy.equals("order")) {
             return ResponseEntity.ok(narudzbaService.searchByOrderDate(start, end));
-        }
-        else return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } else return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @GetMapping("/filter")
+    ResponseEntity<List<Narudzba>> filter(@RequestParam(value = "today") String today,
+                                          @RequestParam(value = "tomorrow") String tomorrow) {
+        return ResponseEntity.ok(narudzbaService.filter(today, tomorrow));
     }
 
     @GetMapping("/search/narucilac")
     ResponseEntity<List<Narudzba>> search(@RequestParam(value = "query") String keyword) {
-        if(keyword.length() == 0) return ResponseEntity.ok(narudzbaService.getAll());
+        if (keyword.length() == 0) return ResponseEntity.ok(narudzbaService.getAll());
         else return ResponseEntity.ok(narudzbaService.search(keyword));
     }
 
@@ -87,8 +88,7 @@ public class NarudzbaController {
         try {
             Narudzba narudzba = narudzbaService.add(narudzbaDTO);
             return narudzba == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build() : ResponseEntity.ok(narudzba);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -98,8 +98,7 @@ public class NarudzbaController {
         try {
             Narudzba narudzba = narudzbaService.update(id, narudzbaDTO);
             return narudzba == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build() : ResponseEntity.ok(narudzba);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -109,8 +108,7 @@ public class NarudzbaController {
         try {
             narudzbaService.delete(id);
             return ResponseEntity.ok().build();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
