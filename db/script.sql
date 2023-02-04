@@ -65,6 +65,7 @@ CREATE TABLE IF NOT EXISTS `db_sarlota`.`narudzba` (
   `slika` MEDIUMTEXT NULL DEFAULT NULL,
   `kontakt` VARCHAR(20) NULL DEFAULT NULL,
   `adresa` VARCHAR(100) NULL DEFAULT NULL,
+  `ime_narucioca` VARCHAR(100) NULL DEFAULT NULL,
   `aktivna` TINYINT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
