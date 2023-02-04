@@ -50,9 +50,9 @@ export const OrderModal: React.FunctionComponent<OrderModalProps> = ({
       response = await api.narudzbe.editOrder(order.id ? order.id : 0, values);
     else {
       response = await api.narudzbe.addOrder(values);
-      setFileList([]);
     }
     if (response.status === 200) {
+      setFileList([]);
       form.resetFields();
       onModalClose();
     }
