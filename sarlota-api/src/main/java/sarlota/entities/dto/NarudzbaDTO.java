@@ -25,5 +25,6 @@ public class NarudzbaDTO {
     private String slika;
     private String kontakt;
     private String adresa;
+    private String imeNarucioca;
 
 }
