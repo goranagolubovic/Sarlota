@@ -10,16 +10,16 @@ import { SegmentedValue } from "antd/es/segmented";
 
 // Components
 import { Spinner } from "../../components/spinner";
-import { RecipeCard } from "../../components/recipe";
 import { RecipeDrawer } from "../../features/recipe-drawer";
+import { RecipeCard } from "../../components/recipe";
 
 // Assets
 import { FileTextOutlined } from "@ant-design/icons";
 
 import { api } from "../../api";
-import { Recipe } from "../../api/services/recipes.service";
 
 import "./recipes.scss";
+import { Recipe } from "../../api/services/recipes.service";
 
 export const RecipesPage: React.FunctionComponent = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
