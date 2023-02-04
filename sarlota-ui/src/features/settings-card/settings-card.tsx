@@ -1,3 +1,6 @@
+// Libs
+import { useEffect, useState } from "react";
+
 import {
   Button,
   Card,
@@ -8,14 +11,15 @@ import {
   UploadProps,
 } from "antd";
 
+// Icons
 import { EditOutlined, CloseOutlined, CheckOutlined } from "@ant-design/icons";
 
+// Rest
 import { Employee } from "../../api/services/employee.service";
-import React, { useEffect, useState } from "react";
 import "./settings-card.scss";
 import { api } from "../../api";
 
-const SettingsCard = () => {
+const SettingsCard: React.FunctionComponent = () => {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("USER") || "")
   );
