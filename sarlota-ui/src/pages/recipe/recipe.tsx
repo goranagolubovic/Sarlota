@@ -1,5 +1,5 @@
 // Libs
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button, Result, Typography } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -28,7 +28,7 @@ export const RecipePage: React.FunctionComponent = () => {
 
   const [error, setError] = useState(false);
 
-  const fetchRecipe = async () => {
+  const fetchRecipe = useCallback(async () => {
     if (id) {
       const response = await api.recepti.fetchRecipe(+id);
       if (response.status === 200) {
@@ -42,7 +42,7 @@ export const RecipePage: React.FunctionComponent = () => {
     } else {
       setError(true);
     }
-  };
+  }, [id]);
 
   const onBack = () => {
     setError(false);
@@ -56,7 +56,7 @@ export const RecipePage: React.FunctionComponent = () => {
 
   useEffect(() => {
     fetchRecipe();
-  }, []);
+  }, [fetchRecipe]);
 
   return (
     <div className="recipe-container">

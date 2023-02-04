@@ -12,6 +12,7 @@ export interface Employee {
   korisnickoIme?: string;
   plata: number;
   tipZaposlenog: string;
+  fotografija: string;
 }
 
 export const fetchEmployees = async () => {
