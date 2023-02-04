@@ -76,9 +76,7 @@ public class ZaposleniService {
                 passwordEncoder.encode(zaposleniDTO.getLozinka()),
                 zaposleniDTO.getPlata(),
                 zaposleniDTO.getTipZaposlenog(),
-                zaposleniDTO.getFotografija(),
-                null,
-                null
+                zaposleniDTO.getFotografija()
         );
         return zaposleniRepository.save(zaposleni);
 

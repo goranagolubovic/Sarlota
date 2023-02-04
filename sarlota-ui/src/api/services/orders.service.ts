@@ -13,6 +13,7 @@ export interface Orders {
     slika: string;
     napomene: string;
     aktivna: boolean;
+    imeNarucioca: string;
     kontakt: string;
     adresa: string;
     brojKomada: number;
@@ -51,6 +52,13 @@ export const searchOrders = async (start: string, end?: string) => {
         url += `&end=` + end;
     }
     const response = await get(url, {
+        headers,
+    });
+    return response;
+};
+
+export const searchOrdersByPersonName = async (value: string) => {
+    const response = await get(`${URL}/search/narucilac?query=` + value, {
         headers,
     });
     return response;

@@ -37,36 +37,6 @@ export const OrderModal: React.FunctionComponent<OrderModalProps> = ({
     setFileList(newFileList);
   };
 
-  useEffect(() => {
-    if (order) {
-      form.setFieldsValue({
-        datumIsporuke: new Date(order.datumIsporuke).toLocaleDateString(
-          "fr-CA",
-          { year: "numeric", month: "2-digit", day: "2-digit" }
-        ),
-        datumPrijema: new Date(order.datumPrijema).toLocaleDateString("fr-CA", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-        }),
-        naziv: order.naziv,
-        kontakt: order.kontakt,
-        adresa: order.adresa,
-        brojKomada: order.brojKomada,
-        slika: order.slika,
-        napomene: order.napomene,
-      });
-      setFileList([
-        {
-          uid: "-1",
-          name: "Dodajte fotografiju",
-          status: "done",
-          thumbUrl: order?.slika,
-        },
-      ]);
-    }
-  }, [order]);
-
   const handleOk = async (values: Orders) => {
     let response;
     values = {
@@ -94,6 +64,37 @@ export const OrderModal: React.FunctionComponent<OrderModalProps> = ({
     form.resetFields();
     onModalClose();
   };
+
+  useEffect(() => {
+    if (order) {
+      form.setFieldsValue({
+        datumIsporuke: new Date(order.datumIsporuke).toLocaleDateString(
+          "fr-CA",
+          { year: "numeric", month: "2-digit", day: "2-digit" }
+        ),
+        datumPrijema: new Date(order.datumPrijema).toLocaleDateString("fr-CA", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        }),
+        naziv: order.naziv,
+        imeNarucioca: order.imeNarucioca,
+        kontakt: order.kontakt,
+        adresa: order.adresa,
+        brojKomada: order.brojKomada,
+        slika: order.slika,
+        napomene: order.napomene,
+      });
+      setFileList([
+        {
+          uid: "-1",
+          name: "Dodajte fotografiju",
+          status: "done",
+          thumbUrl: order?.slika,
+        },
+      ]);
+    }
+  }, [order]);
 
   return (
     <Modal
@@ -167,6 +168,13 @@ export const OrderModal: React.FunctionComponent<OrderModalProps> = ({
           rules={[{ required: true, message: "Polje je obavezno!" }]}
         >
           <Input name="brojKomada" type="number" />
+        </Form.Item>
+        <Form.Item
+          label="Ime naručioca"
+          name="imeNarucioca"
+          rules={[{ required: true, message: "Polje je obavezno!" }]}
+        >
+          <Input name="imeNarucioca" />
         </Form.Item>
         <Form.Item
           label="Kontakt"

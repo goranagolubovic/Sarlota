@@ -55,7 +55,15 @@ export const OrdersPage: React.FunctionComponent = () => {
     setLoading(false);
   }, [checkedOptions]);
 
-  const onSearch = (value: string) => {};
+  const onSearch = async (value: string) => {
+    if (value === "") {
+      fetchOrders();
+    } else {
+      const response = await api.narudzbe.searchOrdersByPersonName(value);
+      const data = await response.json();
+      setOrders(data);
+    }
+  };
 
   const formatData = (data: any) => {
     return data.filter(
@@ -75,6 +83,7 @@ export const OrdersPage: React.FunctionComponent = () => {
   const onModalClose = () => {
     setShowModal(false);
     setRefresh((is) => !is);
+    fetchOrders();
   };
 
   const onOrderDelete = async (id: number) => {
@@ -151,7 +160,7 @@ export const OrdersPage: React.FunctionComponent = () => {
           </Button>
           <Search
             className="contacts__header__actions__search"
-            placeholder="Pretraži narudžbe"
+            placeholder="Unesite ime naručioca"
             allowClear
             enterButton="Pretraga"
             size="large"

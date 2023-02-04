@@ -56,6 +56,7 @@ public class NarudzbaService {
         narudzba.setNaziv(narudzbaDTO.getNaziv());
         narudzba.setNapomene(narudzbaDTO.getNapomene());
         narudzba.setSlika(narudzbaDTO.getSlika());
+        narudzba.setImeNarucioca(narudzbaDTO.getImeNarucioca());
         narudzba.setKontakt(narudzbaDTO.getKontakt());
         narudzba.setAdresa(narudzbaDTO.getAdresa());
 

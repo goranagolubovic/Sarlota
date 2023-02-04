@@ -15,7 +15,8 @@ import {
   editOrder,
   addOrder,
   deleteOrder,
-  searchOrders
+  searchOrders,
+  searchOrdersByPersonName
 } from "./services/orders.service";
 
 import { login, signUp } from "./services/users.service";
@@ -42,6 +43,7 @@ export const api = {
     editOrder,
     addOrder,
     deleteOrder,
-    searchOrders
+    searchOrders,
+    searchOrdersByPersonName
   }
 };
