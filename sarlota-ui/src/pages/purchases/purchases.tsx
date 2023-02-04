@@ -1,6 +1,6 @@
 // Libs
 import { useCallback, useEffect, useState } from "react";
-import { List, Typography } from "antd";
+import { Button, List, Typography } from "antd";
 
 // Service
 import { Nabavka, Namirnice } from "../../api/services/purchases.service";
@@ -10,6 +10,8 @@ import type { ColumnsType } from "antd/es/table";
 
 import { formatDate } from "../../util/util";
 import { api } from "../../api";
+
+import "./purchases.scss";
 
 const { Title } = Typography;
 const Moment = require("moment");
@@ -78,10 +80,20 @@ export const PurchasesPage: React.FunctionComponent = () => {
   }, [fetchPurchases]);
 
   return (
-    <div>
-      <Title level={3} style={{ marginTop: 0 }}>
-        Nabavke
-      </Title>
+    <div className="purchases">
+      <div className="purchases__header">
+        <Title level={3} style={{ marginTop: 0 }}>
+          Nabavke
+        </Title>
+        <div className="purchases__header__actions">
+          <Button type="default" size="middle">
+            Dodaj namirnice
+          </Button>
+          <Button type="primary" size="middle">
+            Nova nabavka
+          </Button>
+        </div>
+      </div>
       <Table dataSource={purchases} columns={columns} />
     </div>
   );
