@@ -134,7 +134,7 @@ export const RecipePage: React.FunctionComponent = () => {
 
             <div className="recipe-view__description__method">
               <Title level={4}>Način pripreme</Title>
-              {recipe.priprema}
+              <Typography.Text copyable>{recipe.priprema}</Typography.Text>
             </div>
           </div>
           <p>Cijena izrade : {cost} KM</p>
