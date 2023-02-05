@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Button, List, Typography } from "antd";
 
 // Service
-import { Nabavka, Namirnice } from "../../api/services/purchases.service";
+import { Nabavka } from "../../api/services/purchases.service";
 
 import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
