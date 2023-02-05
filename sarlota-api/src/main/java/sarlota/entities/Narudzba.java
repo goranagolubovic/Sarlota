@@ -50,5 +50,15 @@ public class Narudzba {
     @JsonIgnore
     @OneToMany(mappedBy = "narudzbaByNarudzbaId")
     private List<Proizvod> proizvodsById;
+    @Basic
+    @Column(name = "velicina")
+    private String velicina;
+    @Basic
+    @Column(name = "cijena")
+    private Double cijena;
+    @Basic
+    @Column(name = "idRecepta")
+    private Integer idRecepta;
+
 
 }

@@ -16,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NarudzbaDTO {
+    private Integer id;
     private LocalDateTime datumPrijema;
     private LocalDateTime datumIsporuke;
     private Boolean aktivna;
@@ -26,5 +27,8 @@ public class NarudzbaDTO {
     private String kontakt;
     private String adresa;
     private String imeNarucioca;
+    private String velicina;
+    private Double cijena;
+    private String nazivRecepta;
 
 }

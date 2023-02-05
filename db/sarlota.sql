@@ -97,7 +97,7 @@ AUTO_INCREMENT = 124;
 -- Table `db_sarlota`.`namirnica`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `db_sarlota`.`namirnica` (
-  `id` INT ZEROFILL NOT NULL AUTO_INCREMENT,
+  `id` INT  NOT NULL AUTO_INCREMENT,
   `naziv` VARCHAR(45) NOT NULL,
   `cijena_po_jedinici` DECIMAL(6,2) NOT NULL,
   `jedinica` VARCHAR(45) NULL,

@@ -17,6 +17,9 @@ export interface Orders {
     adresa: string;
     brojKomada: number;
     naziv: string;
+    velicina: string;
+    cijena: number;
+    nazivRecepta: string;
 }
 
 export const fetchOrders = async () => {

@@ -19,11 +19,11 @@ public class ReceptService {
     private final ReceptRepository receptRepository;
 
     private final NamirnicaRepository namirnicaRepository;
-    private  final NamirnicaUReceptuRepository namirnicaUReceptuRepository;
+    private final NamirnicaUReceptuRepository namirnicaUReceptuRepository;
 
     private final ZaposleniRepository zaposleniRepository;
 
-     private final PonudaRepository ponudaRepository;
+    private final PonudaRepository ponudaRepository;
 
     public List<Recept> getAll() {
         return receptRepository.findAll();
@@ -37,21 +37,20 @@ public class ReceptService {
 
         List<NamirnicaUReceptuDTO> sastojci = new ArrayList<>();
 
-        for(NamirnicaUReceptu namirnica : namirniceUreceptu) {
+        for (NamirnicaUReceptu namirnica : namirniceUreceptu) {
             Namirnica n = namirnicaRepository.findById(namirnica.getIdNamirnice()).get();
             double cijena = n.getCijenaPoJedinici() * namirnica.getKolicina();
-            trosakIzrade+=cijena;
-            sastojci.add(new NamirnicaUReceptuDTO(n,namirnica.getKolicina(),cijena));
+            trosakIzrade += cijena;
+            sastojci.add(new NamirnicaUReceptuDTO(n, namirnica.getKolicina(), cijena));
         }
 
-        ReceptDTO result = new ReceptDTO(recept,sastojci,trosakIzrade);
+        ReceptDTO result = new ReceptDTO(recept, sastojci, trosakIzrade);
         return result;
     }
 
     public Recept add(Recept receptDTO) {
         Recept recept = new Recept(
                 receptDTO.getPriprema(),
-                receptDTO.getSastojci(),
                 receptDTO.getNaslov(),
                 receptDTO.getFotografija(),
                 false,
@@ -62,7 +61,7 @@ public class ReceptService {
 
     public Recept toggleFavorite(int id) {
         Recept r = receptRepository.findById(id).orElse(null);
-        if(r == null) return null;
+        if (r == null) return null;
 
         r.setOmiljeni(!r.getOmiljeni());
         receptRepository.save(r);
@@ -76,7 +75,6 @@ public class ReceptService {
         }
         r.setNaslov(receptDTO.getRecept().getNaslov());
         r.setPriprema(receptDTO.getRecept().getPriprema());
-        r.setSastojci(receptDTO.getRecept().getSastojci());
         r.setFotografija(receptDTO.getRecept().getFotografija());
         return receptRepository.save(r);
     }
