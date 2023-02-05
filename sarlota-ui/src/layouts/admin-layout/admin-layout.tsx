@@ -46,7 +46,7 @@ function getItem(
   } as MenuItem;
 }
 
-const items: MenuItem[] = [
+const adminItems: MenuItem[] = [
   // getItem("Pregled", "pregled", <DesktopOutlined />),
   getItem("Narudžbe", "narudzbe", <ShopOutlined />),
   getItem("Kalendar", "kalendar", <CalendarOutlined />),
@@ -54,6 +54,15 @@ const items: MenuItem[] = [
   getItem("Statistika", "statistika", <LineChartOutlined />),
   getItem("Recepti", "recepti", <FileTextOutlined />),
   getItem("Zaposleni", "zaposleni", <TeamOutlined />),
+  getItem("Kontakti", "kontakti", <ContactsOutlined />),
+  getItem("Profil", "podesavanja", <SettingOutlined />),
+];
+
+const employeeItems: MenuItem[] = [
+  // getItem("Pregled", "pregled", <DesktopOutlined />),
+  getItem("Narudžbe", "narudzbe", <ShopOutlined />),
+  getItem("Kalendar", "kalendar", <CalendarOutlined />),
+  getItem("Recepti", "recepti", <FileTextOutlined />),
   getItem("Kontakti", "kontakti", <ContactsOutlined />),
   getItem("Profil", "podesavanja", <SettingOutlined />),
 ];
@@ -96,7 +105,9 @@ export const AdminLayout: React.FunctionComponent = () => {
           theme="dark"
           defaultSelectedKeys={["pregled"]}
           mode="inline"
-          items={items}
+          items={
+            user?.tipZaposlenog === "POSLASTICAR" ? adminItems : employeeItems
+          }
           onClick={onNavigate}
         />
       </Sider>

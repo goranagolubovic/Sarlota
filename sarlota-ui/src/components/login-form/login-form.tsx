@@ -17,18 +17,8 @@ export const LoginForm: React.FunctionComponent = () => {
   const onFinish = async (values: LoginRequest) => {
     const response = await api.login.login(values);
     if (response.status === 200) {
-      const responseData = await response.json();
-      const user = {
-        ime: responseData.ime,
-        prezime: responseData.prezime,
-        korisnickoIme: responseData.korisnickoIme,
-        plata: responseData.plata,
-        id: responseData.id,
-        tipZaposlenog: responseData.tipZaposlenpg,
-        fotografija: responseData.fotografija,
-      };
-      const token = responseData.token;
-
+      const user = await response.json();
+      const token = user.token;
       login(user, token);
       navigate("/admin/pregled");
     } else onFinishFailed("Error");

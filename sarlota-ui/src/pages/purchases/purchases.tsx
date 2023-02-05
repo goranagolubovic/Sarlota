@@ -14,6 +14,8 @@ import { api } from "../../api";
 import "./purchases.scss";
 import moment from "moment";
 import { FoodStuffModal } from "../../features/foodstuff-modal/foodstuff-modal";
+import { useNavigate } from "react-router";
+import { useAuth } from "../../contexts/user.context";
 
 const { Title } = Typography;
 const Moment = require("moment");
@@ -73,6 +75,9 @@ const columns: ColumnsType<Nabavka> = [
 ];
 
 export const PurchasesPage: React.FunctionComponent = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
   const [purchases, setPurchases] = useState<Nabavka[]>([]);
   const [showModal, setShowModal] = useState(false);
 
@@ -89,7 +94,9 @@ export const PurchasesPage: React.FunctionComponent = () => {
   };
 
   useEffect(() => {
-    fetchPurchases();
+    user?.tipZaposlenog === "POSLASTICAR"
+      ? fetchPurchases()
+      : navigate("/admin/pregled");
   }, [fetchPurchases]);
 
   return (
