@@ -20,7 +20,7 @@ import {
   searchOrders,
   searchOrdersByPersonName,
 } from "./services/orders.service";
-import { fetchPurchases } from "./services/purchases.service";
+import { fetchPurchases, addFoodStuff } from "./services/purchases.service";
 import {
   fetchRecipes,
   fetchRecipe,
@@ -71,5 +71,6 @@ export const api = {
   },
   nabavke: {
     fetchPurchases,
+    addFoodStuff
   },
 };
