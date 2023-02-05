@@ -61,6 +61,7 @@ export const EmployeesPage: React.FunctionComponent = () => {
   const onModalClose = () => {
     setShowModal(false);
     setRefresh((is) => !is);
+    fetchEmployees();
   };
 
   const onEmployeeDelete = async (id: number) => {

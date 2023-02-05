@@ -1,9 +1,18 @@
 // Libs
-import { useEffect } from "react";
-import { Button, Form, Input, Modal, Select } from "antd";
+import { useEffect, useState } from "react";
+import {
+  Button,
+  Form,
+  Input,
+  Modal,
+  Select,
+  Upload,
+  UploadFile,
+  UploadProps,
+} from "antd";
 
 // Services
-import { Employee } from "../../api/services/employee.service";
+import { Employee, fetchEmployees } from "../../api/services/employee.service";
 import { api } from "../../api";
 
 interface EmployeeModalProps {
@@ -20,15 +29,25 @@ export const EmployeeModal: React.FunctionComponent<EmployeeModalProps> = ({
   onModalClose,
 }) => {
   const [form] = Form.useForm<Employee>();
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
+    setFileList(newFileList);
+  };
 
   const handleOk = async (values: Employee) => {
     let response;
-
-    if (employee)
-      response = await api.zaposleni.editEmployee(employee.id, values);
-    response = await api.zaposleni.addEmployee(values);
+    values = {
+      ...values,
+      fotografija: fileList[0]?.thumbUrl || "",
+    };
+    if (employee) {
+      response = await api.zaposleni.updateEmployee(employee.id, values);
+    } else {
+      response = await api.zaposleni.addEmployee(values);
+    }
 
     if (response.status === 200) {
+      setFileList([]);
       form.resetFields();
       onModalClose();
     }
@@ -36,6 +55,7 @@ export const EmployeeModal: React.FunctionComponent<EmployeeModalProps> = ({
   };
 
   const handleCancel = () => {
+    setFileList([]);
     form.resetFields();
     onModalClose();
   };
@@ -47,9 +67,18 @@ export const EmployeeModal: React.FunctionComponent<EmployeeModalProps> = ({
         prezime: employee.prezime,
         tipZaposlenog: employee.tipZaposlenog === "POSLASTICAR" ? "0" : "1",
         plata: employee.plata,
+        fotografija: fileList[0]?.thumbUrl || "",
       });
+      setFileList([
+        {
+          uid: "-1",
+          name: "Dodajte fotografiju",
+          status: "done",
+          thumbUrl: employee.fotografija,
+        },
+      ]);
     }
-  });
+  }, [employee]);
 
   return (
     <Modal
@@ -79,6 +108,16 @@ export const EmployeeModal: React.FunctionComponent<EmployeeModalProps> = ({
         onFinish={handleOk}
         form={form}
       >
+        <Form.Item className="order_upload">
+          <Upload
+            listType="picture-card"
+            fileList={fileList}
+            onChange={onChange}
+            beforeUpload={() => false}
+          >
+            {fileList.length < 1 && "+ Upload"}
+          </Upload>
+        </Form.Item>
         <Form.Item
           label="Ime"
           name="ime"

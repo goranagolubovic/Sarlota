@@ -11,6 +11,7 @@ import {
   editEmployee,
   fetchEmployees,
   searchEmployees,
+  updateEmployee
 } from "./services/employee.service";
 import {
   fetchOrders,
@@ -51,6 +52,7 @@ export const api = {
     deleteEmployee,
     editEmployee,
     searchEmployees,
+    updateEmployee
   },
   recepti: {
     fetchRecipes,

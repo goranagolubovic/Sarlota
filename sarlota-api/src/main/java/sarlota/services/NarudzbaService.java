@@ -11,20 +11,24 @@ import sarlota.repositories.ZaposleniRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class NarudzbaService {
     private final NarudzbaRepository narudzbaRepository;
 
-    public List<Narudzba> getAll() { return narudzbaRepository.findAll(); }
+    public List<Narudzba> getAll() {
+        return narudzbaRepository.findAll();
+    }
 
-    public Narudzba getOne(int id){
+    public Narudzba getOne(int id) {
         return narudzbaRepository.findById(id).orElse(null);
     }
 
-    public Narudzba add(NarudzbaDTO narudzbaDTO){
+    public Narudzba add(NarudzbaDTO narudzbaDTO) {
 
         Narudzba narudzba = new Narudzba(
                 null,
@@ -64,16 +68,16 @@ public class NarudzbaService {
     }
 
     public List<Narudzba> search(String keyword) {
-        try{
+        try {
             int id = Integer.parseInt(keyword);
             Narudzba k = narudzbaRepository.findById(id).orElse(null);
             List<Narudzba> narudzbe = new ArrayList<Narudzba>();
-            if(k != null){
+            if (k != null) {
                 narudzbe.add(k);
             }
             return narudzbe;
+        } catch (NumberFormatException e) {
         }
-        catch(NumberFormatException e){}
         return narudzbaRepository.findByKeyword("%" + keyword + "%");
     }
 
@@ -84,7 +88,16 @@ public class NarudzbaService {
     public List<Narudzba> searchByDeliveryDate(LocalDateTime startDate, LocalDateTime endDate) {
         return narudzbaRepository.findByDatumIsporuke(startDate, endDate);
     }
+
     public List<Narudzba> searchByOrderDate(LocalDateTime startDate, LocalDateTime endDate) {
         return narudzbaRepository.findByDatumPrijema(startDate, endDate);
+    }
+
+    public List<Narudzba> filter(String today, String tomorrow) {
+        return narudzbaRepository.findAll().stream()
+                .filter(elem -> (today != null && String.valueOf(elem.getDatumIsporuke().toLocalDate())
+                        .equals(today)) || (tomorrow != null && String.valueOf(elem.getDatumIsporuke().toLocalDate()).equals(tomorrow)))
+                .collect(Collectors.toList());
+
     }
 }

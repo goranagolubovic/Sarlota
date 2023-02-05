@@ -15,7 +15,6 @@ public class ZaposleniDTO {
     private String ime;
     private String prezime;
     private String korisnickoIme;
-//    @JsonIgnore
     private String lozinka;
     private BigDecimal plata;
     private Role tipZaposlenog;

@@ -41,7 +41,17 @@ export const editEmployee = async (id: number, body: any) => {
   return response;
 };
 
+export const updateEmployee = async (id: number, body: any) => {
+  // console.log(body)
+  const response = await put(`${URL}/${id}`, {
+    headers,
+    body: JSON.stringify(body),
+  });
+  return response;
+};
+
 export const searchEmployees = async (query: string) => {
   const response = await get(`${URL}/search?query=${query}`);
   return response;
 };
+

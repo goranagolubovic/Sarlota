@@ -35,12 +35,18 @@ const Filter = ({ setCheckedOptions }: FilterProps) => {
   };
 
   const formatFilterRequest = () => {
+    let d = new Date();
     const mappedDates = checkedList.map((date) => {
-      let d = new Date();
       if (date === "Sutra") {
         d.setDate(d.getDate() + 1);
       }
-      return d.toISOString();
+      return d
+        .toLocaleDateString("fr-CA", {
+          year: "numeric",
+          month: "numeric",
+          day: "numeric",
+        })
+        .split("T")[0];
     });
     setCheckedOptions(mappedDates);
   };

@@ -55,7 +55,7 @@ export const EmployeeCard: React.FunctionComponent<EmployeeCardProps> = ({
     <Card
       hoverable
       className="employee"
-      cover={<img alt="example" src="https://bit.ly/3WrLuBw" />}
+      cover={<img alt="example" src={employee.fotografija} />}
       actions={[
         <Tooltip title="Detalji" placement="bottom">
           <UserOutlined key="detalji" onClick={onDetails} />
