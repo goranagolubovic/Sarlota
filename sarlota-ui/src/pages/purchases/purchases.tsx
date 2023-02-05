@@ -13,6 +13,7 @@ import { api } from "../../api";
 
 import "./purchases.scss";
 import moment from "moment";
+import { FoodStuffModal } from "../../features/foodstuff-modal/foodstuff-modal";
 
 const { Title } = Typography;
 const Moment = require("moment");
@@ -73,6 +74,7 @@ const columns: ColumnsType<Nabavka> = [
 
 export const PurchasesPage: React.FunctionComponent = () => {
   const [purchases, setPurchases] = useState<Nabavka[]>([]);
+  const [showModal, setShowModal] = useState(false);
 
   const fetchPurchases = useCallback(async () => {
     const response = await api.nabavke.fetchPurchases();
@@ -81,6 +83,10 @@ export const PurchasesPage: React.FunctionComponent = () => {
       setPurchases(data);
     }
   }, []);
+
+  const onModalClose = () => {
+    setShowModal(false);
+  };
 
   useEffect(() => {
     fetchPurchases();
@@ -92,9 +98,19 @@ export const PurchasesPage: React.FunctionComponent = () => {
         <Title level={3} style={{ marginTop: 0 }}>
           Nabavke
         </Title>
+
+        <FoodStuffModal
+          title={"Dodajte novu namirnicu"}
+          isModalOpen={showModal}
+          onModalClose={onModalClose}
+        />
         <div className="purchases__header__actions">
-          <Button type="default" size="middle">
-            Dodaj namirnice
+          <Button
+            type="default"
+            size="middle"
+            onClick={() => setShowModal(true)}
+          >
+            Dodaj namirnicu
           </Button>
           <Button type="primary" size="middle">
             Nova nabavka

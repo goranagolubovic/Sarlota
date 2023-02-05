@@ -1,8 +1,7 @@
 import { BACKEND_URL } from "../../util/constants";
-import { get } from "../client";
+import { get, post } from "../client";
 
 const URL = BACKEND_URL + "nabavke";
-
 const headers = { "Content-Type": "application/json" };
 
 export interface Nabavka {
@@ -29,3 +28,9 @@ export const fetchPurchases = async () => {
   const response = await get(URL, { headers });
   return response;
 };
+
+export const addFoodStuff = async (body: Namirnica) => {
+  const response = await post(BACKEND_URL + "namirnice", { headers, body: JSON.stringify(body) });
+  return response;
+};
+
