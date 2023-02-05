@@ -103,7 +103,7 @@ export const AdminLayout: React.FunctionComponent = () => {
         />
         <Menu
           theme="dark"
-          defaultSelectedKeys={["pregled"]}
+          defaultSelectedKeys={["narudzbe"]}
           mode="inline"
           items={
             user?.tipZaposlenog === "POSLASTICAR" ? adminItems : employeeItems
