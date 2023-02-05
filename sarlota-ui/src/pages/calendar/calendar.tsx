@@ -4,66 +4,132 @@ import { Badge, Calendar } from "antd";
 import { Typography } from "antd";
 
 import type { Dayjs } from "dayjs";
+import {
+  Key,
+  ReactElement,
+  JSXElementConstructor,
+  ReactFragment,
+  useState,
+  useEffect,
+} from "react";
+import { api } from "../../api";
 
 import "./calendar.scss";
 
 const { Title } = Typography;
 
-const getListData = (value: Dayjs) => {
-  let listData;
-  switch (value.date()) {
-    case 8:
-      listData = [
-        { type: "warning", content: "This is warning event." },
-        { type: "success", content: "This is usual event." },
-      ];
-      break;
-    case 10:
-      listData = [
-        { type: "success", content: "This is usual event." },
-        { type: "error", content: "This is error event." },
-      ];
-      break;
-    case 15:
-      listData = [{ type: "error", content: "This is error event 4." }];
-      break;
-    default:
-  }
-  return listData || [];
+const formatDate = (value: Date) => {
+  return value.toLocaleDateString("fr-CA", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
 };
 
-const getMonthData = (value: Dayjs) => {
-  if (value.month() === 8) {
-    return 1394;
-  }
+const formatMonth = (value: Date) => {
+  return value.toLocaleDateString("fr-CA", {
+    year: "numeric",
+    month: "2-digit",
+  });
 };
 
 export const CalendarPage: React.FunctionComponent = () => {
+  const [orders, setOrders] = useState([]);
+
+  const fetchOrders = async () => {
+    const response = await api.narudzbe.fetchOrders();
+    const responseData = await response.json();
+    setOrders(responseData);
+  };
+
+  const getMonthData = (value: Dayjs) => {
+    let filteredData = orders.filter(
+      (elem: any) =>
+        formatMonth(new Date(elem.datumIsporuke)) ===
+        formatMonth(value.toDate())
+    );
+
+    const mappedObject = filteredData.map((elem: any) => ({
+      content: elem.naziv,
+      type: "warning",
+    }));
+
+    return mappedObject || [];
+  };
+
   const monthCellRender = (value: Dayjs) => {
-    const num = getMonthData(value);
-    return num ? (
-      <div className="notes-month">
-        <section>{num}</section>
-        <span>Backlog number</span>
+    const listData = getMonthData(value);
+    return (
+      <div className="events">
+        {listData.map(
+          (item: {
+            content:
+              | boolean
+              | Key
+              | ReactElement<any, string | JSXElementConstructor<any>>
+              | ReactFragment
+              | null
+              | undefined;
+            type: string | undefined;
+          }) => (
+            <li>
+              <Badge
+                text={item.content}
+                status={item.type as BadgeProps["status"]}
+                color={"blue"}
+              />
+            </li>
+          )
+        )}
       </div>
-    ) : null;
+    );
+  };
+
+  const getListData = (value: Dayjs) => {
+    let filteredData = orders.filter(
+      (elem: any) =>
+        formatDate(new Date(elem.datumIsporuke)) === formatDate(value.toDate())
+    );
+
+    const mappedObject = filteredData.map((elem: any) => ({
+      content: elem.naziv,
+      type: "warning",
+    }));
+
+    return mappedObject || [];
   };
 
   const dateCellRender = (value: Dayjs) => {
-    const listData = getListData(value);
+    let listData = getListData(value);
     return (
-      <ul className="events">
-        {listData.map((item) => (
-          <li key={item.content}>
-            <Badge
-              status={item.type as BadgeProps["status"]}
-              text={item.content}
-            />
-          </li>
-        ))}
-      </ul>
+      <div>
+        {listData.map(
+          (item: {
+            content:
+              | boolean
+              | Key
+              | ReactElement<any, string | JSXElementConstructor<any>>
+              | ReactFragment
+              | null
+              | undefined;
+            type: string | undefined;
+          }) => (
+            <div>
+              <Badge
+                text={item.content}
+                status={item.type as BadgeProps["status"]}
+                color={"blue"}
+              />
+            </div>
+          )
+        )}
+      </div>
     );
   };
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
 
   return (
     <>
