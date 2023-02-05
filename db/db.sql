@@ -144,7 +144,7 @@ ENGINE = InnoDB;
 -- Table `db_sarlota`.`namirnica`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `db_sarlota`.`namirnica` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` INT  NOT NULL AUTO_INCREMENT,
   `naziv` VARCHAR(45) NOT NULL,
   `cijena_po_jedinici` DECIMAL(6,2) NOT NULL,
   `jedinica` VARCHAR(45) NULL,
@@ -156,7 +156,7 @@ ENGINE = InnoDB;
 -- Table `db_sarlota`.`nabavka`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `db_sarlota`.`nabavka` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `datum` DATE NULL,
   `cijena` DOUBLE(6,2) NULL,
   PRIMARY KEY (`id`))

@@ -47,7 +47,7 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem("Pregled", "pregled", <DesktopOutlined />),
+  // getItem("Pregled", "pregled", <DesktopOutlined />),
   getItem("Narudžbe", "narudzbe", <ShopOutlined />),
   getItem("Kalendar", "kalendar", <CalendarOutlined />),
   getItem("Nabavke", "nabavke", <ShoppingCartOutlined />),
