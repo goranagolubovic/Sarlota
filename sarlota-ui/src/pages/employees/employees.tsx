@@ -18,10 +18,16 @@ import { api } from "../../api";
 
 // Rest
 import "./employees.scss";
+import { userInfo } from "os";
+import { useNavigate } from "react-router";
+import { useAuth } from "../../contexts/user.context";
 
 const { Title } = Typography;
 
 export const EmployeesPage: React.FunctionComponent = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [employeeToEdit, setEmployeeToEdit] = useState<Employee | null>(null);
 
@@ -99,7 +105,9 @@ export const EmployeesPage: React.FunctionComponent = () => {
   };
 
   useEffect(() => {
-    fetchEmployees();
+    user?.tipZaposlenog === "POSLASTICAR"
+      ? fetchEmployees()
+      : navigate("/admin/pregled");
   }, [fetchEmployees, refresh]);
 
   return (
