@@ -33,6 +33,7 @@ export const OrderModal: React.FunctionComponent<OrderModalProps> = ({
 }) => {
   const [form] = Form.useForm<Orders>();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+
   const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
     setFileList(newFileList);
   };
@@ -46,11 +47,13 @@ export const OrderModal: React.FunctionComponent<OrderModalProps> = ({
       aktivna: true,
       slika: fileList[0]?.thumbUrl || "",
     };
+
     if (order)
       response = await api.narudzbe.editOrder(order.id ? order.id : 0, values);
     else {
       response = await api.narudzbe.addOrder(values);
     }
+
     if (response.status === 200) {
       setFileList([]);
       form.resetFields();
@@ -94,7 +97,7 @@ export const OrderModal: React.FunctionComponent<OrderModalProps> = ({
         },
       ]);
     }
-  }, [order]);
+  }, [order, form]);
 
   return (
     <Modal

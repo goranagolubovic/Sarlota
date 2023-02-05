@@ -59,7 +59,6 @@ export const EmployeesPage: React.FunctionComponent = () => {
   };
 
   const onModalClose = () => {
-    console.log("close");
     setShowModal(false);
     setRefresh((is) => !is);
     fetchEmployees();

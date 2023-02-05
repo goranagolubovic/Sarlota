@@ -1,6 +1,11 @@
-import { message, Typography } from "antd";
+// Libs
+import { Typography } from "antd";
+
+// Components
 import SettingsCard from "../../features/settings-card/settings-card";
+
 import "./settings.scss";
+
 export const SettingsPage: React.FunctionComponent = () => {
   const { Title } = Typography;
 

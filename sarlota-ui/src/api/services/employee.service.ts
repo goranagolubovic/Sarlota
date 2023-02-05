@@ -34,7 +34,6 @@ export const deleteEmployee = async (id: number) => {
 };
 
 export const editEmployee = async (id: number, body: any) => {
-  // console.log(body)
   const response = await put(`${URL}/${id}/edit`, {
     headers,
     body: JSON.stringify(body),

@@ -19,8 +19,9 @@ import {
   addOrder,
   deleteOrder,
   searchOrders,
-  searchOrdersByPersonName
+  searchOrdersByPersonName,
 } from "./services/orders.service";
+import { fetchPurchases, addFoodStuff } from "./services/purchases.service";
 import {
   fetchRecipes,
   fetchRecipe,
@@ -68,6 +69,10 @@ export const api = {
     addOrder,
     deleteOrder,
     searchOrders,
-    searchOrdersByPersonName
-  }
+    searchOrdersByPersonName,
+  },
+  nabavke: {
+    fetchPurchases,
+    addFoodStuff
+  },
 };

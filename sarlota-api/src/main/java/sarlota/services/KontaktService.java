@@ -19,7 +19,6 @@ public class KontaktService {
         return kontaktRepository.findAll();
     }
 
-
     public List<Kontakt> search(String keyword) {
         try{
             int id = Integer.parseInt(keyword);
