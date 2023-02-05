@@ -20,7 +20,7 @@ export const LoginForm: React.FunctionComponent = () => {
       const user = await response.json();
       const token = user.token;
       login(user, token);
-      navigate("/admin/pregled");
+      navigate("/admin/narudzbe");
     } else onFinishFailed("Error");
   };
 

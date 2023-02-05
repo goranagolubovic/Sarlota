@@ -1,11 +1,12 @@
-INSERT INTO db_sarlota.recept (naslov, priprema, sastojci, omiljeni, id, fotografija) VALUES ('Baklava', 'test', 'test', 1, 1, 'https://upload.wikimedia.org/wikipedia/commons/c/c7/Baklava%281%29.png');
+
+INSERT INTO db_sarlota.recept (naslov, priprema, sastojci, omiljeni, id, fotografija) VALUES ('Baklava', 'Prvo napraviti zaljev (šerbet ili agdu) kako bi se ohladio kada baklava bude pečena. Kuhati vodu i šećer 10-ak min. Pred kraj dodati sok od pola limuna. Ostaviti da se hladi za vrijeme pravljenja baklave, jer ide vruća baklava - hladan zaljev.
+Tepsiju veličine 20x30cm premazati uljem. Kore izrezati na veličinu tepsije (u mom slučaju kore prepoloviti). Orahe i prezlo izmješati. Najprije redati u tepsiju 3 kore svaku premazati uljem (s cetkicom). Četvrtu posuti mješavinom oraha i prezle (odprilike 3-4 kašike) petu premazati uljem. Tako redati do kraja, jednu premazati uljem, sljedeću posuti orasima dok se ne potroši sav materijal. Na kraju 3 kore premazati samo uljem kao na početku. Ostaviti sa strane još jednu koru. Baklavu isjeći dijagonalno na rombove. Zagrijati 125ml ulja i 125g maslaca te preliti preko isječene baklave. Na baklavu staviti jednu cijelu koru koju smo ostavili sa strane kako nebi izgorila.Baklava se peče 50min. Zagrijati rernu na 200C. Prvih 10 minuta peći na 200C. Smanjiti na 180C pa peći idućih 30 minuta na 180C. Na kraju pečenja ponovo pojačati temperaturu na 200C pa peći još 10 minuta.Izvaditi iz rerne, skinuti gornju koru (koja je malo izgorila) i preliti hladnim zaljevom. Kada upije zaljev mozete poklopiti drugom tepsijom 10-ak minuta da stoji kako se nebi gornja kora dizala. Ostaviti da se hladi na sobnoj temperaturi, pa prebaciti u frižider pokrivenu aluminijskom folijom. Baklava može dugo stajati u frižideru, ali nestat ce u trenu. U slast!', 'test', 1, 1, 'https://upload.wikimedia.org/wikipedia/commons/c/c7/Baklava%281%29.png');
 INSERT INTO db_sarlota.recept (naslov, priprema, sastojci, omiljeni, id, fotografija) VALUES ('Cheesecake', 'test', 'test', 1, 2, 'https://www.thespruceeats.com/thmb/HM3X8w38eMVo0Lejx4GLvGHZ4dM=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/gluten-free-new-york-cheesecake-1450985-hero-01-dc54f9daf38044238b495c7cefc191fa.jpg');
 INSERT INTO db_sarlota.recept (naslov, priprema, sastojci, omiljeni, id, fotografija) VALUES ('Čokolanda torta', 'test', 'test', 0, 3, 'https://foodhub.scene7.com/is/image/woolworthsltdprod/2209-easy-choc-crunch-cake:Mobile-1300x1150');
 INSERT INTO db_sarlota.recept (naslov, priprema, sastojci, omiljeni, id, fotografija) VALUES ('Kuglof', 'aaa', 'aaa', 0, 4, 'https://tirkizna.com/wp-content/uploads/2021/08/IMG_8003-e1628017925607.jpg');
 INSERT INTO db_sarlota.recept (naslov, priprema, sastojci, omiljeni, id, fotografija) VALUES ('Kraljica čokolade', 'test', 'test', 1, 5, 'https://stil.kurir.rs/data/images/2020/11/30/16/235623_torta_share.jpg');
 INSERT INTO db_sarlota.recept (naslov, priprema, sastojci, omiljeni, id, fotografija) VALUES ('Sacher ', 'test', 'test', 0, 6, 'https://images.fidhouse.com/fidelitynews/wp-content/uploads/sites/6/2014/08/sacher_personalizzate1.jpg');
 INSERT INTO db_sarlota.recept (naslov, priprema, sastojci, omiljeni, id, fotografija) VALUES ('Šarlota', 'test', 'test', 0, 7, 'https://www.oetker.ba/Recipe/Recipes/oetker.ba/ba-bs/baking/image-thumb__81063__RecipeDetail/sarlota-s-kremom-od-jagoda.jpg');
-
 
 
 INSERT INTO zaposleni (id, ime, prezime, korisnicko_ime,lozinka,plata,tip_zaposlenog,fotografija)
@@ -27,3 +28,6 @@ INSERT INTO db_sarlota.nabavka (id, datum, cijena) VALUES (2, '2023-02-02', 20);
 INSERT INTO db_sarlota.nabavka_namirnice (nabavka_id, namirnica_id, id, kolicina) VALUES (1, 1, 1, 1.00);
 INSERT INTO db_sarlota.nabavka_namirnice (nabavka_id, namirnica_id, id, kolicina) VALUES (1, 2, 2, 2.00);
 INSERT INTO db_sarlota.nabavka_namirnice (nabavka_id, namirnica_id, id, kolicina) VALUES (2, 3, 4, 4.00);
+
+INSERT INTO db_sarlota.namirnica_u_receptu (recept_id, namirnica_id, id, kolicina) VALUES (1, 1, 1, 2.00);
+INSERT INTO db_sarlota.namirnica_u_receptu (recept_id, namirnica_id, id, kolicina) VALUES (1, 2, 2, 2.00);
