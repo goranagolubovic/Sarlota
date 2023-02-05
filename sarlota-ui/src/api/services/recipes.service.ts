@@ -51,5 +51,5 @@ export const searchRecipes = async (query: string) => {
 };
 
 export const toggleFavorite = async (id: number) => {
-  const response = await get(`${URL}/toggle-favorite/${id}`);
+  await get(`${URL}/toggle-favorite/${id}`);
 };

@@ -1,3 +1,6 @@
+// Libs
+import { useEffect, useState } from "react";
+
 import {
   Button,
   Card,
@@ -8,18 +11,19 @@ import {
   UploadProps,
 } from "antd";
 
+// Icons
 import { EditOutlined, CloseOutlined, CheckOutlined } from "@ant-design/icons";
 
+// Rest
 import { Employee } from "../../api/services/employee.service";
-import React, { useEffect, useState } from "react";
 import "./settings-card.scss";
 import { api } from "../../api";
 
-const SettingsCard = () => {
+const SettingsCard: React.FunctionComponent = () => {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("USER") || "")
   );
-  const [isEditeActive, setIsEditActive] = useState(false);
+  const [isEditActive, setIsEditActive] = useState(false);
   const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -34,34 +38,13 @@ const SettingsCard = () => {
   ]);
   const [form] = Form.useForm<Employee>();
 
-  useEffect(() => {
-    if (!isEditeActive) {
-      setUsername(user.korisnickoIme);
-      setFirstName(user.ime);
-      setLastName(user.prezime);
-      setPassword("********");
-    } else {
-      setUsername("");
-      setFirstName("");
-      setLastName("");
-      setPassword("");
-    }
-  }, [isEditeActive]);
-
-  useEffect(() => {
-    setUsername(user.korisnickoIme);
-    setFirstName(user.ime);
-    setLastName(user.prezime);
-    setPassword("********");
-  }, [user]);
-
   const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
     setFileList(newFileList);
   };
 
   const editProfile = () => {
     form.resetFields();
-    setIsEditActive(!isEditeActive);
+    setIsEditActive(!isEditActive);
   };
 
   const formatFormData = (values: any) => {
@@ -88,6 +71,27 @@ const SettingsCard = () => {
     console.log("Failed:", errorInfo);
   };
 
+  useEffect(() => {
+    setUsername(user.korisnickoIme);
+    setFirstName(user.ime);
+    setLastName(user.prezime);
+    setPassword("********");
+  }, [user]);
+
+  useEffect(() => {
+    if (!isEditActive) {
+      setUsername(user.korisnickoIme);
+      setFirstName(user.ime);
+      setLastName(user.prezime);
+      setPassword("********");
+    } else {
+      setUsername("");
+      setFirstName("");
+      setLastName("");
+      setPassword("");
+    }
+  }, [isEditActive, user]);
+
   return (
     <Card className="card">
       <Form
@@ -109,9 +113,9 @@ const SettingsCard = () => {
             fileList={fileList}
             onChange={onChange}
             className="card__image"
-            disabled={!isEditeActive}
+            disabled={!isEditActive}
           >
-            {fileList.length != 0 ? null : "+ Upload"}
+            {fileList.length !== 0 ? null : "+ Upload"}
           </Upload>
         </Form.Item>
         <Form.Item
@@ -119,14 +123,14 @@ const SettingsCard = () => {
           name="ime"
           rules={[{ required: true, message: "Polje je obavezno!" }]}
         >
-          <Input placeholder={firstName} disabled={!isEditeActive} />
+          <Input placeholder={firstName} disabled={!isEditActive} />
         </Form.Item>
         <Form.Item
           label="Prezime"
           name="prezime"
           rules={[{ required: true, message: "Polje je obavezno!" }]}
         >
-          <Input disabled={!isEditeActive} placeholder={lastName} />
+          <Input disabled={!isEditActive} placeholder={lastName} />
         </Form.Item>
 
         <Form.Item
@@ -134,25 +138,25 @@ const SettingsCard = () => {
           name="korisnickoIme"
           rules={[{ required: true, message: "Polje je obavezno!" }]}
         >
-          <Input disabled={!isEditeActive} placeholder={username} />
+          <Input disabled={!isEditActive} placeholder={username} />
         </Form.Item>
         <Form.Item
           label="Lozinka"
           name="lozinka"
           rules={[{ required: true, message: "Polje je obavezno!" }]}
         >
-          <Input.Password disabled={!isEditeActive} placeholder={password} />
+          <Input.Password disabled={!isEditActive} placeholder={password} />
         </Form.Item>
-        {isEditeActive && (
+        {isEditActive && (
           <Form.Item
             label="Nova lozinka"
             name="novaLozinka"
             rules={[{ required: true, message: "Polje je obavezno!" }]}
           >
-            <Input.Password disabled={!isEditeActive} />
+            <Input.Password disabled={!isEditActive} />
           </Form.Item>
         )}
-        {isEditeActive && (
+        {isEditActive && (
           <Form.Item
             label="Potvrda lozinke"
             name="potvrdaLozinke"
@@ -169,11 +173,11 @@ const SettingsCard = () => {
               }),
             ]}
           >
-            <Input.Password disabled={!isEditeActive} />
+            <Input.Password disabled={!isEditActive} />
           </Form.Item>
         )}
         <div className="card__row">
-          {!isEditeActive && (
+          {!isEditActive && (
             <Button
               type="primary"
               size="large"
@@ -183,7 +187,7 @@ const SettingsCard = () => {
               Izmijeni informacije
             </Button>
           )}
-          {isEditeActive && (
+          {isEditActive && (
             <Form.Item>
               <Button
                 type="primary"
@@ -195,7 +199,7 @@ const SettingsCard = () => {
               </Button>
             </Form.Item>
           )}
-          {isEditeActive && (
+          {isEditActive && (
             <Form.Item>
               <Button
                 type="primary"

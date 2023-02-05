@@ -74,7 +74,7 @@ export const RecipeDrawer: React.FunctionComponent<RecipeDrawerProps> = ({
       setFileList([]);
       form.resetFields();
     }
-  }, [recipe]);
+  }, [recipe, form]);
 
   return (
     <Drawer

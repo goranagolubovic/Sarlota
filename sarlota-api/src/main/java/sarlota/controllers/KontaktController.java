@@ -21,6 +21,7 @@ public class KontaktController {
         if(keyword.length() == 0) return ResponseEntity.ok(kontaktService.getAll());
         else return ResponseEntity.ok(kontaktService.search(keyword));
     }
+
     @GetMapping
     public ResponseEntity<List<Kontakt>> getAll() {
         return ResponseEntity.ok(kontaktService.getAll());

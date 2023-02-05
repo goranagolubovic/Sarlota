@@ -1,6 +1,6 @@
 // Libs
 import { useCallback, useEffect, useState } from "react";
-import { Button, message, Typography } from "antd";
+import { Button, Empty, message, Typography } from "antd";
 import Search from "antd/es/input/Search";
 
 // Components
@@ -65,16 +65,6 @@ export const OrdersPage: React.FunctionComponent = () => {
     }
   };
 
-  const formatData = (data: any) => {
-    return data.filter(
-      (elem: any) =>
-        new Date(elem.datumIsporuke).toLocaleDateString("en-GB", {
-          year: "numeric",
-          month: "numeric",
-          day: "numeric",
-        }) === checkedOptions[0]
-    );
-  };
   const onNewOrderClick = () => {
     setShowModal(true);
     setOrderToEdit(null);
@@ -173,14 +163,21 @@ export const OrdersPage: React.FunctionComponent = () => {
         <Spinner />
       ) : (
         <div className="orders__content">
-          {orders?.map((order) => (
-            <OrderCard
-              order={order}
-              onDeleteClick={onOrderDelete}
-              onEditClick={onOrderEdit}
-              onDetailsClick={onOrderDetailsClick}
+          {orders?.length > 0 ? (
+            orders?.map((order) => (
+              <OrderCard
+                order={order}
+                onDeleteClick={onOrderDelete}
+                onEditClick={onOrderEdit}
+                onDetailsClick={onOrderDetailsClick}
+              />
+            ))
+          ) : (
+            <Empty
+              description="Nisu pronađene narudžbe"
+              style={{ margin: "auto", marginTop: "20vh" }}
             />
-          ))}
+          )}
         </div>
       )}
     </div>
