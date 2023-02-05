@@ -57,7 +57,7 @@ export const FoodStuffModal: React.FunctionComponent<FoodStuffModalProps> = ({
       <Form
         // layout="vertical"
         labelAlign="left"
-        labelCol={{ span: 6 }}
+        labelCol={{ span: 7 }}
         wrapperCol={{ span: 14 }}
         style={{ maxWidth: 500, marginTop: "25px" }}
         onFinish={handleOk}
@@ -75,15 +75,7 @@ export const FoodStuffModal: React.FunctionComponent<FoodStuffModalProps> = ({
           name="jedinica"
           rules={[{ required: true, message: "Polje je obavezno!" }]}
         >
-          <Select
-            onChange={(value) => form.setFieldValue("jedinica", value)}
-            options={[
-              { value: "kg", label: "kg" },
-              { value: "l", label: "l" },
-              { value: "g", label: "g" },
-              { value: "karton", label: "karton" },
-            ]}
-          />
+          <Input />
         </Form.Item>
 
         <Form.Item
