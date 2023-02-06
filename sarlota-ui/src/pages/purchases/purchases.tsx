@@ -16,6 +16,7 @@ import moment from "moment";
 import { FoodStuffModal } from "../../features/foodstuff-modal/foodstuff-modal";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../contexts/user.context";
+import { PurchaseModal } from "../../features/purchase-modal";
 
 const { Title } = Typography;
 const Moment = require("moment");
@@ -79,6 +80,7 @@ export const PurchasesPage: React.FunctionComponent = () => {
   const { user } = useAuth();
 
   const [purchases, setPurchases] = useState<Nabavka[]>([]);
+  const [showAddModal, setShowAddModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   const fetchPurchases = useCallback(async () => {
@@ -101,6 +103,13 @@ export const PurchasesPage: React.FunctionComponent = () => {
 
   return (
     <div className="purchases">
+      <PurchaseModal
+        open={showAddModal}
+        handleCancel={() => {
+          setShowAddModal(false);
+        }}
+      />
+
       <div className="purchases__header">
         <Title level={3} style={{ marginTop: 0 }}>
           Nabavke
@@ -119,7 +128,11 @@ export const PurchasesPage: React.FunctionComponent = () => {
           >
             Dodaj sirovinu
           </Button>
-          <Button type="primary" size="middle">
+          <Button
+            type="primary"
+            size="middle"
+            onClick={() => setShowAddModal(true)}
+          >
             Nova nabavka
           </Button>
         </div>

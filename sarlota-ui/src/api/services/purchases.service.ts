@@ -30,7 +30,14 @@ export const fetchPurchases = async () => {
 };
 
 export const addFoodStuff = async (body: Namirnica) => {
-  const response = await post(BACKEND_URL + "namirnice", { headers, body: JSON.stringify(body) });
+  const response = await post(BACKEND_URL + "namirnice", {
+    headers,
+    body: JSON.stringify(body),
+  });
   return response;
 };
 
+export const fetchIngredients = async () => {
+  const response = await get(BACKEND_URL + "namirnice", { headers });
+  return response;
+};
