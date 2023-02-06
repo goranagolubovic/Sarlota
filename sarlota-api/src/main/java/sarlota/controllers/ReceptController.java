@@ -11,6 +11,7 @@ import sarlota.entities.Recept;
 import sarlota.entities.Zaposleni;
 import sarlota.entities.dto.NamirnicaUReceptuDTO;
 import sarlota.entities.dto.ReceptDTO;
+import sarlota.entities.requests.ReceptAddRequest;
 import sarlota.repositories.NamirnicaUReceptuRepository;
 import sarlota.services.NamirnicaService;
 import sarlota.services.ReceptService;
@@ -42,12 +43,10 @@ public class ReceptController {
     }
 
     @PostMapping
-    public ResponseEntity<Recept> add(@RequestBody ReceptDTO receptDTO) {
+    public ResponseEntity<Recept> add(@RequestBody ReceptAddRequest recept) {
         try {
-            Recept r = receptService.add(receptDTO.getRecept());
-            for (NamirnicaUReceptuDTO n : receptDTO.getNamirnice()) {
-                namirnicaUReceptuRepository.save(new NamirnicaUReceptu(0, receptDTO.getRecept().getId(),n.getNamirnica().getId(),n.getKolicina()));
-            }
+            Recept r = receptService.add(recept);
+
             return ResponseEntity.ok(r);
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

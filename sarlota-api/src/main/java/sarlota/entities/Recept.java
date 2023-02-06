@@ -21,4 +21,6 @@ public class Recept {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id@Column(name = "id")
     private Integer id;
+    @Column (name = "aktivan")
+    private Boolean aktivan = true;
 }

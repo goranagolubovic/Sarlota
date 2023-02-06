@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 import sarlota.entities.*;
 import sarlota.entities.dto.NamirnicaDTO;
+import sarlota.entities.dto.NamirnicaReceptDTO;
 import sarlota.entities.dto.NamirnicaUReceptuDTO;
 import sarlota.entities.dto.ReceptDTO;
+import sarlota.entities.requests.ReceptAddRequest;
 import sarlota.repositories.*;
 
 import java.util.ArrayList;
@@ -48,15 +50,23 @@ public class ReceptService {
         return result;
     }
 
-    public Recept add(Recept receptDTO) {
-        Recept recept = new Recept(
-                receptDTO.getPriprema(),
-                receptDTO.getNaslov(),
-                receptDTO.getFotografija(),
-                false,
-                null
-        );
-        return receptRepository.save(recept);
+    public Recept add(ReceptAddRequest receptAddRequest) {
+        Recept recept = new Recept();
+
+        List<NamirnicaReceptDTO> namirnice = receptAddRequest.getNamirnice();
+
+        recept.setId(0);
+        recept.setNaslov(receptAddRequest.getNaslov());
+        recept.setPriprema(receptAddRequest.getPriprema());
+        recept.setFotografija(receptAddRequest.getFotografija());
+
+        recept = receptRepository.save(recept);
+
+        for(NamirnicaReceptDTO n : namirnice) {
+            namirnicaUReceptuRepository.save(new NamirnicaUReceptu(0, recept.getId(),n.getIdNamirnice(),n.getKolicina()));
+        }
+
+        return recept;
     }
 
     public Recept toggleFavorite(int id) {
@@ -94,6 +104,8 @@ public class ReceptService {
     }
 
     public void delete(int id) {
-        receptRepository.deleteById(id);
+        Recept r = receptRepository.findById(id).orElse(null);
+        r.setAktivan(false);
+        receptRepository.save(r);
     }
 }

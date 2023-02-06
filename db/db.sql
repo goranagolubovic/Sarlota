@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS `db_sarlota`.`recept` (
   `omiljeni` TINYINT NULL DEFAULT NULL,
   `id` INT NOT NULL AUTO_INCREMENT,
   `fotografija` MEDIUMTEXT COLLATE 'utf8mb3_unicode_ci' NULL DEFAULT NULL,
+  `aktivan` TINYINT NULL DEFAULT 1,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 3;
@@ -97,7 +98,7 @@ AUTO_INCREMENT = 124;
 -- Table `db_sarlota`.`namirnica`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `db_sarlota`.`namirnica` (
-  `id` INT ZEROFILL NOT NULL AUTO_INCREMENT,
+  `id` INT  NOT NULL AUTO_INCREMENT,
   `naziv` VARCHAR(45) NOT NULL,
   `cijena_po_jedinici` DECIMAL(6,2) NOT NULL,
   `jedinica` VARCHAR(45) NULL,
