@@ -3,13 +3,11 @@ package sarlota.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
-import sarlota.entities.Ponuda;
-import sarlota.entities.Recept;
-import sarlota.entities.Zaposleni;
+import sarlota.entities.*;
+import sarlota.entities.dto.NamirnicaDTO;
+import sarlota.entities.dto.NamirnicaUReceptuDTO;
 import sarlota.entities.dto.ReceptDTO;
-import sarlota.repositories.PonudaRepository;
-import sarlota.repositories.ReceptRepository;
-import sarlota.repositories.ZaposleniRepository;
+import sarlota.repositories.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,22 +18,39 @@ public class ReceptService {
 
     private final ReceptRepository receptRepository;
 
+    private final NamirnicaRepository namirnicaRepository;
+    private final NamirnicaUReceptuRepository namirnicaUReceptuRepository;
+
     private final ZaposleniRepository zaposleniRepository;
 
-     private final PonudaRepository ponudaRepository;
+    private final PonudaRepository ponudaRepository;
 
     public List<Recept> getAll() {
         return receptRepository.findAll();
     }
 
-    public Recept getOne(int id) {
-        return receptRepository.findById(id).orElse(null);
+    public ReceptDTO getOne(int id) {
+        Recept recept = receptRepository.findById(id).orElse(null);
+        List<NamirnicaUReceptu> namirniceUreceptu = namirnicaUReceptuRepository.findByIdRecepta(recept.getId());
+
+        double trosakIzrade = 0;
+
+        List<NamirnicaUReceptuDTO> sastojci = new ArrayList<>();
+
+        for (NamirnicaUReceptu namirnica : namirniceUreceptu) {
+            Namirnica n = namirnicaRepository.findById(namirnica.getIdNamirnice()).get();
+            double cijena = n.getCijenaPoJedinici() * namirnica.getKolicina();
+            trosakIzrade += cijena;
+            sastojci.add(new NamirnicaUReceptuDTO(n, namirnica.getKolicina(), cijena));
+        }
+
+        ReceptDTO result = new ReceptDTO(recept, sastojci, trosakIzrade);
+        return result;
     }
 
-    public Recept add(ReceptDTO receptDTO) {
+    public Recept add(Recept receptDTO) {
         Recept recept = new Recept(
                 receptDTO.getPriprema(),
-                receptDTO.getSastojci(),
                 receptDTO.getNaslov(),
                 receptDTO.getFotografija(),
                 false,
@@ -46,7 +61,7 @@ public class ReceptService {
 
     public Recept toggleFavorite(int id) {
         Recept r = receptRepository.findById(id).orElse(null);
-        if(r == null) return null;
+        if (r == null) return null;
 
         r.setOmiljeni(!r.getOmiljeni());
         receptRepository.save(r);
@@ -58,10 +73,9 @@ public class ReceptService {
         if (r == null) {
             return null;
         }
-        r.setNaslov(receptDTO.getNaslov());
-        r.setPriprema(receptDTO.getPriprema());
-        r.setSastojci(receptDTO.getSastojci());
-        r.setFotografija(receptDTO.getFotografija());
+        r.setNaslov(receptDTO.getRecept().getNaslov());
+        r.setPriprema(receptDTO.getRecept().getPriprema());
+        r.setFotografija(receptDTO.getRecept().getFotografija());
         return receptRepository.save(r);
     }
 

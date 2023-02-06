@@ -5,9 +5,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sarlota.entities.Namirnica;
+import sarlota.entities.NamirnicaUReceptu;
 import sarlota.entities.Recept;
 import sarlota.entities.Zaposleni;
+import sarlota.entities.dto.NamirnicaUReceptuDTO;
 import sarlota.entities.dto.ReceptDTO;
+import sarlota.repositories.NamirnicaUReceptuRepository;
+import sarlota.services.NamirnicaService;
 import sarlota.services.ReceptService;
 
 import java.util.List;
@@ -17,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReceptController {
     private final ReceptService receptService;
+    private  final NamirnicaUReceptuRepository namirnicaUReceptuRepository;
 
     @GetMapping("/toggle-favorite/{id}")
     public ResponseEntity<?> toggleFavorite(@PathVariable int id) {
@@ -30,17 +36,20 @@ public class ReceptController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Recept> getOne(@PathVariable int id) {
-        Recept r = receptService.getOne(id);
+    public ResponseEntity<ReceptDTO> getOne(@PathVariable int id) {
+        ReceptDTO r = receptService.getOne(id);
         return r == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build() : ResponseEntity.ok(r);
     }
 
     @PostMapping
     public ResponseEntity<Recept> add(@RequestBody ReceptDTO receptDTO) {
         try {
-            Recept r = receptService.add(receptDTO);
-            return r == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build() : ResponseEntity.ok(r);
-        } catch (Exception e) {
+            Recept r = receptService.add(receptDTO.getRecept());
+            for (NamirnicaUReceptuDTO n : receptDTO.getNamirnice()) {
+                namirnicaUReceptuRepository.save(new NamirnicaUReceptu(0, receptDTO.getRecept().getId(),n.getNamirnica().getId(),n.getKolicina()));
+            }
+            return ResponseEntity.ok(r);
+        } catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

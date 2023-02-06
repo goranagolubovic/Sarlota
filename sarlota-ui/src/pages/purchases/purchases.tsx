@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Button, List, Typography } from "antd";
 
 // Service
-import { Nabavka, Namirnice } from "../../api/services/purchases.service";
+import { Nabavka } from "../../api/services/purchases.service";
 
 import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
@@ -50,7 +50,7 @@ const columns: ColumnsType<Nabavka> = [
     sorter: (a, b) => a.cijena - b.cijena,
   },
   {
-    title: "Namirnice",
+    title: "Sirovine",
     key: "namirnice",
     dataIndex: "namirnice",
     render: (_, { namirnice }) => (
@@ -107,7 +107,7 @@ export const PurchasesPage: React.FunctionComponent = () => {
         </Title>
 
         <FoodStuffModal
-          title={"Dodajte novu namirnicu"}
+          title={"Dodajte novu sirovinu"}
           isModalOpen={showModal}
           onModalClose={onModalClose}
         />
@@ -117,7 +117,7 @@ export const PurchasesPage: React.FunctionComponent = () => {
             size="middle"
             onClick={() => setShowModal(true)}
           >
-            Dodaj namirnicu
+            Dodaj sirovinu
           </Button>
           <Button type="primary" size="middle">
             Nova nabavka

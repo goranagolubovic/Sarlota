@@ -8,6 +8,6 @@ import sarlota.entities.Zaposleni;
 import java.util.List;
 
 public interface ReceptRepository extends JpaRepository<Recept, Integer> {
-    @Query(value = "SELECT r FROM Recept r WHERE (r.naslov LIKE ?1 OR r.priprema LIKE ?1 OR r.sastojci LIKE ?1)")
+    @Query(value = "SELECT r FROM Recept r WHERE (r.naslov LIKE ?1 OR r.priprema LIKE ?1)")
     List<Recept> findByKeyword(String keyword);
 }

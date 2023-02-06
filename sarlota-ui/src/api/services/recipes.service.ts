@@ -14,6 +14,25 @@ export interface Recipe {
   omiljeni: boolean;
 }
 
+export interface RecipeResponse {
+  recept: Recipe;
+  namirnice: Namirnice[];
+  trosakIzrade: number;
+}
+
+export interface Namirnice {
+  namirnica: Namirnica;
+  kolicina: number;
+  cijena: number;
+}
+
+export interface Namirnica {
+  id: number;
+  naziv: string;
+  cijenaPoJedinici: number;
+  jedinica: string;
+}
+
 export const fetchRecipes = async () => {
   const response = await get(URL);
   return response;
