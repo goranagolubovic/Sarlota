@@ -152,4 +152,8 @@ public class NarudzbaService {
                 .collect(Collectors.toList());
 
     }
+
+    public Integer count(int brojDana) {
+         return searchByOrderDate( LocalDateTime.now().minusDays(brojDana), LocalDateTime.now()).size();
+    }
 }
