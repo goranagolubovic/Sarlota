@@ -23,5 +23,4 @@ public class NabavkaController {
         return ResponseEntity.ok(nabavkaService.getAll());
     }
 
-
 }
