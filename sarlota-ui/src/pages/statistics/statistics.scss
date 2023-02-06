@@ -1,0 +1,22 @@
+.content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    &__title{
+      margin-right: auto;
+      margin-top: 0;
+    }
+    &__orders{
+        display: flex;
+        justify-content: row;
+    }
+    &__links{
+        padding-top: 2%;
+        padding-bottom: 2%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+  
+}
