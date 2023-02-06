@@ -42,7 +42,15 @@ public class StatistikaService {
             return namirnicaUReceptu.stream().mapToDouble(nu -> {
                 Namirnica nam = namirnicaRepository.findById(nu.getIdNamirnice()).orElse(null);
                 if (nam == null) return 0.0;
-                return nu.getKolicina() * nam.getCijenaPoJedinici();
+                switch(n.getVelicina()){
+                    case "mala":
+                        return nu.getKolicina() * nam.getCijenaPoJedinici();
+                    case "velika":
+                        return 2.0 * nu.getKolicina() * nam.getCijenaPoJedinici();
+                    case "srednja":
+                        return 1.5 * nu.getKolicina() * nam.getCijenaPoJedinici();
+                    default: return 0.0;
+                }
             }).sum();
 
         }).sum();
@@ -65,7 +73,16 @@ public class StatistikaService {
                 return namirnicaUReceptu.stream().mapToDouble(nu -> {
                     Namirnica nam = namirnicaRepository.findById(nu.getIdNamirnice()).orElse(null);
                     if (nam == null) return 0.0;
-                    return nu.getKolicina() * nam.getCijenaPoJedinici();
+                    switch(n.getVelicina()){
+                        case "mala":
+                            return nu.getKolicina() * nam.getCijenaPoJedinici();
+                        case "velika":
+                            return 2.0 * nu.getKolicina() * nam.getCijenaPoJedinici();
+                        case "srednja":
+                            return 1.5 * nu.getKolicina() * nam.getCijenaPoJedinici();
+                        default: return 0.0;
+                    }
+
                 }).sum();
 
             }).sum();
@@ -88,7 +105,15 @@ public class StatistikaService {
                 return namirnicaUReceptu.stream().mapToDouble(nu -> {
                     Namirnica nam = namirnicaRepository.findById(nu.getIdNamirnice()).orElse(null);
                     if (nam == null) return 0.0;
-                    return nu.getKolicina() * nam.getCijenaPoJedinici();
+                    switch(n.getVelicina()){
+                        case "mala":
+                            return nu.getKolicina() * nam.getCijenaPoJedinici();
+                        case "velika":
+                            return 2.0 * nu.getKolicina() * nam.getCijenaPoJedinici();
+                        case "srednja":
+                            return 1.5 * nu.getKolicina() * nam.getCijenaPoJedinici();
+                        default: return 0.0;
+                    }
                 }).sum();
             }).sum();
 
