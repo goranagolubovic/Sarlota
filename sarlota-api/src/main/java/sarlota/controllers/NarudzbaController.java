@@ -1,21 +1,17 @@
 package sarlota.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sarlota.entities.Kontakt;
+
 import sarlota.entities.Narudzba;
-import sarlota.entities.Zaposleni;
-import sarlota.entities.dto.KontaktDTO;
 import sarlota.entities.dto.NarudzbaDTO;
-import sarlota.services.KontaktService;
 import sarlota.services.NarudzbaService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @RestController

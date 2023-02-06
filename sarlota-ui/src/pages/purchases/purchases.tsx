@@ -99,7 +99,7 @@ export const PurchasesPage: React.FunctionComponent = () => {
     user?.tipZaposlenog === "POSLASTICAR"
       ? fetchPurchases()
       : navigate("/admin/pregled");
-  }, [fetchPurchases]);
+  }, [fetchPurchases, showAddModal]);
 
   return (
     <div className="purchases">

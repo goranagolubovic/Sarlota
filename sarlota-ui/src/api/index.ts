@@ -25,6 +25,7 @@ import {
   fetchPurchases,
   addFoodStuff,
   fetchIngredients,
+  addPurchase,
 } from "./services/purchases.service";
 import {
   fetchRecipes,
@@ -79,5 +80,6 @@ export const api = {
     fetchPurchases,
     addFoodStuff,
     fetchIngredients,
+    addPurchase,
   },
 };

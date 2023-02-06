@@ -10,9 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class NabavkaDTO {
-    private Integer id;
+public class NabavkaAddRequest {
     private LocalDateTime datum;
-    private double cijena;
-    private List<NabavljenaNamirnicaDTO> namirnice;
+    private List<NabavkaNamirniceDTO> namirnice;
 }

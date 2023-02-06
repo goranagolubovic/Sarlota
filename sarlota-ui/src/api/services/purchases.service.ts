@@ -29,6 +29,11 @@ export const fetchPurchases = async () => {
   return response;
 };
 
+export const addPurchase = async (body: string) => {
+  const response = await post(URL, { headers, body });
+  return response;
+};
+
 export const addFoodStuff = async (body: Namirnica) => {
   const response = await post(BACKEND_URL + "namirnice", {
     headers,

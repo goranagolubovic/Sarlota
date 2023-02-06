@@ -53,10 +53,10 @@ export const PurchaseModal: React.FunctionComponent<PurchaseModalProps> = ({
     );
   };
 
-  const onFinish = (values: PurchaseI) => {
-    console.log(values);
-
+  const onFinish = async (values: PurchaseI) => {
+    await api.nabavke.addPurchase(JSON.stringify(values));
     form.resetFields();
+    handleCancel();
   };
 
   useEffect(() => {
@@ -85,9 +85,9 @@ export const PurchaseModal: React.FunctionComponent<PurchaseModalProps> = ({
         style={{ maxWidth: 600 }}
         autoComplete="off"
       >
-        <Form.Item name="datumNabavke">
-          <Input type="date" style={{ width: "50%" }} />
-          {/* <DatePicker format={"dd/mm/yyyy"} /> */}
+        <Form.Item name="datum">
+          {/* <Input type="date" style={{ width: "50%" }} /> */}
+          <DatePicker format={"dd/mm/yyyy"} />
         </Form.Item>
         <Divider />
         <Form.List name="namirnice">

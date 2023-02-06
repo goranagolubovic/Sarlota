@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import sarlota.entities.Nabavka;
 import sarlota.entities.NabavkaNamirnice;
 import sarlota.entities.Namirnica;
+import sarlota.entities.dto.NabavkaAddRequest;
 import sarlota.entities.dto.NabavkaDTO;
+import sarlota.entities.dto.NabavkaNamirniceDTO;
 import sarlota.entities.dto.NabavljenaNamirnicaDTO;
 import sarlota.repositories.NabavkaNamirniceRepository;
 import sarlota.repositories.NabavkaRepository;
@@ -42,5 +44,30 @@ public class NabavkaService {
             result.add(new NabavkaDTO(nabavka.getId(),nabavka.getDatum(),ukupnaCijena,nabavljeneNamirnice));
         }
         return result;
+    }
+
+
+    public Nabavka add(NabavkaAddRequest nabavkaAddRequest) {
+        Nabavka nabavka = new Nabavka();
+
+        List<NabavkaNamirniceDTO> namirnice =  nabavkaAddRequest.getNamirnice();
+
+        double cijena=0;
+        for(NabavkaNamirniceDTO n : namirnice) {
+            Namirnica namirnica = namirnicaRepository.getById(n.getIdNamirnice());
+            cijena+= namirnica.getCijenaPoJedinici() * n.getKolicina();
+        }
+
+        nabavka.setId(0);
+        nabavka.setCijena(cijena);
+        nabavka.setDatum(nabavkaAddRequest.getDatum());
+
+        nabavka = nabavkaRepository.save(nabavka);
+
+        for(NabavkaNamirniceDTO n : namirnice) {
+            nabavkaNamirniceRepository.save(new NabavkaNamirnice(0,nabavka.getId(),n.getIdNamirnice(),n.getKolicina()));
+        }
+
+        return nabavka;
     }
 }
