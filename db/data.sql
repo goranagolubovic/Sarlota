@@ -23,10 +23,17 @@ INSERT INTO db_sarlota.namirnica (id, naziv, cijena_po_jedinici, jedinica) VALUE
 
 INSERT INTO db_sarlota.nabavka (id, datum, cijena) VALUES (1, '2023-02-04', 30);
 INSERT INTO db_sarlota.nabavka (id, datum, cijena) VALUES (2, '2023-02-02', 20);
+INSERT INTO db_sarlota.nabavka (id, datum, cijena) VALUES (5, '2023-02-05', 10);
+INSERT INTO db_sarlota.nabavka (id, datum, cijena) VALUES (6, '2023-02-02', 318);
+
 
 INSERT INTO db_sarlota.nabavka_namirnice (nabavka_id, namirnica_id, id, kolicina) VALUES (1, 1, 1, 1.00);
 INSERT INTO db_sarlota.nabavka_namirnice (nabavka_id, namirnica_id, id, kolicina) VALUES (1, 2, 2, 2.00);
 INSERT INTO db_sarlota.nabavka_namirnice (nabavka_id, namirnica_id, id, kolicina) VALUES (2, 3, 4, 4.00);
+INSERT INTO db_sarlota.nabavka_namirnice (nabavka_id, namirnica_id, id, kolicina) VALUES (5, 1, 7, 5.00);
+INSERT INTO db_sarlota.nabavka_namirnice (nabavka_id, namirnica_id, id, kolicina) VALUES (6, 1, 8, 4.00);
+INSERT INTO db_sarlota.nabavka_namirnice (nabavka_id, namirnica_id, id, kolicina) VALUES (6, 2, 9, 10.00);
+INSERT INTO db_sarlota.nabavka_namirnice (nabavka_id, namirnica_id, id, kolicina) VALUES (6, 3, 10, 5.00);
 
 INSERT INTO db_sarlota.namirnica_u_receptu (recept_id, namirnica_id, id, kolicina) VALUES (1, 1, 1, 2.00);
 INSERT INTO db_sarlota.namirnica_u_receptu (recept_id, namirnica_id, id, kolicina) VALUES (1, 2, 2, 2.00);
