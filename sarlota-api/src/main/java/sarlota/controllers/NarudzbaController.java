@@ -25,7 +25,7 @@ public class NarudzbaController {
     private final NarudzbaService narudzbaService;
 
     @GetMapping
-    public ResponseEntity<List<Narudzba>> getAll() {
+    public ResponseEntity<List<NarudzbaDTO>> getAll() {
         return ResponseEntity.ok(narudzbaService.getAll());
     }
 
@@ -71,16 +71,16 @@ public class NarudzbaController {
     }
 
     @GetMapping("/search/narucilac")
-    ResponseEntity<List<Narudzba>> search(@RequestParam(value = "query") String keyword) {
+    ResponseEntity<List<NarudzbaDTO>> search(@RequestParam(value = "query") String keyword) {
         if (keyword.length() == 0) return ResponseEntity.ok(narudzbaService.getAll());
         else return ResponseEntity.ok(narudzbaService.search(keyword));
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Narudzba> getOne(@PathVariable int id) {
-        Narudzba narudzba = narudzbaService.getOne(id);
-        return narudzba == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build() : ResponseEntity.ok(narudzba);
+    public ResponseEntity<NarudzbaDTO> getOne(@PathVariable int id) {
+        NarudzbaDTO narudzbaDTO = narudzbaService.getOne(id);
+        return narudzbaDTO == null ? ResponseEntity.status(HttpStatus.NOT_FOUND).build() : ResponseEntity.ok(narudzbaDTO);
     }
 
     @PostMapping

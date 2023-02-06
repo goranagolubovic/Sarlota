@@ -23,6 +23,9 @@ export const OrderDetails: React.FunctionComponent<OrderDetailsProps> = ({
       <p>{order?.naziv}</p>
       <p>Broj komada:{order?.brojKomada}</p>
       <p>Napomene:{order?.napomene}</p>
+      <p>Cijena:{order?.cijena}</p>
+      <p>Veličina:{order?.velicina}</p>
+      <p>Recept:{order?.nazivRecepta}</p>
       <p>Ime narucioca:{order?.imeNarucioca}</p>
       <p>Kontakt:{order?.kontakt}</p>
       <p>Adresa:{order?.adresa}</p>

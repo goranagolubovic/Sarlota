@@ -14,8 +14,6 @@ public class Recept {
     private String priprema;
     @Basic@Column(name = "naslov")
     private String naslov;
-    @Basic@Column(name = "sastojci")
-    private String sastojci;
     @Column (name = "fotografija")
     private String fotografija;
     @Column (name = "omiljeni")

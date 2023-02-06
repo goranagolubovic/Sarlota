@@ -4,6 +4,7 @@ import {
   Form,
   Input,
   Modal,
+  Select,
   Upload,
   UploadFile,
   UploadProps,
@@ -17,6 +18,8 @@ import "./order-modal.scss";
 
 // Rest
 import { useEffect, useState } from "react";
+import { element } from "prop-types";
+import { Recipe } from "../../api/services/recipes.service";
 
 interface OrderModalProps {
   title?: string;
@@ -33,6 +36,8 @@ export const OrderModal: React.FunctionComponent<OrderModalProps> = ({
 }) => {
   const [form] = Form.useForm<Orders>();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [totalPrice, setTotalPrice] = useState(0.0);
+  const [recipesTitle, setRecipesTitle] = useState([]);
 
   const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
     setFileList(newFileList);
@@ -68,8 +73,24 @@ export const OrderModal: React.FunctionComponent<OrderModalProps> = ({
     onModalClose();
   };
 
+  const fetchRecipes = async () => {
+    const response = await api.recepti.fetchRecipes();
+    const data = await response.json();
+    const titleArray = data.map((elem: any) => ({
+      value: elem.naslov,
+      label: elem.naslov,
+    }));
+    console.log(titleArray);
+    setRecipesTitle(titleArray);
+  };
+
+  useEffect(() => {
+    fetchRecipes();
+  }, []);
+
   useEffect(() => {
     if (order) {
+      console.log(JSON.stringify(order));
       form.setFieldsValue({
         datumIsporuke: new Date(order.datumIsporuke).toLocaleDateString(
           "fr-CA",
@@ -87,6 +108,9 @@ export const OrderModal: React.FunctionComponent<OrderModalProps> = ({
         brojKomada: order.brojKomada,
         slika: order.slika,
         napomene: order.napomene,
+        velicina: order.velicina,
+        nazivRecepta: order.nazivRecepta,
+        cijena: order.cijena,
       });
       setFileList([
         {
@@ -171,6 +195,37 @@ export const OrderModal: React.FunctionComponent<OrderModalProps> = ({
           rules={[{ required: true, message: "Polje je obavezno!" }]}
         >
           <Input name="brojKomada" type="number" />
+        </Form.Item>
+        <Form.Item
+          label="Velicina"
+          name="velicina"
+          rules={[{ required: true, message: "Polje je obavezno!" }]}
+        >
+          <Select
+            onChange={(value) => form.setFieldValue("velicina", value)}
+            options={[
+              { value: "Mala", label: "Mala" },
+              { value: "Srednja", label: "Srednja" },
+              { value: "Velika", label: "Velika" },
+            ]}
+          />
+        </Form.Item>
+        <Form.Item
+          label="Naziv recepta"
+          name="nazivRecepta"
+          rules={[{ required: true, message: "Polje je obavezno!" }]}
+        >
+          <Select
+            onChange={(value) => form.setFieldValue("nazivRecepta", value)}
+            options={recipesTitle}
+          />
+        </Form.Item>
+        <Form.Item
+          label="Cijena"
+          name="cijena"
+          rules={[{ required: true, message: "Polje je obavezno!" }]}
+        >
+          <Input name="cijena" value={totalPrice} />
         </Form.Item>
         <Form.Item
           label="Ime naručioca"
