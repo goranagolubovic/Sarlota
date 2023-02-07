@@ -7,6 +7,7 @@ import sarlota.entities.NamirnicaUReceptu;
 import sarlota.entities.Narudzba;
 import sarlota.entities.Recept;
 import sarlota.entities.dto.Potrosnja;
+import sarlota.entities.dto.ReceptDTO;
 import sarlota.entities.dto.Zarada;
 import sarlota.repositories.NamirnicaRepository;
 import sarlota.repositories.NamirnicaUReceptuRepository;
@@ -16,7 +17,9 @@ import sarlota.repositories.ReceptRepository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,103 +28,75 @@ import java.util.stream.Collectors;
 public class StatistikaService {
 
     private final NarudzbaRepository narudzbaRepository;
-    private final ReceptRepository receptRepository;
-    private final NamirnicaRepository namirnicaRepository;
-    private final NamirnicaUReceptuRepository namirnicaUReceptuRepository;
 
+    private final ReceptService receptService;
 
-    public Double profit() throws Exception {
-        List<Narudzba> narudzbe = narudzbaRepository.findAll();
-        Double ukupnaPotrosnja = null;
-        Double ukupnaZarada = narudzbe.stream().mapToDouble(n -> n.getCijena()).sum();
-
-        ukupnaPotrosnja = narudzbe.stream().mapToDouble(n -> {
-            Recept r = receptRepository.findById(n.getIdRecepta()).orElse(null);
-            if (r == null) return 0.0;
-            List<NamirnicaUReceptu> namirnicaUReceptu = namirnicaUReceptuRepository.findByIdRecepta(r.getId());
-            return namirnicaUReceptu.stream().mapToDouble(nu -> {
-                Namirnica nam = namirnicaRepository.findById(nu.getIdNamirnice()).orElse(null);
-                if (nam == null) return 0.0;
-                switch(n.getVelicina()){
-                    case "mala":
-                        return nu.getKolicina() * nam.getCijenaPoJedinici();
-                    case "velika":
-                        return 2.0 * nu.getKolicina() * nam.getCijenaPoJedinici();
-                    case "srednja":
-                        return 1.5 * nu.getKolicina() * nam.getCijenaPoJedinici();
-                    default: return 0.0;
-                }
-            }).sum();
-
-        }).sum();
-
-        if (ukupnaZarada == 0.0) throw new Exception();
-        return ukupnaZarada - ukupnaPotrosnja;
+    public double profit(int days) throws Exception {
+      List<Zarada> zarada = profitLastNDays(days);
+      return zarada.stream().mapToDouble(Zarada::getZarada).sum();
     }
 
 
     public List<Potrosnja> expensesLastNDays(int brojDana) {
         List<Narudzba> narudzbe = narudzbaRepository.findAll();
-        List<Potrosnja> potrosnje = new ArrayList<Potrosnja>();
+        List<Potrosnja> potrosnje = new ArrayList<>();
 
-        for (int i = 0; i < brojDana; ++i) {
-            LocalDateTime ld = LocalDate.now().minusDays(i).atStartOfDay();
-            Double potrosnjaZaDan = narudzbe.stream().filter(n -> n.getDatumIsporuke().compareTo(ld) >= 0 && n.getDatumIsporuke().compareTo(ld.plusDays(1)) < 0).mapToDouble(n -> {
-                Recept r = receptRepository.findById(n.getIdRecepta()).orElse(null);
-                if (r == null) return 0.0;
-                List<NamirnicaUReceptu> namirnicaUReceptu = namirnicaUReceptuRepository.findByIdRecepta(r.getId());
-                return namirnicaUReceptu.stream().mapToDouble(nu -> {
-                    Namirnica nam = namirnicaRepository.findById(nu.getIdNamirnice()).orElse(null);
-                    if (nam == null) return 0.0;
-                    switch(n.getVelicina()){
-                        case "mala":
-                            return nu.getKolicina() * nam.getCijenaPoJedinici();
-                        case "velika":
-                            return 2.0 * nu.getKolicina() * nam.getCijenaPoJedinici();
-                        case "srednja":
-                            return 1.5 * nu.getKolicina() * nam.getCijenaPoJedinici();
-                        default: return 0.0;
-                    }
+        LocalDate today = LocalDate.now().plusDays(1);
+        LocalDate end = today.minusDays(brojDana);
 
-                }).sum();
+        List<LocalDate> datumi = end.datesUntil(today).collect(Collectors.toList());
 
-            }).sum();
-            potrosnje.add(new Potrosnja(ld.toLocalDate(), potrosnjaZaDan));
+        for(LocalDate dan : datumi) {
+            List<Narudzba> narudzbePoDanu = narudzbe.stream().filter(e -> e.getDatumIsporuke().toLocalDate().isEqual(dan)).collect(Collectors.toList());
+            double potrosnja = 0;
+
+            for(Narudzba n : narudzbePoDanu) {
+                ReceptDTO receptDTO = receptService.getOne(n.getIdRecepta());
+                double trosak = receptDTO.getTrosakIzrade();
+
+                if("Srednja".equals(n.getVelicina())){
+                    trosak*=1.5;
+                } else if ("Velika".equals(n.getVelicina())){
+                    trosak*=2;
+                }
+                potrosnja+=trosak;
+            }
+
+            potrosnje.add(new Potrosnja(dan,potrosnja));
         }
+
         return potrosnje;
     }
 
     public List<Zarada> profitLastNDays(int brojDana) {
+        List<Zarada> zarade = new ArrayList<>();
         List<Narudzba> narudzbe = narudzbaRepository.findAll();
-        List<Zarada> zarade = new ArrayList<Zarada>();
-        for (int i = 0; i < brojDana; ++i) {
-            LocalDateTime ld = LocalDate.now().minusDays(i).atStartOfDay();
 
-            Double troskovi = narudzbe.stream().filter(n -> n.getDatumIsporuke().compareTo(ld) >= 0 && n.getDatumIsporuke().compareTo(ld.plusDays(1)) < 0).mapToDouble(n -> {
-                Recept r = receptRepository.findById(n.getIdRecepta()).orElse(null);
-                if (r == null) return 0.0;
-                List<NamirnicaUReceptu> namirnicaUReceptu = namirnicaUReceptuRepository.findByIdRecepta(r.getId());
+        LocalDate today = LocalDate.now().plusDays(1);
+        LocalDate end = today.minusDays(brojDana);
 
-                return namirnicaUReceptu.stream().mapToDouble(nu -> {
-                    Namirnica nam = namirnicaRepository.findById(nu.getIdNamirnice()).orElse(null);
-                    if (nam == null) return 0.0;
-                    switch(n.getVelicina()){
-                        case "mala":
-                            return nu.getKolicina() * nam.getCijenaPoJedinici();
-                        case "velika":
-                            return 2.0 * nu.getKolicina() * nam.getCijenaPoJedinici();
-                        case "srednja":
-                            return 1.5 * nu.getKolicina() * nam.getCijenaPoJedinici();
-                        default: return 0.0;
-                    }
-                }).sum();
-            }).sum();
+        List<LocalDate> datumi = end.datesUntil(today).collect(Collectors.toList());
 
-            Double ukupnaZarada = narudzbe.stream().filter(n -> n.getDatumIsporuke().compareTo(ld) >= 0 && n.getDatumIsporuke().compareTo(ld.plusDays(1)) < 0).
-                    mapToDouble(n -> n.getCijena()).sum();
+        for(LocalDate dan : datumi) {
+            List<Narudzba> narudzbePoDanu = narudzbe.stream().filter(e -> e.getDatumIsporuke().toLocalDate().isEqual(dan)).collect(Collectors.toList());
+            double zarada = 0;
 
-            zarade.add(new Zarada(ld.toLocalDate(), ukupnaZarada - troskovi));
+            for(Narudzba n : narudzbePoDanu) {
+                ReceptDTO receptDTO = receptService.getOne(n.getIdRecepta());
+                double trosak = receptDTO.getTrosakIzrade();
+
+                if("Srednja".equals(n.getVelicina())){
+                    trosak*=1.5;
+                } else if ("Velika".equals(n.getVelicina())){
+                    trosak*=2;
+                }
+
+                zarada+=(n.getCijena()-trosak);
+            }
+
+            zarade.add(new Zarada(dan,zarada));
         }
+
         return zarade;
     }
 }

@@ -11,7 +11,7 @@ import {
   editEmployee,
   fetchEmployees,
   searchEmployees,
-  updateEmployee
+  updateEmployee,
 } from "./services/employee.service";
 import {
   fetchOrders,
@@ -21,7 +21,12 @@ import {
   searchOrders,
   searchOrdersByPersonName,
 } from "./services/orders.service";
-import { fetchPurchases, addFoodStuff } from "./services/purchases.service";
+import {
+  fetchPurchases,
+  addFoodStuff,
+  fetchIngredients,
+  addPurchase,
+} from "./services/purchases.service";
 import {
   fetchRecipes,
   fetchRecipe,
@@ -59,7 +64,7 @@ export const api = {
     deleteEmployee,
     editEmployee,
     searchEmployees,
-    updateEmployee
+    updateEmployee,
   },
   recepti: {
     fetchRecipes,
@@ -80,7 +85,9 @@ export const api = {
   },
   nabavke: {
     fetchPurchases,
-    addFoodStuff
+    addFoodStuff,
+    fetchIngredients,
+    addPurchase,
   },
   statistike: {
     getIncome,

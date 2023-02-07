@@ -18,6 +18,7 @@ import { useNavigate } from "react-router";
 import { useAuth } from "../../contexts/user.context";
 import { PDFExport } from "@progress/kendo-react-pdf";
 import { ExportOutlined } from "@ant-design/icons";
+import { PurchaseModal } from "../../features/purchase-modal";
 
 const { Title } = Typography;
 const Moment = require("moment");
@@ -81,6 +82,7 @@ export const PurchasesPage: React.FunctionComponent = () => {
   const { user } = useAuth();
 
   const [purchases, setPurchases] = useState<Nabavka[]>([]);
+  const [showAddModal, setShowAddModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   const pdfExportComponent = useRef<PDFExport>(null);
@@ -107,11 +109,18 @@ export const PurchasesPage: React.FunctionComponent = () => {
     user?.tipZaposlenog === "POSLASTICAR"
       ? fetchPurchases()
       : navigate("/admin/pregled");
-  }, [fetchPurchases]);
+  }, [fetchPurchases, showAddModal]);
 
   return (
     <PDFExport ref={pdfExportComponent} paperSize="A1" landscape>
       <div className="purchases">
+        <PurchaseModal
+          open={showAddModal}
+          handleCancel={() => {
+            setShowAddModal(false);
+          }}
+        />
+
         <div className="purchases__header">
           <Title level={3} style={{ marginTop: 0 }}>
             Nabavke

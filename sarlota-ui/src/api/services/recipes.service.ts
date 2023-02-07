@@ -43,10 +43,10 @@ export const fetchRecipe = async (id: number) => {
   return response;
 };
 
-export const addRecipe = async (body: Recipe) => {
+export const addRecipe = async (body: string) => {
   const response = await post(URL, {
     headers,
-    body: JSON.stringify(body),
+    body,
   });
   return response;
 };

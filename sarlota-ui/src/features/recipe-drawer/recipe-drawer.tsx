@@ -8,12 +8,15 @@ import {
   Form,
   Input,
   Row,
+  Select,
   Space,
 } from "antd";
+import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+
 import Upload, { UploadFile, UploadProps } from "antd/es/upload";
 
 // Services
-import { Recipe } from "../../api/services/recipes.service";
+import { Namirnica, Recipe } from "../../api/services/recipes.service";
 import { api } from "../../api";
 
 interface RecipeDrawerProps extends DrawerProps {
@@ -29,30 +32,55 @@ export const RecipeDrawer: React.FunctionComponent<RecipeDrawerProps> = ({
   const [form] = Form.useForm<Recipe>();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
+  const [selectOptions, setSelectOptions] = useState([]);
+
+  const fetchNamirnice = async () => {
+    const response = await api.nabavke.fetchIngredients();
+    const data = await response.json();
+    setSelectOptions(
+      data.map((n: Namirnica) => {
+        return {
+          value: n.id,
+          label: n.naziv,
+        };
+      })
+    );
+  };
+
   const onSubmit = async (values: Recipe) => {
     const data = { ...values, fotografija: fileList[0]?.thumbUrl || "" };
     let response;
 
-    if (recipe) {
-      response = await api.recepti.editRecipe(recipe.id, data);
-    } else {
-      response = await api.recepti.addRecipe(data);
-    }
-
-    if (response.status === 200) {
-      form.resetFields();
-      setFileList([]);
-      onClose();
-    }
+    response = await api.recepti.addRecipe(JSON.stringify(data));
 
     form.resetFields();
     setFileList([]);
     onClose();
+
+    // if (recipe) {
+    //   response = await api.recepti.editRecipe(recipe.id, data);
+    // } else {
+    //   response = await api.recepti.addRecipe(data);
+    // }
+
+    // if (response.status === 200) {
+    //   form.resetFields();
+    //   setFileList([]);
+    //   onClose();
+    // }
+
+    // form.resetFields();
+    // setFileList([]);
+    // onClose();
   };
 
   const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
     setFileList(newFileList);
   };
+
+  useEffect(() => {
+    fetchNamirnice();
+  }, []);
 
   useEffect(() => {
     if (recipe) {
@@ -122,22 +150,6 @@ export const RecipeDrawer: React.FunctionComponent<RecipeDrawerProps> = ({
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item
-              name="sastojci"
-              label="Sastojci"
-              rules={[
-                {
-                  required: true,
-                  message: "Polje je obavezno",
-                },
-              ]}
-            >
-              <Input.TextArea rows={4} placeholder="Sastojci" />
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={16}>
-          <Col span={24}>
-            <Form.Item
               name="priprema"
               label="Priprema"
               rules={[
@@ -149,6 +161,45 @@ export const RecipeDrawer: React.FunctionComponent<RecipeDrawerProps> = ({
             >
               <Input.TextArea rows={6} placeholder="Priprema" />
             </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col span={24}>
+            <Form.List name="namirnice">
+              {(fields, { add, remove }) => (
+                <>
+                  {fields.map(({ key, name, ...restField }) => (
+                    <Space
+                      key={key}
+                      style={{ display: "flex", marginBottom: 8 }}
+                      align="baseline"
+                    >
+                      <Form.Item {...restField} name={[name, "idNamirnice"]}>
+                        <Select
+                          placeholder="Sirovina"
+                          style={{ width: 120 }}
+                          options={selectOptions}
+                        />
+                      </Form.Item>
+                      <Form.Item {...restField} name={[name, "kolicina"]}>
+                        <Input placeholder="Kolicina" />
+                      </Form.Item>
+                      <MinusCircleOutlined onClick={() => remove(name)} />
+                    </Space>
+                  ))}
+                  <Form.Item>
+                    <Button
+                      type="dashed"
+                      onClick={() => add()}
+                      block
+                      icon={<PlusOutlined />}
+                    >
+                      Dodajte sastojak
+                    </Button>
+                  </Form.Item>
+                </>
+              )}
+            </Form.List>
           </Col>
         </Row>
       </Form>

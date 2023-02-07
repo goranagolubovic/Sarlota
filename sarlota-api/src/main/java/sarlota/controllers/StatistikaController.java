@@ -38,9 +38,9 @@ public class StatistikaController {
         }
     }
     @GetMapping("/ukupnaZarada")
-    ResponseEntity<Double> profit(){
+    ResponseEntity<Double> profit(@RequestParam(value = "query") int days){
         try{
-            return ResponseEntity.ok(statistikaService.profit());
+            return ResponseEntity.ok(statistikaService.profit(days));
         }
         catch(Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -67,9 +67,8 @@ public class StatistikaController {
             return ResponseEntity.ok(statistikaService.expensesLastNDays(brojDana));
         }
         catch(Exception e){
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-
-
 }

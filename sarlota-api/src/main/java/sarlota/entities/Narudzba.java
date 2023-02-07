@@ -47,9 +47,6 @@ public class Narudzba {
     @Basic
     @Column(name = "ime_narucioca")
     private String imeNarucioca;
-    @JsonIgnore
-    @OneToMany(mappedBy = "narudzbaByNarudzbaId")
-    private List<Proizvod> proizvodsById;
     @Basic
     @Column(name = "velicina")
     private String velicina;
@@ -57,7 +54,7 @@ public class Narudzba {
     @Column(name = "cijena")
     private Double cijena;
     @Basic
-    @Column(name = "idRecepta")
+    @Column(name = "id_recepta")
     private Integer idRecepta;
 
 

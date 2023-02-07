@@ -80,7 +80,6 @@ export const OrderModal: React.FunctionComponent<OrderModalProps> = ({
       value: elem.naslov,
       label: elem.naslov,
     }));
-    console.log(titleArray);
     setRecipesTitle(titleArray);
   };
 
