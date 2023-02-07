@@ -118,7 +118,7 @@ export const AdminLayout: React.FunctionComponent = () => {
           style={{ paddingBlock: "10px", background: colorBgContainer }}
         >
           <div>
-            <strong>Welcome,</strong> {user?.korisnickoIme}
+            <strong>Dobrodošli,</strong> {user?.korisnickoIme}
           </div>
 
           <div className="admin-header__avatar">

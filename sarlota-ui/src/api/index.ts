@@ -37,6 +37,13 @@ import {
   toggleFavorite,
 } from "./services/recipes.service";
 
+import {
+  getTotalIncome,
+  getNumOfOrders,
+  getExpenditure,
+  getIncome
+} from "./services/statistics.service";
+
 import { login, signUp } from "./services/users.service";
 
 export const api = {
@@ -82,4 +89,10 @@ export const api = {
     fetchIngredients,
     addPurchase,
   },
+  statistike: {
+    getIncome,
+    getExpenditure,
+    getTotalIncome,
+    getNumOfOrders
+  }
 };

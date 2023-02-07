@@ -1,5 +1,5 @@
 // Libs
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, List, Typography } from "antd";
 
 // Service
@@ -16,6 +16,8 @@ import moment from "moment";
 import { FoodStuffModal } from "../../features/foodstuff-modal/foodstuff-modal";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../contexts/user.context";
+import { PDFExport } from "@progress/kendo-react-pdf";
+import { ExportOutlined } from "@ant-design/icons";
 import { PurchaseModal } from "../../features/purchase-modal";
 
 const { Title } = Typography;
@@ -83,6 +85,8 @@ export const PurchasesPage: React.FunctionComponent = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
+  const pdfExportComponent = useRef<PDFExport>(null);
+
   const fetchPurchases = useCallback(async () => {
     const response = await api.nabavke.fetchPurchases();
     if (response.status === 200) {
@@ -95,6 +99,12 @@ export const PurchasesPage: React.FunctionComponent = () => {
     setShowModal(false);
   };
 
+  const exportPurchases = () => {
+    if (pdfExportComponent.current) {
+      pdfExportComponent.current.save();
+    }
+  };
+
   useEffect(() => {
     user?.tipZaposlenog === "POSLASTICAR"
       ? fetchPurchases()
@@ -102,42 +112,47 @@ export const PurchasesPage: React.FunctionComponent = () => {
   }, [fetchPurchases, showAddModal]);
 
   return (
-    <div className="purchases">
-      <PurchaseModal
-        open={showAddModal}
-        handleCancel={() => {
-          setShowAddModal(false);
-        }}
-      />
-
-      <div className="purchases__header">
-        <Title level={3} style={{ marginTop: 0 }}>
-          Nabavke
-        </Title>
-
-        <FoodStuffModal
-          title={"Dodajte novu sirovinu"}
-          isModalOpen={showModal}
-          onModalClose={onModalClose}
+    <PDFExport ref={pdfExportComponent} paperSize="A1" landscape>
+      <div className="purchases">
+        <PurchaseModal
+          open={showAddModal}
+          handleCancel={() => {
+            setShowAddModal(false);
+          }}
         />
-        <div className="purchases__header__actions">
-          <Button
-            type="default"
-            size="middle"
-            onClick={() => setShowModal(true)}
-          >
-            Dodaj sirovinu
-          </Button>
-          <Button
-            type="primary"
-            size="middle"
-            onClick={() => setShowAddModal(true)}
-          >
-            Nova nabavka
-          </Button>
+
+        <div className="purchases__header">
+          <Title level={3} style={{ marginTop: 0 }}>
+            Nabavke
+          </Title>
+
+          <FoodStuffModal
+            title={"Dodajte novu sirovinu"}
+            isModalOpen={showModal}
+            onModalClose={onModalClose}
+          />
+          <div className="purchases__header__actions">
+            <Button
+              type="default"
+              size="middle"
+              onClick={() => setShowModal(true)}
+            >
+              Dodaj sirovinu
+            </Button>
+            <Button type="primary" size="middle">
+              Nova nabavka
+            </Button>
+            <Button
+              type="primary"
+              onClick={exportPurchases}
+              icon={<ExportOutlined />}
+            >
+              Eksportuj
+            </Button>
+          </div>
         </div>
+        <Table dataSource={purchases} columns={columns} />
       </div>
-      <Table dataSource={purchases} columns={columns} />
-    </div>
+    </PDFExport>
   );
 };
