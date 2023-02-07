@@ -72,7 +72,6 @@ public class NarudzbaService {
                 narudzbaDTO.getKontakt(),
                 narudzbaDTO.getAdresa(),
                 narudzbaDTO.getImeNarucioca(),
-                null,
                 narudzbaDTO.getVelicina(),
                 narudzbaDTO.getCijena(),
                 findIdForRecept(narudzbaDTO.getNazivRecepta())

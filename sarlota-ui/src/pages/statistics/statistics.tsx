@@ -134,15 +134,16 @@ export const StatisticsPage: React.FunctionComponent = () => {
             width={1007}
             height={270}
             color="#3861ED"
-          ></AreaChartComponent>
+          />
           {/* {numOfDays === "1" && (
           <PieChartComponent key={"zarada"} data={data}></PieChartComponent>
         )} */}
+
           <StatisticCard
-            title={"Broj narudzbi"}
-            value={numOfOrders}
-            precision={0}
-          ></StatisticCard>
+            title={"Ukupna zarada [KM]"}
+            value={totalIncome}
+            precision={2}
+          />
         </div>
         <div className="content__orders">
           <AreaChartComponent
@@ -155,10 +156,10 @@ export const StatisticsPage: React.FunctionComponent = () => {
             color="#3861ED"
           ></AreaChartComponent>
           <StatisticCard
-            title={"Ukupna zarada"}
-            value={totalIncome}
-            precision={2}
-          ></StatisticCard>
+            title={"Broj narudzbi"}
+            value={numOfOrders}
+            precision={0}
+          />
         </div>
       </div>
     </PDFExport>

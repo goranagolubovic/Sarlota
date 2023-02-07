@@ -9,5 +9,5 @@ import java.time.LocalDate;
 @Data
 public class Potrosnja {
     LocalDate datum;
-    Double potrosnja;
+    double potrosnja;
 }
