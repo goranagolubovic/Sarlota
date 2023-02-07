@@ -8,7 +8,7 @@ const PieChartComponent = ({ data }: PieChartComponentProps) => {
   return (
     <PieChart width={400} height={400}>
       <Pie
-        dataKey="value"
+        dataKey="zarada"
         startAngle={180}
         endAngle={0}
         data={data}

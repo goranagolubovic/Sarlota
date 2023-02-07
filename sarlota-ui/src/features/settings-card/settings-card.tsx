@@ -112,6 +112,7 @@ const SettingsCard: React.FunctionComponent = () => {
             listType="picture-card"
             fileList={fileList}
             onChange={onChange}
+            beforeUpload={() => false}
             className="card__image"
             disabled={!isEditActive}
           >
