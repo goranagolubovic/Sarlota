@@ -13,7 +13,6 @@ import {
 // Rest
 import { api } from "../../api";
 import {
-  Namirnica,
   Namirnice,
   Recipe,
   RecipeResponse,

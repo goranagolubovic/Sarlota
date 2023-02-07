@@ -60,9 +60,9 @@ export const RecipeCard: React.FunctionComponent<RecipeCardProps> = ({
         <Tooltip title="Recept" placement="bottom">
           <BookOutlined key="details" onClick={onDetails} />
         </Tooltip>,
-        <Tooltip title="Izmjena" placement="bottom">
-          <EditOutlined key="edit" onClick={onEdit} />
-        </Tooltip>,
+        // <Tooltip title="Izmjena" placement="bottom">
+        //   <EditOutlined key="edit" onClick={onEdit} />
+        // </Tooltip>,
         <Tooltip title="Brisanje" placement="bottom">
           <Popconfirm
             title="Obriši recept"

@@ -32,7 +32,7 @@ function App() {
       path: "/admin",
       element: <AdminLayout />,
       children: [
-        { path: "pregled", element: <HomePage /> },
+        { path: "pregled", element: <OrdersPage /> },
         { path: "kalendar", element: <CalendarPage /> },
         { path: "narudzbe", element: <OrdersPage /> },
         { path: "statistika", element: <StatisticsPage /> },
@@ -42,7 +42,7 @@ function App() {
         { path: "recepti/:id", element: <RecipePage /> },
         { path: "kontakti", element: <ContactsPage /> },
         { path: "podesavanja", element: <SettingsPage /> },
-        { path: "*", element: <HomePage /> },
+        { path: "*", element: <OrdersPage /> },
       ],
     },
     { path: "*", element: <LoginPage /> },
