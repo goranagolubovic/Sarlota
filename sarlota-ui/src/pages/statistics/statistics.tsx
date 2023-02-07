@@ -89,7 +89,7 @@ export const StatisticsPage: React.FunctionComponent = () => {
     <PDFExport ref={pdfExportComponent} paperSize="A1" landscape>
       <div className="content">
         <Title level={3} className="content__title">
-          Statistika za {numOfDays} dana
+          Statistika za {numOfDays} {numOfDays === "1" ? "dan" : "dana"}
         </Title>
         <Button
           className="content__report"
@@ -106,7 +106,7 @@ export const StatisticsPage: React.FunctionComponent = () => {
               changeGraphShow("1");
             }}
           >
-            1 day
+            1 dan
           </Button>
           <Button
             type="text"
@@ -114,7 +114,7 @@ export const StatisticsPage: React.FunctionComponent = () => {
               changeGraphShow("7");
             }}
           >
-            7 days
+            7 dana
           </Button>
           <Button
             type="text"
@@ -122,7 +122,7 @@ export const StatisticsPage: React.FunctionComponent = () => {
               changeGraphShow("30");
             }}
           >
-            30 days
+            30 dana
           </Button>
         </div>
         <div className="content__orders">
@@ -139,14 +139,14 @@ export const StatisticsPage: React.FunctionComponent = () => {
           <PieChartComponent key={"zarada"} data={data}></PieChartComponent>
         )} */}
           <StatisticCard
-            title={"Broj narudžbi"}
+            title={"Broj narudzbi"}
             value={numOfOrders}
             precision={0}
           ></StatisticCard>
         </div>
         <div className="content__orders">
           <AreaChartComponent
-            title={"Potrošnja"}
+            title={"Potrosnja"}
             data={expenditureData}
             date={"datum"}
             value={"potrosnja"}
