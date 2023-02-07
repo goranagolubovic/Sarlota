@@ -100,6 +100,7 @@ export const RecipeDrawer: React.FunctionComponent<RecipeDrawerProps> = ({
                 listType="picture-card"
                 fileList={fileList}
                 onChange={onChange}
+                beforeUpload={() => false}
               >
                 {fileList.length < 1 && "+ Upload"}
               </Upload>
