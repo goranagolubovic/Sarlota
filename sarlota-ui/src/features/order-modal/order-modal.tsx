@@ -89,7 +89,6 @@ export const OrderModal: React.FunctionComponent<OrderModalProps> = ({
 
   useEffect(() => {
     if (order) {
-      console.log(JSON.stringify(order));
       form.setFieldsValue({
         datumIsporuke: new Date(order.datumIsporuke).toLocaleDateString(
           "fr-CA",

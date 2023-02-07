@@ -106,7 +106,7 @@ export const RecipeDrawer: React.FunctionComponent<RecipeDrawerProps> = ({
 
   return (
     <Drawer
-      title={recipe ? "Izmijenite recept" : "Dodajte novi recept"}
+      title="Dodajte novi recept"
       width={720}
       onClose={onClose}
       open={open}

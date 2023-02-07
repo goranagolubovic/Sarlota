@@ -47,7 +47,6 @@ export const StatisticsPage: React.FunctionComponent = () => {
     const response = await api.statistike.getIncome(numOfDays);
     const responseData = await response.json();
     setIncomeData(responseData);
-    console.log(responseData);
   };
 
   const getExpenditureStatistics = async () => {
@@ -65,7 +64,6 @@ export const StatisticsPage: React.FunctionComponent = () => {
       datum: elem.datum,
       zarada: parseInt(elem.zarada),
     }));
-    console.log(newData);
     return newData;
   };
 
