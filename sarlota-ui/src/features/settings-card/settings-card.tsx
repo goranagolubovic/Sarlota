@@ -18,11 +18,10 @@ import { EditOutlined, CloseOutlined, CheckOutlined } from "@ant-design/icons";
 import { Employee } from "../../api/services/employee.service";
 import "./settings-card.scss";
 import { api } from "../../api";
+import { useAuth } from "../../contexts/user.context";
 
 const SettingsCard: React.FunctionComponent = () => {
-  const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem("USER") || "")
-  );
+  const { user, setUser } = useAuth();
   const [isEditActive, setIsEditActive] = useState(false);
   const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -33,7 +32,7 @@ const SettingsCard: React.FunctionComponent = () => {
       uid: "-1",
       name: "image.png",
       status: "done",
-      thumbUrl: user.fotografija,
+      thumbUrl: user?.fotografija,
     },
   ]);
   const [form] = Form.useForm<Employee>();
@@ -60,11 +59,11 @@ const SettingsCard: React.FunctionComponent = () => {
 
   const save = async (values: any) => {
     const employee = formatFormData(values);
-    let response = await api.zaposleni.editEmployee(user.id, employee);
+    let response = await api.zaposleni.editEmployee(user?.id || 0, employee);
     let responseData = await response.text();
     localStorage.setItem("USER", responseData);
     editProfile();
-    setUser(JSON.parse(localStorage.getItem("USER") || ""));
+    setUser(JSON.parse(responseData));
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -72,17 +71,17 @@ const SettingsCard: React.FunctionComponent = () => {
   };
 
   useEffect(() => {
-    setUsername(user.korisnickoIme);
-    setFirstName(user.ime);
-    setLastName(user.prezime);
+    setUsername(user?.korisnickoIme || "");
+    setFirstName(user?.ime || "");
+    setLastName(user?.prezime || "");
     setPassword("********");
   }, [user]);
 
   useEffect(() => {
     if (!isEditActive) {
-      setUsername(user.korisnickoIme);
-      setFirstName(user.ime);
-      setLastName(user.prezime);
+      setUsername(user?.korisnickoIme || "");
+      setFirstName(user?.ime || "");
+      setLastName(user?.prezime || "");
       setPassword("********");
     } else {
       setUsername("");
