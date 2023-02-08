@@ -96,7 +96,7 @@ public class ZaposleniService {
 
         z.setIme(request.getIme());
         z.setPrezime(request.getPrezime());
-         z.setKorisnickoIme(request.getKorisnickoIme());
+//         z.setKorisnickoIme(request.getKorisnickoIme());
         z.setPlata(request.getPlata());
         z.setTipZaposlenog(request.getTipZaposlenog());
         z.setFotografija(request.getFotografija());
