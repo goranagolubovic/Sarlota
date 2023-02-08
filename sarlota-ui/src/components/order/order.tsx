@@ -65,6 +65,7 @@ export const OrderCard: React.FunctionComponent<OrderCardProps> = ({
       cover={
         <img
           alt="example"
+          style={{ minHeight: "400px", width: "100%", objectFit: "cover" }}
           src={
             order?.slika !== ""
               ? order.slika
