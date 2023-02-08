@@ -139,7 +139,11 @@ export const PurchasesPage: React.FunctionComponent = () => {
             >
               Dodaj sirovinu
             </Button>
-            <Button type="primary" size="middle">
+            <Button
+              type="primary"
+              size="middle"
+              onClick={() => setShowAddModal(true)}
+            >
               Nova nabavka
             </Button>
             <Button
