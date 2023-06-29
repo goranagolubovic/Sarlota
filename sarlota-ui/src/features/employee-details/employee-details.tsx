@@ -77,6 +77,16 @@ export const EmployeeDetails: React.FunctionComponent<EmployeeDetailsProps> = ({
         </Row>
 
         <Divider />
+
+        <p className="site-description-item-profile-p">Kontakt informacije</p>
+        <Row>
+          <Col span={12}>
+            <DescriptionItem title="Email" content="AntDesign@example.com" />
+          </Col>
+          <Col span={12}>
+            <DescriptionItem title="Phone Number" content="+86 181 0000 0000" />
+          </Col>
+        </Row>
       </div>
     </Drawer>
   );
